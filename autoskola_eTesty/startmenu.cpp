@@ -2,6 +2,8 @@
 #include "startmenu.h"
 #include "./ui_startmenu.h"
 
+#include <QLabel>
+
 
 StartMenu::StartMenu(QWidget *parent)
     : QMainWindow(parent)
