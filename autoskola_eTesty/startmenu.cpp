@@ -1,10 +1,11 @@
 
 #include "startmenu.h"
 #include "./ui_startmenu.h"
+#include "questionswindow.h"
+
 
 #include <QFile>
 #include <QDir>
-#include <QLabel>
 #include <QMessageBox>
 
 
@@ -13,6 +14,7 @@ StartMenu::StartMenu(QWidget *parent)
     , ui(new Ui::StartMenu)
 {
     ui->setupUi(this);
+    this->setWindowFlags(windowFlags() &(~Qt::WindowMaximizeButtonHint));
 }
 
 StartMenu::~StartMenu()
@@ -49,5 +51,23 @@ void StartMenu::on_pushButton_2_clicked()
     msgBox.setWindowTitle("Statistiky");
     msgBox.setText("počet otázek správně: \n\n\n");
     msgBox.exec();
+}
+
+
+void StartMenu::on_pushButton_clicked()
+{
+    // open questions window
+
+    QuestionsWindow qw;
+    this->hide();
+
+    qw.startQuiz();
+
+    while(!qw.closed){
+        qApp->processEvents();
+    }
+
+    this->show();
+
 }
 

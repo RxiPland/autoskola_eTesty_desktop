@@ -18,6 +18,10 @@ set(PROJECT_SOURCES
         startmenu.cpp
         startmenu.h
         startmenu.ui
+
+        questionswindow.h
+        questionswindow.cpp
+        questionswindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
