@@ -22,6 +22,9 @@ set(PROJECT_SOURCES
         questionswindow.h
         questionswindow.cpp
         questionswindow.ui
+
+        clickabletextedit.h
+        clickabletextedit.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

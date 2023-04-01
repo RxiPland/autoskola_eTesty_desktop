@@ -61,13 +61,12 @@ void StartMenu::on_pushButton_clicked()
     QuestionsWindow qw;
     this->hide();
 
-    qw.startQuiz();
+    qw.newQuestion();
 
     while(!qw.closed){
         qApp->processEvents();
     }
 
-    this->show();
-
+    this->close();
 }
 

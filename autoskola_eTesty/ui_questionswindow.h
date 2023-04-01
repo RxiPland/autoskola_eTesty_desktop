@@ -15,11 +15,11 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "clickabletextedit.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -37,11 +37,11 @@ public:
     QSpacerItem *verticalSpacer_3;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer_3;
-    QPlainTextEdit *plainTextEdit;
+    ClickableTextEdit *plainTextEdit;
     QSpacerItem *horizontalSpacer;
-    QPlainTextEdit *plainTextEdit_2;
+    ClickableTextEdit *plainTextEdit_2;
     QSpacerItem *horizontalSpacer_2;
-    QPlainTextEdit *plainTextEdit_3;
+    ClickableTextEdit *plainTextEdit_3;
     QSpacerItem *horizontalSpacer_4;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -104,7 +104,7 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_3);
 
-        plainTextEdit = new QPlainTextEdit(centralwidget);
+        plainTextEdit = new ClickableTextEdit(centralwidget);
         plainTextEdit->setObjectName("plainTextEdit");
         QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Maximum);
         sizePolicy2.setHorizontalStretch(0);
@@ -126,7 +126,7 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer);
 
-        plainTextEdit_2 = new QPlainTextEdit(centralwidget);
+        plainTextEdit_2 = new ClickableTextEdit(centralwidget);
         plainTextEdit_2->setObjectName("plainTextEdit_2");
         sizePolicy2.setHeightForWidth(plainTextEdit_2->sizePolicy().hasHeightForWidth());
         plainTextEdit_2->setSizePolicy(sizePolicy2);
@@ -143,7 +143,7 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_2);
 
-        plainTextEdit_3 = new QPlainTextEdit(centralwidget);
+        plainTextEdit_3 = new ClickableTextEdit(centralwidget);
         plainTextEdit_3->setObjectName("plainTextEdit_3");
         sizePolicy2.setHeightForWidth(plainTextEdit_3->sizePolicy().hasHeightForWidth());
         plainTextEdit_3->setSizePolicy(sizePolicy2);
