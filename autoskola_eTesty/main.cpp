@@ -108,7 +108,6 @@ void checkFilesIntegrity(){
         settingsFile.write(docData.toJson());
         settingsFile.close();
     }
-    //corrupted = false;
 }
 
 int main(int argc, char *argv[])
