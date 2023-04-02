@@ -11,6 +11,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QProcess>
+#include <QTimer>
 
 
 QuestionsDialog::QuestionsDialog(QWidget *parent) :
@@ -40,13 +41,16 @@ void QuestionsDialog::closeEvent(QCloseEvent *bar)
     }
 }
 
-void QuestionsDialog::disableWidgets(bool disable)
+void QuestionsDialog::hideWidgets(bool hide)
 {
-    // disable widgets
+    // hide widgets
 
-    ui->plainTextEdit->setDisabled(disable);
-    ui->plainTextEdit_2->setDisabled(disable);
-    ui->plainTextEdit_3->setDisabled(disable);
+    ui->plainTextEdit->setHidden(hide);
+    ui->plainTextEdit_2->setHidden(hide);
+    ui->plainTextEdit_3->setHidden(hide);
+
+    ui->label->setHidden(hide);
+    ui->image_label->setHidden(hide);
 }
 
 void QuestionsDialog::loadSettings()
@@ -88,7 +92,6 @@ void QuestionsDialog::loadSettings()
 
                 QuestionsDialog::userAgent = loadedJson["user_agent"].toString().toUtf8();
 
-                qInfo() << QuestionsDialog::userAgent;
             }
         }
 
@@ -107,6 +110,8 @@ void QuestionsDialog::newQuestion()
 {
     // set new question
 
+    qInfo() << "new question";
+
     QJsonObject question = QuestionsDialog::getRandomQuestion();
 
     if(question.isEmpty()){
@@ -122,7 +127,7 @@ void QuestionsDialog::newQuestion()
 QJsonObject QuestionsDialog::getRandomQuestion()
 {
     // get random question
-    QuestionsDialog::disableWidgets();
+    QuestionsDialog::hideWidgets();
 
     QJsonObject question;
     /*
@@ -142,7 +147,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     QNetworkReply::NetworkError error = replyGet->error();
     */
 
-    QuestionsDialog::disableWidgets(false);
+    QuestionsDialog::hideWidgets(false);
 
     return question;
 }
@@ -151,15 +156,30 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 void QuestionsDialog::on_plainTextEdit_clicked()
 {
     qInfo() << "answer A";
+
+    ui->plainTextEdit->setStyleSheet("background-image: url(C:/Users/libor/Downloads/e8d.jpg); background-position: center center;");
+
+    // if correct
+    QTimer::singleShot(1000, this, &QuestionsDialog::newQuestion);
 }
 
 void QuestionsDialog::on_plainTextEdit_2_clicked()
 {
     qInfo() << "answer B";
+
+    ui->plainTextEdit_2->setStyleSheet("background-image: url(C:/Users/libor/Downloads/e8d.jpg); background-position: center center;");
+
+    // if correct
+    QTimer::singleShot(1000, this, &QuestionsDialog::newQuestion);
 }
 
 void QuestionsDialog::on_plainTextEdit_3_clicked()
 {
     qInfo() << "answer C";
+
+    ui->plainTextEdit_3->setStyleSheet("background-image: url(C:/Users/libor/Downloads/e8d.jpg); background-position: center center;");
+
+    // if correct
+    QTimer::singleShot(1000, this, &QuestionsDialog::newQuestion);
 }
 

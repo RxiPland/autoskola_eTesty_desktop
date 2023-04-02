@@ -7,6 +7,8 @@
 #include <QFile>
 #include <QDir>
 #include <QMessageBox>
+#include <QJsonObject>
+#include <QJsonDocument>
 
 
 StartMenu::StartMenu(QWidget *parent)
@@ -34,8 +36,15 @@ void StartMenu::on_pushButton_3_clicked()
     QFile statsFile(QDir::currentPath() + "/Data/stats.json");
 
     if(statsFile.exists()){
+
+        QJsonObject newJson;
+        newJson["correct"] = 0;
+        newJson["wrong"] = 0;
+
+        QJsonDocument docData(newJson);
+
         statsFile.open(QIODevice::WriteOnly | QIODevice::Text);
-        statsFile.write("{}");
+        statsFile.write(docData.toJson());
         statsFile.close();
     }
 
@@ -59,12 +68,16 @@ void StartMenu::on_pushButton_clicked()
     // start questions window
 
     QuestionsDialog qd;
+
+
+    this->hide();
+
     qd.loadSettings();
     qd.newQuestion();
 
     qd.exec();
 
 
-    this->close();
+    this->show();
 }
 

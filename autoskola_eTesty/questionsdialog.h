@@ -29,7 +29,7 @@ private:
     QNetworkAccessManager manager;
 
     void closeEvent(QCloseEvent *bar = nullptr);
-    void disableWidgets(bool disable = true);
+    void hideWidgets(bool disable = true);
 
     QJsonObject getRandomQuestion();
 
