@@ -1,33 +1,30 @@
 /********************************************************************************
-** Form generated from reading UI file 'questionswindow.ui'
+** Form generated from reading UI file 'questionsdialog.ui'
 **
 ** Created by: Qt User Interface Compiler version 6.4.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef UI_QUESTIONSWINDOW_H
-#define UI_QUESTIONSWINDOW_H
+#ifndef UI_QUESTIONSDIALOG_H
+#define UI_QUESTIONSDIALOG_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QSpacerItem>
-#include <QtWidgets/QStatusBar>
 #include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QWidget>
 #include "clickabletextedit.h"
 
 QT_BEGIN_NAMESPACE
 
-class Ui_QuestionsWindow
+class Ui_QuestionsDialog
 {
 public:
-    QWidget *centralwidget;
     QHBoxLayout *horizontalLayout_2;
+    QSpacerItem *horizontalSpacer_5;
     QVBoxLayout *verticalLayout_2;
     QVBoxLayout *verticalLayout;
     QSpacerItem *verticalSpacer_2;
@@ -43,18 +40,20 @@ public:
     QSpacerItem *horizontalSpacer_2;
     ClickableTextEdit *plainTextEdit_3;
     QSpacerItem *horizontalSpacer_4;
-    QMenuBar *menubar;
-    QStatusBar *statusbar;
+    QSpacerItem *verticalSpacer_4;
+    QSpacerItem *horizontalSpacer_6;
 
-    void setupUi(QMainWindow *QuestionsWindow)
+    void setupUi(QDialog *QuestionsDialog)
     {
-        if (QuestionsWindow->objectName().isEmpty())
-            QuestionsWindow->setObjectName("QuestionsWindow");
-        QuestionsWindow->resize(949, 609);
-        centralwidget = new QWidget(QuestionsWindow);
-        centralwidget->setObjectName("centralwidget");
-        horizontalLayout_2 = new QHBoxLayout(centralwidget);
+        if (QuestionsDialog->objectName().isEmpty())
+            QuestionsDialog->setObjectName("QuestionsDialog");
+        QuestionsDialog->resize(854, 612);
+        horizontalLayout_2 = new QHBoxLayout(QuestionsDialog);
         horizontalLayout_2->setObjectName("horizontalLayout_2");
+        horizontalSpacer_5 = new QSpacerItem(10, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_5);
+
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName("verticalLayout_2");
         verticalLayout_2->setContentsMargins(-1, 0, -1, 0);
@@ -64,7 +63,7 @@ public:
 
         verticalLayout->addItem(verticalSpacer_2);
 
-        label = new QLabel(centralwidget);
+        label = new QLabel(QuestionsDialog);
         label->setObjectName("label");
         QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
         sizePolicy.setHorizontalStretch(0);
@@ -81,7 +80,7 @@ public:
 
         verticalLayout->addItem(verticalSpacer);
 
-        image_label = new QLabel(centralwidget);
+        image_label = new QLabel(QuestionsDialog);
         image_label->setObjectName("image_label");
         QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy1.setHorizontalStretch(0);
@@ -104,7 +103,7 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_3);
 
-        plainTextEdit = new ClickableTextEdit(centralwidget);
+        plainTextEdit = new ClickableTextEdit(QuestionsDialog);
         plainTextEdit->setObjectName("plainTextEdit");
         QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Maximum);
         sizePolicy2.setHorizontalStretch(0);
@@ -126,7 +125,7 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer);
 
-        plainTextEdit_2 = new ClickableTextEdit(centralwidget);
+        plainTextEdit_2 = new ClickableTextEdit(QuestionsDialog);
         plainTextEdit_2->setObjectName("plainTextEdit_2");
         sizePolicy2.setHeightForWidth(plainTextEdit_2->sizePolicy().hasHeightForWidth());
         plainTextEdit_2->setSizePolicy(sizePolicy2);
@@ -143,7 +142,7 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_2);
 
-        plainTextEdit_3 = new ClickableTextEdit(centralwidget);
+        plainTextEdit_3 = new ClickableTextEdit(QuestionsDialog);
         plainTextEdit_3->setObjectName("plainTextEdit_3");
         sizePolicy2.setHeightForWidth(plainTextEdit_3->sizePolicy().hasHeightForWidth());
         plainTextEdit_3->setSizePolicy(sizePolicy2);
@@ -162,37 +161,37 @@ public:
 
         verticalLayout_2->addLayout(horizontalLayout);
 
+        verticalSpacer_4 = new QSpacerItem(20, 12, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout_2->addItem(verticalSpacer_4);
+
 
         horizontalLayout_2->addLayout(verticalLayout_2);
 
-        QuestionsWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(QuestionsWindow);
-        menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 949, 21));
-        QuestionsWindow->setMenuBar(menubar);
-        statusbar = new QStatusBar(QuestionsWindow);
-        statusbar->setObjectName("statusbar");
-        QuestionsWindow->setStatusBar(statusbar);
+        horizontalSpacer_6 = new QSpacerItem(10, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
-        retranslateUi(QuestionsWindow);
+        horizontalLayout_2->addItem(horizontalSpacer_6);
 
-        QMetaObject::connectSlotsByName(QuestionsWindow);
+
+        retranslateUi(QuestionsDialog);
+
+        QMetaObject::connectSlotsByName(QuestionsDialog);
     } // setupUi
 
-    void retranslateUi(QMainWindow *QuestionsWindow)
+    void retranslateUi(QDialog *QuestionsDialog)
     {
-        QuestionsWindow->setWindowTitle(QCoreApplication::translate("QuestionsWindow", "Ot\303\241zky", nullptr));
-        label->setText(QCoreApplication::translate("QuestionsWindow", "question", nullptr));
-        image_label->setText(QCoreApplication::translate("QuestionsWindow", "question image", nullptr));
+        QuestionsDialog->setWindowTitle(QCoreApplication::translate("QuestionsDialog", "Dialog", nullptr));
+        label->setText(QCoreApplication::translate("QuestionsDialog", "question", nullptr));
+        image_label->setText(QCoreApplication::translate("QuestionsDialog", "question image", nullptr));
         plainTextEdit->setPlainText(QString());
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class QuestionsWindow: public Ui_QuestionsWindow {};
+    class QuestionsDialog: public Ui_QuestionsDialog {};
 } // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif // UI_QUESTIONSWINDOW_H
+#endif // UI_QUESTIONSDIALOG_H

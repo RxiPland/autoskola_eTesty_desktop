@@ -1,9 +1,9 @@
 
 #include "startmenu.h"
 #include "./ui_startmenu.h"
-#include "questionswindow.h"
+#include "questionsdialog.h"
 
-
+#include <QThread>
 #include <QFile>
 #include <QDir>
 #include <QMessageBox>
@@ -56,16 +56,14 @@ void StartMenu::on_pushButton_2_clicked()
 
 void StartMenu::on_pushButton_clicked()
 {
-    // open questions window
+    // start questions window
 
-    QuestionsWindow qw;
-    this->hide();
+    QuestionsDialog qd;
+    qd.loadSettings();
+    qd.newQuestion();
 
-    qw.newQuestion();
+    qd.exec();
 
-    while(!qw.closed){
-        qApp->processEvents();
-    }
 
     this->close();
 }

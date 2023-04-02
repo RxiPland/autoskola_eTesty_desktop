@@ -19,12 +19,12 @@ set(PROJECT_SOURCES
         startmenu.h
         startmenu.ui
 
-        questionswindow.h
-        questionswindow.cpp
-        questionswindow.ui
-
         clickabletextedit.h
         clickabletextedit.cpp
+
+        questionsdialog.h
+        questionsdialog.cpp
+        questionsdialog.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -67,3 +67,7 @@ install(TARGETS autoskola_eTesty
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(autoskola_eTesty)
 endif()
+
+
+find_package(Qt6 REQUIRED COMPONENTS Network)
+target_link_libraries(autoskola_eTesty PRIVATE Qt6::Network)
