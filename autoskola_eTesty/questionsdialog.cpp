@@ -198,12 +198,15 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     QString questionId;
     QString points;
 
+    QRegularExpression rx;
+    QRegularExpressionMatch match;
+    QRegularExpressionMatchIterator iterator;
 
     if(responseHtml.contains("/img/single")){
         // image question and text answers
 
         // QUESTION TEXT
-        QRegularExpression rx(patternQuestionText);
+        rx = QRegularExpression(patternQuestionText);
         questionText = rx.match(responseHtml).captured(1).trimmed();
 
         // QUESTION MEDIA
@@ -219,65 +222,15 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         correctText = rx.match(responseHtml).captured(1).trimmed();
 
         // WRONG ANSWERS TEXT
-        QRegularExpressionMatch match;
         rx = QRegularExpression(patternWrong);
 
-        QRegularExpressionMatchIterator iterator = rx.globalMatch(responseHtml);
+        iterator = rx.globalMatch(responseHtml);
 
         match = iterator.next();
         wrong1Text = match.captured(1).trimmed();
         match = iterator.next();
         wrong2Text = match.captured(1).trimmed();
 
-        /*
-        qInfo() << questionText;
-        qInfo() << questionMedia;
-        qInfo() << correctText;
-        qInfo() << wrong1Text;
-        qInfo() << wrong2Text;
-        */
-
-
-        /*
-        question_text: list[str] = re.findall(PATTERN_QUESTION_TEXT, response_html)
-
-        if len(question_text) > 0:
-            question_text = question_text[0].strip()
-        else:
-            question_text = QString()
-
-        question_media: list[str] = re.findall(PATTERN_QUESTION_MEDIA, response_html)
-
-        if len(question_media) > 0:
-            question_media = question_media[0].strip()
-            question_media = "https://www.autoskola-testy.cz" + question_media
-        else:
-            question_media = QString()
-
-        correct_text: list[str] = re.findall(PATTERN_CORRECT, response_html)
-
-        if len(correct_text) > 0:
-            correct_text = correct_text[0].strip()
-        else:
-            correct_text = QString()
-
-        // WRONG ANSWER //1 TEXT
-        wrong1_text: list[str] = re.findall(PATTERN_WRONG, response_html)
-
-        if len(wrong1_text) > 0:
-            wrong1_text = wrong1_text[0].strip()
-        else:
-            wrong1_text = QString()
-
-        // WRONG ANSWER //2 TEXT
-        wrong2_text: list[str] = re.findall(PATTERN_WRONG, response_html)
-
-        if len(wrong2_text) > 1:
-            wrong2_text = wrong2_text[1].strip()
-        else:
-            wrong2_text = QString()
-
-        */
 
     } else if(responseHtml.contains("/img/triple")){
         // text question and image answers
@@ -369,26 +322,31 @@ QJsonObject QuestionsDialog::getRandomQuestion()
             wrong2_text = wrong2_text[1].strip()
         else:
             wrong2_text = QString()
-
-
-        // QUESTION ID
-        question_id: list[str] = re.findall(PATTER_QUESTION_ID, response_html)
-
-        if len(question_id) > 0:
-            question_id = question_id[0].strip()
-        else:
-            question_id = QString()
-
-        // POINTS
-        points: list[str] = re.findall(PATTER_POINTS, response_html)
-
-        if len(points) > 0:
-            points = points[0].strip()
-        else:
-            points = QString()
-
-
     */
+
+    // QUESTION ID
+    rx = QRegularExpression(patternQuestionId);
+    questionId = rx.match(responseHtml).captured(1).trimmed();
+
+    // POINTS
+    rx = QRegularExpression(patternPoints);
+    points = rx.match(responseHtml).captured(1).trimmed();
+
+
+
+    // tests
+    qInfo() << questionText;
+    qInfo() << questionMedia;
+    qInfo() << correctText;
+    qInfo() << correctMedia;
+    qInfo() << wrong1Text;
+    qInfo() << wrong1Media;
+    qInfo() << wrong2Text;
+    qInfo() << wrong2Media;
+    qInfo() << questionId;
+    qInfo() << points;
+
+
     QuestionsDialog::previousTopicId = randomTopicId;
     QuestionsDialog::hideWidgets(false);
 
