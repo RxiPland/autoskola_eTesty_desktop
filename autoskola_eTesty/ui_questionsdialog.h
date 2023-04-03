@@ -47,7 +47,7 @@ public:
     {
         if (QuestionsDialog->objectName().isEmpty())
             QuestionsDialog->setObjectName("QuestionsDialog");
-        QuestionsDialog->resize(854, 612);
+        QuestionsDialog->resize(854, 577);
         horizontalLayout_2 = new QHBoxLayout(QuestionsDialog);
         horizontalLayout_2->setObjectName("horizontalLayout_2");
         horizontalSpacer_5 = new QSpacerItem(10, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);

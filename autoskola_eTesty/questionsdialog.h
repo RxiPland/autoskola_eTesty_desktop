@@ -33,7 +33,19 @@ private:
 
     QJsonObject getRandomQuestion();
 
+    int previousTopicId = 1;
     QByteArray userAgent;
+
+    QString url = "https://www.autoskola-testy.cz/prohlizeni_otazek.php?random=";
+
+    QString patternQuestionText = "\"question-text\".+>(.+)\n*\t*</p>";
+    QString patternQuestionMedia = "src=\"(/img/[a-zA-z0-9/]+.[a-zA-Z0-9]+)";
+
+    QString patternCorrect = "\"answer otazka_spravne\".+\n*\t*.+<p>(.+)</p>";
+    QString patternWrong = "\"answer otazka_spatne\".+\n*\t*.+<p>(.+)</p>";
+
+    QString patternQuestionId = "má kód (\\d+)";
+    QString patternPoints = "za její správné zodpovězení v testech se získá.+(\\d) body?";
 
 };
 
