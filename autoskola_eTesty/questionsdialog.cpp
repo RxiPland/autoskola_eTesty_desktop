@@ -13,6 +13,7 @@
 #include <QProcess>
 #include <QTimer>
 #include <QRandomGenerator>
+#include <QRegularExpression>
 
 
 QuestionsDialog::QuestionsDialog(QWidget *parent) :
@@ -144,6 +145,8 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         // should never happen
 
         QMessageBox::critical(this, "Nastala chyba", "Nepodařilo se vygenerovat náhodné číslo mezi 1 a 7!");
+
+        QuestionsDialog::hideWidgets(false);
         return question;
     }
 
@@ -160,67 +163,103 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     connect(replyGet, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
 
-    QString error = replyGet->errorString();
+    QNetworkReply::NetworkError error = replyGet->error();
 
-    if(!error.isEmpty()){
+    if(error != QNetworkReply::NoError){
         // any error occured
 
-        QMessageBox::critical(this, "Nastala chyba", error);
+        QString errortext = replyGet->errorString();
+        QMessageBox::critical(this, "Nastala chyba", errortext);
+
+        QuestionsDialog::hideWidgets(false);
         return question;
     }
 
     QByteArray responseHtml = replyGet->readAll();
 
+    if(responseHtml.isEmpty()){
+        // no HTML
 
-    /*
-    if question_topic_id < 1 or question_topic_id > 7:
-        raise Exception("Question topic ID integer must be between 1 and 7")
+        QMessageBox::critical(this, "Nastala chyba", "Server nic nevrátil!");
 
-    elif previous_topic_id < 1 or previous_topic_id > 7:
-        raise Exception("Previous topic ID integer must be between 1 and 7")
+        QuestionsDialog::hideWidgets(false);
+        return question;
+    }
+
+    // variables for json
+    QString questionText;
+    QString questionMedia;
+    QString correctText;
+    QString correctMedia;
+    QString wrong1Text;
+    QString wrong1Media;
+    QString wrong2Text;
+    QString wrong2Media;
+    QString questionId;
+    QString points;
 
 
-    question_text = str()
-    question_media = str()
-    correct_text = str()
-    correct_media = str()
-    wrong1_text = str()
-    wrong1_media = str()
-    wrong2_text = str()
-    wrong2_media = str()
-    question_id = str()
-    points = str()
-
-
-    response = requests.get(URL + str(question_topic_id), headers={"User-Agent": USER_AGENT, "Referer": URL + str(previous_topic_id)})
-    response_html = response.text
-
-    if "/img/single" in response_html:
+    if(responseHtml.contains("/img/single")){
+        // image question and text answers
 
         // QUESTION TEXT
+        QRegularExpression rx(patternQuestionText);
+        questionText = rx.match(responseHtml).captured(1).trimmed();
+
+        // QUESTION MEDIA
+        rx = QRegularExpression(patternQuestionMedia);
+        questionMedia = rx.match(responseHtml).captured(1).trimmed();
+
+        if(!questionMedia.isEmpty()){
+            questionMedia = "https://www.autoskola-testy.cz" + questionMedia;
+        }
+
+        // CORRECT ANSWER TEXT
+        rx = QRegularExpression(patternCorrect);
+        correctText = rx.match(responseHtml).captured(1).trimmed();
+
+        // WRONG ANSWERS TEXT
+        QRegularExpressionMatch match;
+        rx = QRegularExpression(patternWrong);
+
+        QRegularExpressionMatchIterator iterator = rx.globalMatch(responseHtml);
+
+        match = iterator.next();
+        wrong1Text = match.captured(1).trimmed();
+        match = iterator.next();
+        wrong2Text = match.captured(1).trimmed();
+
+        /*
+        qInfo() << questionText;
+        qInfo() << questionMedia;
+        qInfo() << correctText;
+        qInfo() << wrong1Text;
+        qInfo() << wrong2Text;
+        */
+
+
+        /*
         question_text: list[str] = re.findall(PATTERN_QUESTION_TEXT, response_html)
 
         if len(question_text) > 0:
             question_text = question_text[0].strip()
         else:
-            question_text = str()
+            question_text = QString()
 
-        // QUESTION MEDIA
         question_media: list[str] = re.findall(PATTERN_QUESTION_MEDIA, response_html)
 
         if len(question_media) > 0:
             question_media = question_media[0].strip()
             question_media = "https://www.autoskola-testy.cz" + question_media
         else:
-            question_media = str()
+            question_media = QString()
 
-        // CORRECT ANSWER TEXT
         correct_text: list[str] = re.findall(PATTERN_CORRECT, response_html)
 
         if len(correct_text) > 0:
             correct_text = correct_text[0].strip()
         else:
-            correct_text = str()
+            correct_text = QString()
 
         // WRONG ANSWER //1 TEXT
         wrong1_text: list[str] = re.findall(PATTERN_WRONG, response_html)
@@ -228,7 +267,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         if len(wrong1_text) > 0:
             wrong1_text = wrong1_text[0].strip()
         else:
-            wrong1_text = str()
+            wrong1_text = QString()
 
         // WRONG ANSWER //2 TEXT
         wrong2_text: list[str] = re.findall(PATTERN_WRONG, response_html)
@@ -236,8 +275,20 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         if len(wrong2_text) > 1:
             wrong2_text = wrong2_text[1].strip()
         else:
-            wrong2_text = str()
+            wrong2_text = QString()
 
+        */
+
+    } else if(responseHtml.contains("/img/triple")){
+        // text question and image answers
+
+
+    } else{
+        // text question and text answers
+    }
+
+
+    /*
 
     elif "/img/tripple/" in response_html:
 
@@ -247,7 +298,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         if len(question_text) > 0:
             question_text = question_text[0].strip()
         else:
-            question_text = str()
+            question_text = QString()
 
         // CORRECT ANSWER MEDIA
         correct_media: list[str] = re.findall(PATTERN_CORRECT, response_html)
@@ -259,7 +310,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
             correct_media = "https://www.autoskola-testy.cz" + correct_media
 
         else:
-            correct_media = str()
+            correct_media = QString()
 
         // WRONG ANSWER //1 MEDIA
         wrong1_media: list[str] = re.findall(PATTERN_WRONG, response_html)
@@ -271,7 +322,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
             wrong1_media = "https://www.autoskola-testy.cz" + wrong1_media
 
         else:
-            wrong1_media = str()
+            wrong1_media = QString()
 
         // WRONG ANSWER //2 MEDIA
         wrong2_media: list[str] = re.findall(PATTERN_WRONG, response_html)
@@ -283,7 +334,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
             wrong2_media = "https://www.autoskola-testy.cz" + wrong2_media
 
         else:
-            wrong2_media = str()
+            wrong2_media = QString()
 
     else:
 
@@ -293,7 +344,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         if len(question_text) > 0:
             question_text = question_text[0].strip()
         else:
-            question_text = str()
+            question_text = QString()
 
         // CORRECT ANSWER TEXT
         correct_text: list[str] = re.findall(PATTERN_CORRECT, response_html)
@@ -301,7 +352,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         if len(correct_text) > 0:
             correct_text = correct_text[0].strip()
         else:
-            correct_text = str()
+            correct_text = QString()
 
         // WRONG ANSWER TEXT //1
         wrong1_text: list[str] = re.findall(PATTERN_WRONG, response_html)
@@ -309,7 +360,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         if len(wrong1_text) > 0:
             wrong1_text = wrong1_text[0].strip()
         else:
-            wrong1_text = str()
+            wrong1_text = QString()
 
         // WRONG ANSWER TEXT //2
         wrong2_text: list[str] = re.findall(PATTERN_WRONG, response_html)
@@ -317,7 +368,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         if len(wrong2_text) > 1:
             wrong2_text = wrong2_text[1].strip()
         else:
-            wrong2_text = str()
+            wrong2_text = QString()
 
 
         // QUESTION ID
@@ -326,7 +377,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         if len(question_id) > 0:
             question_id = question_id[0].strip()
         else:
-            question_id = str()
+            question_id = QString()
 
         // POINTS
         points: list[str] = re.findall(PATTER_POINTS, response_html)
@@ -334,7 +385,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         if len(points) > 0:
             points = points[0].strip()
         else:
-            points = str()
+            points = QString()
 
 
     */
