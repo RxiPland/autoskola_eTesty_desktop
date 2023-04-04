@@ -23,6 +23,7 @@ QuestionsDialog::QuestionsDialog(QWidget *parent) :
     ui->setupUi(this);
 
     ui->question_image->setAlignment(Qt::AlignCenter);
+
     this->show();
 }
 
@@ -121,6 +122,25 @@ void QuestionsDialog::newQuestion()
 
         return;
     }
+
+
+    QString questionText = questionData["question_text"].toString();
+    QString questionMedia = questionData["question_media"].toString();
+    QString correctText = questionData["correct_text"].toString();
+    QString correctMedia = questionData["correct_media"].toString();
+    QString wrong1Text = questionData["wrong1_text"].toString();
+    QString wrong1Media = questionData["wrong1_media"].toString();
+    QString wrong2Text = questionData["wrong2_text"].toString();
+    QString wrong2Media = questionData["wrong2_media"].toString();
+
+    //QString questionId = questionData["question_id"].toString();
+    //int questionTopicId = questionData["topic_id"].toInt();
+    //QString points = questionData["points"].toString();
+
+    // 1 = text question and text answers
+    // 2 = image question and text answers
+    // 3 = text question and image answers
+    int questionType = 0;
 
 
     if(questionData["question_media"].toString().isEmpty()){
@@ -338,6 +358,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     question["wrong2_text"] = wrong2Text;
     question["wrong2_media"] = wrong2Media;
     question["question_id"] = questionId;
+    question["topic_id"] = randomTopicId;
     question["points"] = points;
 
 
