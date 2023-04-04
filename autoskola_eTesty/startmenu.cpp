@@ -68,8 +68,6 @@ void StartMenu::on_pushButton_clicked()
     // start questions window
 
     QuestionsDialog qd;
-
-
     this->hide();
 
     qd.loadSettings();
