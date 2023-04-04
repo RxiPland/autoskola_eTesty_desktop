@@ -33,6 +33,9 @@ private:
 
     QJsonObject getRandomQuestion();
 
+    int width = 0;
+    int height = 0;
+
     int previousTopicId = 1;
     QByteArray userAgent;
 

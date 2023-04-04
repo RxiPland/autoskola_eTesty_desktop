@@ -25,6 +25,9 @@ QuestionsDialog::QuestionsDialog(QWidget *parent) :
     ui->question_image->setAlignment(Qt::AlignCenter);
 
     this->show();
+    width = ui->question_text->width();
+    height = ui->question_text->height()+(width/8);
+
 }
 
 
@@ -53,6 +56,7 @@ void QuestionsDialog::hideWidgets(bool hide)
     ui->label->setHidden(hide);
     ui->label_2->setHidden(hide);
     ui->label_3->setHidden(hide);
+    ui->label_4->setHidden(hide);
 
     ui->question_imageText->setHidden(hide);
     ui->question_text->setHidden(hide);
@@ -202,29 +206,73 @@ void QuestionsDialog::newQuestion()
         if(!correctText.isEmpty()){
             ui->answerA->setHidden(false);
             ui->answerA->setPlainText(correctText);
+            ui->label->setHidden(false);
 
         } else{
             ui->answerA->setHidden(true);
+            ui->label->setHidden(true);
         }
 
         if(!wrong1Text.isEmpty()){
             ui->answerB->setHidden(false);
             ui->answerB->setPlainText(wrong1Text);
+            ui->label_2->setHidden(false);
 
         } else{
             ui->answerB->setHidden(true);
+            ui->label_2->setHidden(true);
         }
 
         if(!wrong2Text.isEmpty()){
             ui->answerC->setHidden(false);
             ui->answerC->setPlainText(wrong2Text);
+            ui->label_3->setHidden(false);
 
         } else{
             ui->answerC->setHidden(true);
+            ui->label_3->setHidden(true);
         }
 
     } else if(questionType == 2){
+        ui->question_imageText->setPlainText(questionText);
+        ui->question_imageText->setHidden(false);
 
+        QPixmap questionImage("C:/Users/libor/Downloads/0447.jpg");
+        ui->question_image->setPixmap(questionImage.scaled(width, height, Qt::KeepAspectRatio));
+        ui->question_image->setHidden(false);
+
+        ui->question_text->setHidden(true);
+        ui->question_text->clear();
+
+        if(!correctText.isEmpty()){
+            ui->answerA->setHidden(false);
+            ui->answerA->setPlainText(correctText);
+            ui->label->setHidden(false);
+
+        } else{
+            ui->answerA->setHidden(true);
+            ui->label->setHidden(true);
+        }
+
+        if(!wrong1Text.isEmpty()){
+            ui->answerB->setHidden(false);
+            ui->answerB->setPlainText(wrong1Text);
+            ui->label_2->setHidden(false);
+
+        } else{
+            ui->answerB->setHidden(true);
+            ui->label_2->setHidden(true);
+        }
+
+        if(!wrong2Text.isEmpty()){
+            ui->answerC->setHidden(false);
+            ui->answerC->setPlainText(wrong2Text);
+            ui->label_3->setHidden(false);
+
+        } else{
+            ui->answerC->setHidden(true);
+            ui->label_3->setHidden(true);
+        }
     }
 
 
