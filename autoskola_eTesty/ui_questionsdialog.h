@@ -24,6 +24,7 @@ QT_BEGIN_NAMESPACE
 class Ui_QuestionsDialog
 {
 public:
+    QVBoxLayout *verticalLayout_6;
     QHBoxLayout *horizontalLayout_2;
     QSpacerItem *horizontalSpacer_5;
     QVBoxLayout *verticalLayout_2;
@@ -50,15 +51,21 @@ public:
     QSpacerItem *horizontalSpacer_4;
     QSpacerItem *verticalSpacer_4;
     QSpacerItem *horizontalSpacer_6;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *label_4;
+    QSpacerItem *horizontalSpacer_7;
 
     void setupUi(QDialog *QuestionsDialog)
     {
         if (QuestionsDialog->objectName().isEmpty())
             QuestionsDialog->setObjectName("QuestionsDialog");
         QuestionsDialog->resize(854, 577);
-        horizontalLayout_2 = new QHBoxLayout(QuestionsDialog);
+        verticalLayout_6 = new QVBoxLayout(QuestionsDialog);
+        verticalLayout_6->setObjectName("verticalLayout_6");
+        horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName("horizontalLayout_2");
-        horizontalSpacer_5 = new QSpacerItem(10, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+        horizontalLayout_2->setContentsMargins(-1, 0, -1, -1);
+        horizontalSpacer_5 = new QSpacerItem(15, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
         horizontalLayout_2->addItem(horizontalSpacer_5);
 
@@ -231,9 +238,28 @@ public:
 
         horizontalLayout_2->addLayout(verticalLayout_2);
 
-        horizontalSpacer_6 = new QSpacerItem(10, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+        horizontalSpacer_6 = new QSpacerItem(15, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
         horizontalLayout_2->addItem(horizontalSpacer_6);
+
+
+        verticalLayout_6->addLayout(horizontalLayout_2);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName("horizontalLayout_3");
+        horizontalLayout_3->setContentsMargins(-1, 0, -1, -1);
+        label_4 = new QLabel(QuestionsDialog);
+        label_4->setObjectName("label_4");
+        label_4->setMinimumSize(QSize(70, 0));
+
+        horizontalLayout_3->addWidget(label_4);
+
+        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_3->addItem(horizontalSpacer_7);
+
+
+        verticalLayout_6->addLayout(horizontalLayout_3);
 
 
         retranslateUi(QuestionsDialog);
@@ -249,6 +275,7 @@ public:
         answerA->setPlainText(QString());
         label_2->setText(QCoreApplication::translate("QuestionsDialog", "Odpov\304\233\304\217 B:", nullptr));
         label_3->setText(QCoreApplication::translate("QuestionsDialog", "Odpov\304\233\304\217 C:", nullptr));
+        label_4->setText(QCoreApplication::translate("QuestionsDialog", "\304\214as", nullptr));
     } // retranslateUi
 
 };
