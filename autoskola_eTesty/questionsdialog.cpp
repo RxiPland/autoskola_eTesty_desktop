@@ -49,6 +49,10 @@ void QuestionsDialog::hideWidgets(bool hide)
     ui->answerB->setHidden(hide);
     ui->answerC->setHidden(hide);
 
+    ui->label->setHidden(hide);
+    ui->label_2->setHidden(hide);
+    ui->label_3->setHidden(hide);
+
     ui->question_imageText->setHidden(hide);
     ui->question_text->setHidden(hide);
     ui->question_image->setHidden(hide);

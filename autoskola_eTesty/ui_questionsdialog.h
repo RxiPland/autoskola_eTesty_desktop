@@ -36,10 +36,16 @@ public:
     QSpacerItem *verticalSpacer_3;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer_3;
+    QVBoxLayout *verticalLayout_3;
+    QLabel *label;
     ClickableTextEdit *answerA;
     QSpacerItem *horizontalSpacer;
+    QVBoxLayout *verticalLayout_4;
+    QLabel *label_2;
     ClickableTextEdit *answerB;
     QSpacerItem *horizontalSpacer_2;
+    QVBoxLayout *verticalLayout_5;
+    QLabel *label_3;
     ClickableTextEdit *answerC;
     QSpacerItem *horizontalSpacer_4;
     QSpacerItem *verticalSpacer_4;
@@ -121,6 +127,17 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_3);
 
+        verticalLayout_3 = new QVBoxLayout();
+        verticalLayout_3->setObjectName("verticalLayout_3");
+        verticalLayout_3->setContentsMargins(-1, 0, 0, -1);
+        label = new QLabel(QuestionsDialog);
+        label->setObjectName("label");
+        label->setFont(font);
+        label->setTextFormat(Qt::PlainText);
+        label->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_3->addWidget(label);
+
         answerA = new ClickableTextEdit(QuestionsDialog);
         answerA->setObjectName("answerA");
         QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Maximum);
@@ -135,11 +152,25 @@ public:
         answerA->setFocusPolicy(Qt::NoFocus);
         answerA->setReadOnly(true);
 
-        horizontalLayout->addWidget(answerA);
+        verticalLayout_3->addWidget(answerA);
+
+
+        horizontalLayout->addLayout(verticalLayout_3);
 
         horizontalSpacer = new QSpacerItem(60, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer);
+
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName("verticalLayout_4");
+        verticalLayout_4->setContentsMargins(-1, 0, 0, -1);
+        label_2 = new QLabel(QuestionsDialog);
+        label_2->setObjectName("label_2");
+        label_2->setFont(font);
+        label_2->setTextFormat(Qt::PlainText);
+        label_2->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_4->addWidget(label_2);
 
         answerB = new ClickableTextEdit(QuestionsDialog);
         answerB->setObjectName("answerB");
@@ -152,11 +183,24 @@ public:
         answerB->setFocusPolicy(Qt::NoFocus);
         answerB->setReadOnly(true);
 
-        horizontalLayout->addWidget(answerB);
+        verticalLayout_4->addWidget(answerB);
+
+
+        horizontalLayout->addLayout(verticalLayout_4);
 
         horizontalSpacer_2 = new QSpacerItem(60, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer_2);
+
+        verticalLayout_5 = new QVBoxLayout();
+        verticalLayout_5->setObjectName("verticalLayout_5");
+        verticalLayout_5->setContentsMargins(-1, 0, 0, -1);
+        label_3 = new QLabel(QuestionsDialog);
+        label_3->setObjectName("label_3");
+        label_3->setFont(font);
+        label_3->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_5->addWidget(label_3);
 
         answerC = new ClickableTextEdit(QuestionsDialog);
         answerC->setObjectName("answerC");
@@ -168,7 +212,10 @@ public:
         answerC->setFocusPolicy(Qt::NoFocus);
         answerC->setReadOnly(true);
 
-        horizontalLayout->addWidget(answerC);
+        verticalLayout_5->addWidget(answerC);
+
+
+        horizontalLayout->addLayout(verticalLayout_5);
 
         horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
@@ -198,7 +245,10 @@ public:
     {
         QuestionsDialog->setWindowTitle(QCoreApplication::translate("QuestionsDialog", "Dialog", nullptr));
         question_image->setText(QCoreApplication::translate("QuestionsDialog", "image", nullptr));
+        label->setText(QCoreApplication::translate("QuestionsDialog", "Odpov\304\233\304\217 A:", nullptr));
         answerA->setPlainText(QString());
+        label_2->setText(QCoreApplication::translate("QuestionsDialog", "Odpov\304\233\304\217 B:", nullptr));
+        label_3->setText(QCoreApplication::translate("QuestionsDialog", "Odpov\304\233\304\217 C:", nullptr));
     } // retranslateUi
 
 };
