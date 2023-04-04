@@ -189,6 +189,8 @@ void QuestionsDialog::newQuestion()
 
 
     if(questionType == 1){
+        hideWidgets();
+
         ui->question_imageText->setHidden(true);
         ui->question_imageText->clear();
 
@@ -229,6 +231,8 @@ void QuestionsDialog::newQuestion()
         }
 
     } else if(questionType == 2){
+        hideWidgets();
+
         ui->question_imageText->setPlainText(questionText);
         ui->question_imageText->setHidden(false);
 
@@ -272,7 +276,9 @@ void QuestionsDialog::newQuestion()
         }
 
     } else if(questionType == 3){
+        //hideWidgets();
 
+        qInfo() << "type 3";
 
 
     } else{
