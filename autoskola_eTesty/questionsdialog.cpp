@@ -120,15 +120,15 @@ void QuestionsDialog::newQuestion()
         //return;
     }
 
-    ui->plainTextEdit->setStyleSheet("background-image: url(C:/Users/libor/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
-    ui->plainTextEdit_2->setStyleSheet("background-image: url(C:/Users/libor/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
-    ui->plainTextEdit_3->setStyleSheet("background-image: url(C:/Users/libor/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
+    ui->plainTextEdit->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
+    ui->plainTextEdit_2->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
+    ui->plainTextEdit_3->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
 
     ui->plainTextEdit->setText("ahoj");
     ui->plainTextEdit->setAlignment(Qt::AlignCenter);
 
 
-    QPixmap questionImage("C:/Users/libor/Downloads/0447.jpg");
+    QPixmap questionImage("C:/Users/RxiPland/Downloads/0117.jpg");
     ui->image_label->setPixmap(questionImage.scaled(ui->image_label->width(), ui->image_label->height(), Qt::KeepAspectRatio));
 }
 
@@ -235,94 +235,69 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     } else if(responseHtml.contains("/img/triple")){
         // text question and image answers
 
+        // QUESTION TEXT
+        rx = QRegularExpression(patternQuestionText);
+        questionText = rx.match(responseHtml).captured(1).trimmed();
+
+        // CORRECT MEDIA
+        rx = QRegularExpression(patternCorrect);
+        correctMedia = rx.match(responseHtml).captured(1).trimmed();
+
+        if(!correctMedia.isEmpty()){
+            correctMedia.replace("<img src=\"", "");
+            correctMedia.replace("\">", "");
+
+            correctMedia = "https://www.autoskola-testy.cz" + correctMedia;
+        }
+
+        // WRONG MEDIAS
+        rx = QRegularExpression(patternWrong);
+        iterator = rx.globalMatch(responseHtml);
+
+        match = iterator.next();
+        wrong1Media = match.captured(1).trimmed();
+
+        if(!wrong1Media.isEmpty()){
+            wrong1Media.replace("<img src=\"", "");
+            wrong1Media.replace("\">", "");
+
+            wrong1Media = "https://www.autoskola-testy.cz" + wrong1Media;
+        }
+
+        match = iterator.next();
+        wrong2Media = match.captured(1).trimmed();
+
+        if(!wrong2Media.isEmpty()){
+            wrong2Media.replace("<img src=\"", "");
+            wrong2Media.replace("\">", "");
+
+            wrong2Media = "https://www.autoskola-testy.cz" + wrong2Media;
+        }
+
+
 
     } else{
         // text question and text answers
-    }
-
-
-    /*
-
-    elif "/img/tripple/" in response_html:
 
         // QUESTION TEXT
-        question_text: list[str] = re.findall(PATTERN_QUESTION_TEXT, response_html)
-
-        if len(question_text) > 0:
-            question_text = question_text[0].strip()
-        else:
-            question_text = QString()
-
-        // CORRECT ANSWER MEDIA
-        correct_media: list[str] = re.findall(PATTERN_CORRECT, response_html)
-
-        if len(correct_media) > 0:
-            correct_media: str = correct_media[0].strip()
-            correct_media = correct_media.lstrip("<img src=\"")
-            correct_media = correct_media.rstrip("\">")
-            correct_media = "https://www.autoskola-testy.cz" + correct_media
-
-        else:
-            correct_media = QString()
-
-        // WRONG ANSWER //1 MEDIA
-        wrong1_media: list[str] = re.findall(PATTERN_WRONG, response_html)
-
-        if len(wrong1_media) > 0:
-            wrong1_media: str = wrong1_media[0].strip()
-            wrong1_media = wrong1_media.lstrip("<img src=\"")
-            wrong1_media = wrong1_media.rstrip("\">")
-            wrong1_media = "https://www.autoskola-testy.cz" + wrong1_media
-
-        else:
-            wrong1_media = QString()
-
-        // WRONG ANSWER //2 MEDIA
-        wrong2_media: list[str] = re.findall(PATTERN_WRONG, response_html)
-
-        if len(wrong2_media) > 1:
-            wrong2_media: str = wrong2_media[1].strip()
-            wrong2_media = wrong2_media.lstrip("<img src=\"")
-            wrong2_media = wrong2_media.rstrip("\">")
-            wrong2_media = "https://www.autoskola-testy.cz" + wrong2_media
-
-        else:
-            wrong2_media = QString()
-
-    else:
-
-        // QUESTION TEXT
-        question_text: list[str] = re.findall(PATTERN_QUESTION_TEXT, response_html)
-
-        if len(question_text) > 0:
-            question_text = question_text[0].strip()
-        else:
-            question_text = QString()
+        rx = QRegularExpression(patternQuestionText);
+        questionText = rx.match(responseHtml).captured(1).trimmed();
 
         // CORRECT ANSWER TEXT
-        correct_text: list[str] = re.findall(PATTERN_CORRECT, response_html)
+        rx = QRegularExpression(patternCorrect);
+        correctText = rx.match(responseHtml).captured(1).trimmed();
 
-        if len(correct_text) > 0:
-            correct_text = correct_text[0].strip()
-        else:
-            correct_text = QString()
+        // WRONG ANSWERS TEXT
+        rx = QRegularExpression(patternWrong);
 
-        // WRONG ANSWER TEXT //1
-        wrong1_text: list[str] = re.findall(PATTERN_WRONG, response_html)
+        iterator = rx.globalMatch(responseHtml);
 
-        if len(wrong1_text) > 0:
-            wrong1_text = wrong1_text[0].strip()
-        else:
-            wrong1_text = QString()
+        match = iterator.next();
+        wrong1Text = match.captured(1).trimmed();
+        match = iterator.next();
+        wrong2Text = match.captured(1).trimmed();
 
-        // WRONG ANSWER TEXT //2
-        wrong2_text: list[str] = re.findall(PATTERN_WRONG, response_html)
-
-        if len(wrong2_text) > 1:
-            wrong2_text = wrong2_text[1].strip()
-        else:
-            wrong2_text = QString()
-    */
+    }
 
     // QUESTION ID
     rx = QRegularExpression(patternQuestionId);
