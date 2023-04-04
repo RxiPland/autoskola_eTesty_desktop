@@ -22,7 +22,7 @@ QuestionsDialog::QuestionsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //ui->question_imageText->setAlignment(Qt::AlignCenter);
+    ui->question_image->setAlignment(Qt::AlignCenter);
     this->show();
 }
 
