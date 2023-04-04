@@ -137,10 +137,10 @@ void QuestionsDialog::newQuestion()
     QString wrong2Text = questionData["wrong2_text"].toString();
     QString wrong2Media = questionData["wrong2_media"].toString();
 
-
     //QString questionId = questionData["question_id"].toString();
     //int questionTopicId = questionData["topic_id"].toInt();
     //QString points = questionData["points"].toString();
+
 
     // 0 = error
     // 1 = text question and text answers
@@ -188,12 +188,7 @@ void QuestionsDialog::newQuestion()
     }
 
 
-    if(questionType == 0){
-
-        QMessageBox::critical(this, "Chyba", "Nastala neznámá chyba! Výstup byl uložen do log souboru");
-        return;
-
-    } else if(questionType == 1){
+    if(questionType == 1){
         ui->question_imageText->setHidden(true);
         ui->question_imageText->clear();
 
@@ -273,6 +268,16 @@ void QuestionsDialog::newQuestion()
             ui->answerC->setHidden(true);
             ui->label_3->setHidden(true);
         }
+
+    } else if(questionType == 3){
+
+
+
+
+
+    } else{
+        QMessageBox::critical(this, "Chyba", "Nastala neznámá chyba! Výstup byl uložen do log souboru");
+        return;
     }
 
 
