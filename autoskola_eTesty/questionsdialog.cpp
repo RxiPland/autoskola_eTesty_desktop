@@ -127,7 +127,6 @@ void QuestionsDialog::newQuestion()
         return;
     }
 
-
     QString questionText = questionData["question_text"].toString();
     QString questionMedia = questionData["question_media"].toString();
     QString correctText = questionData["correct_text"].toString();
@@ -138,7 +137,7 @@ void QuestionsDialog::newQuestion()
     QString wrong2Media = questionData["wrong2_media"].toString();
 
     //QString questionId = questionData["question_id"].toString();
-    //int questionTopicId = questionData["topic_id"].toInt();
+    int questionTopicId = questionData["topic_id"].toInt();
     //QString points = questionData["points"].toString();
 
 
@@ -146,6 +145,7 @@ void QuestionsDialog::newQuestion()
     // 1 = text question and text answers
     // 2 = image question and text answers
     // 3 = text question and image answers
+    // 4 = image question and image answers
     int questionType = 0;
 
     if(
@@ -232,7 +232,9 @@ void QuestionsDialog::newQuestion()
         ui->question_imageText->setPlainText(questionText);
         ui->question_imageText->setHidden(false);
 
-        QPixmap questionImage("C:/Users/libor/Downloads/0447.jpg");
+        QString filePath = downloadFile(questionMedia, QString::number(questionTopicId), "1");
+
+        QPixmap questionImage(filePath);
         ui->question_image->setPixmap(questionImage.scaled(width, height, Qt::KeepAspectRatio));
         ui->question_image->setHidden(false);
 
@@ -270,8 +272,6 @@ void QuestionsDialog::newQuestion()
         }
 
     } else if(questionType == 3){
-
-
 
 
 
@@ -328,7 +328,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     request.setUrl(QUrl(url + QString::number(randomTopicId)));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "text/html; charset=utf-8");
     request.setHeader(QNetworkRequest::UserAgentHeader, userAgent);
-    request.setRawHeader("Referer", (url + QString::number(previousTopicId)).toUtf8());
+    request.setRawHeader("Referer", (url + QString::number(randomTopicId)).toUtf8());
 
     QNetworkReply *replyGet = manager.get(request);
 
@@ -348,6 +348,8 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         QuestionsDialog::hideWidgets(false);
         return question;
     }
+
+    QuestionsDialog::questionCount += 1;
 
     QByteArray responseHtml = replyGet->readAll();
 
@@ -494,11 +496,57 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     question["topic_id"] = randomTopicId;
     question["points"] = points;
 
-
-    QuestionsDialog::previousTopicId = randomTopicId;
     QuestionsDialog::hideWidgets(false);
 
     return question;
+}
+
+QString QuestionsDialog::downloadFile(QString url, QString topicId, QString fileOrder)
+{
+    // download image
+
+    if(url.contains(".mp4")){
+        return QString();
+    }
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(url));
+    request.setHeader(QNetworkRequest::UserAgentHeader, userAgent);
+    request.setRawHeader("Referer", (url + topicId).toUtf8());
+
+    QNetworkReply *replyGet = manager.get(request);
+
+    // wait for completed
+    QEventLoop loop;
+    connect(replyGet, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    QNetworkReply::NetworkError error = replyGet->error();
+
+    if(error != QNetworkReply::NoError){
+        // any error occured
+
+        QString errortext = replyGet->errorString();
+        QMessageBox::critical(this, "Nastala chyba při stahování obrázku", errortext);
+
+        QuestionsDialog::hideWidgets(false);
+        return QString();
+    }
+
+    QString questionCountStr = QString::number(QuestionsDialog::questionCount);
+
+    QDir directory(QDir::currentPath());
+    directory.mkpath(QDir::currentPath() + "/Data/Temp/" + questionCountStr);
+
+    QFile downloadedFile(QDir::currentPath() + "/Data/Temp/" + questionCountStr + '/' + fileOrder + '.' + url.split('.').last());
+
+    downloadedFile.open(QIODevice::WriteOnly);
+    downloadedFile.write(replyGet->readAll());
+    downloadedFile.close();
+
+    QString fileName = downloadedFile.fileName();
+
+    return fileName;
 }
 
 

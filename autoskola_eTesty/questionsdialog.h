@@ -19,6 +19,8 @@ public:
     void newQuestion();
     void loadSettings();
 
+    qint64 questionCount = 0;
+
 private slots:
     void on_answerA_clicked();
     void on_answerB_clicked();
@@ -32,11 +34,11 @@ private:
     void hideWidgets(bool disable = true);
 
     QJsonObject getRandomQuestion();
+    QString downloadFile(QString url, QString topicId, QString fileOrder);
 
     int width = 0;
     int height = 0;
 
-    int previousTopicId = 1;
     QByteArray userAgent;
 
     QString url = "https://www.autoskola-testy.cz/prohlizeni_otazek.php?random=";
