@@ -133,23 +133,102 @@ void QuestionsDialog::newQuestion()
     QString wrong2Text = questionData["wrong2_text"].toString();
     QString wrong2Media = questionData["wrong2_media"].toString();
 
+
     //QString questionId = questionData["question_id"].toString();
     //int questionTopicId = questionData["topic_id"].toInt();
     //QString points = questionData["points"].toString();
 
+    // 0 = error
     // 1 = text question and text answers
     // 2 = image question and text answers
     // 3 = text question and image answers
     int questionType = 0;
 
+    if(
+        !questionText.isEmpty() &&
+        questionMedia.isEmpty() &&
+        !correctText.isEmpty() &&
+        correctMedia.isEmpty() &&
+        !wrong1Text.isEmpty() &&
+        wrong1Media.isEmpty() &&
+        wrong2Media.isEmpty()
+    ){
+        questionType = 1;
 
-    if(questionData["question_media"].toString().isEmpty()){
+    } else if (
+        !questionText.isEmpty() &&
+        !questionMedia.isEmpty() &&
+        !correctText.isEmpty() &&
+        correctMedia.isEmpty() &&
+        !wrong1Text.isEmpty() &&
+        wrong1Media.isEmpty() &&
+        wrong2Media.isEmpty()
+    ){
+        questionType = 2;
+
+    } else if (
+        !questionText.isEmpty() &&
+        questionMedia.isEmpty() &&
+        correctText.isEmpty() &&
+        !correctMedia.isEmpty() &&
+        wrong1Text.isEmpty() &&
+        !wrong1Media.isEmpty() &&
+        wrong2Text.isEmpty() &&
+        !wrong2Media.isEmpty()
+    ){
+        questionType = 3;
+
+    } else{
+        qInfo() << "error";
+        // write output to log file
+    }
+
+
+    if(questionType == 0){
+
+        QMessageBox::critical(this, "Chyba", "Nastala neznámá chyba! Výstup byl uložen do log souboru");
+        return;
+
+    } else if(questionType == 1){
         ui->question_imageText->setHidden(true);
         ui->question_imageText->clear();
-        ui->question_text->setPlainText(questionData["question_text"].toString());
+
+        ui->question_image->setHidden(true);
         ui->question_image->clear();
+
+        ui->question_text->setPlainText(questionText);
         ui->question_text->setHidden(false);
 
+        if(!correctText.isEmpty()){
+            ui->answerA->setHidden(false);
+            ui->answerA->setPlainText(correctText);
+
+        } else{
+            ui->answerA->setHidden(true);
+        }
+
+        if(!wrong1Text.isEmpty()){
+            ui->answerB->setHidden(false);
+            ui->answerB->setPlainText(wrong1Text);
+
+        } else{
+            ui->answerB->setHidden(true);
+        }
+
+        if(!wrong2Text.isEmpty()){
+            ui->answerC->setHidden(false);
+            ui->answerC->setPlainText(wrong2Text);
+
+        } else{
+            ui->answerC->setHidden(true);
+        }
+
+    } else if(questionType == 2){
+
+    }
+
+
+    /*
     } else{
         ui->question_imageText->setHidden(false);
         ui->question_imageText->setPlainText(questionData["question_text"].toString());
@@ -160,6 +239,7 @@ void QuestionsDialog::newQuestion()
     ui->answerA->setPlainText(questionData["correct_text"].toString());
     ui->answerB->setPlainText(questionData["wrong1_text"].toString());
     ui->answerC->setPlainText(questionData["wrong2_text"].toString());
+    */
 
     //ui->plainTextEdit->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
     //ui->plainTextEdit_2->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
