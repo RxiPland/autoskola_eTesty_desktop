@@ -18,6 +18,9 @@ void checkFilesIntegrity(){
     QByteArray fileContent;
     QDir directory(QDir::currentPath());
 
+    QDir tempDirectory(QDir::currentPath() + "/Data/Temp");
+    tempDirectory.removeRecursively();
+
     bool corrupted = false;
 
 
