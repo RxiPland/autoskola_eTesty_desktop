@@ -14,6 +14,7 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include "clickabletextedit.h"
@@ -28,17 +29,18 @@ public:
     QVBoxLayout *verticalLayout_2;
     QVBoxLayout *verticalLayout;
     QSpacerItem *verticalSpacer_2;
-    QLabel *label;
+    QPlainTextEdit *question_imageText;
     QSpacerItem *verticalSpacer;
-    QLabel *image_label;
+    QPlainTextEdit *question_text;
+    QLabel *question_image;
     QSpacerItem *verticalSpacer_3;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer_3;
-    ClickableTextEdit *plainTextEdit;
+    ClickableTextEdit *answerA;
     QSpacerItem *horizontalSpacer;
-    ClickableTextEdit *plainTextEdit_2;
+    ClickableTextEdit *answerB;
     QSpacerItem *horizontalSpacer_2;
-    ClickableTextEdit *plainTextEdit_3;
+    ClickableTextEdit *answerC;
     QSpacerItem *horizontalSpacer_4;
     QSpacerItem *verticalSpacer_4;
     QSpacerItem *horizontalSpacer_6;
@@ -63,32 +65,48 @@ public:
 
         verticalLayout->addItem(verticalSpacer_2);
 
-        label = new QLabel(QuestionsDialog);
-        label->setObjectName("label");
-        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
+        question_imageText = new QPlainTextEdit(QuestionsDialog);
+        question_imageText->setObjectName("question_imageText");
+        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy);
+        sizePolicy.setHeightForWidth(question_imageText->sizePolicy().hasHeightForWidth());
+        question_imageText->setSizePolicy(sizePolicy);
+        question_imageText->setMinimumSize(QSize(0, 0));
+        question_imageText->setMaximumSize(QSize(16777215, 45));
+        question_imageText->setBaseSize(QSize(0, 0));
         QFont font;
         font.setPointSize(11);
-        label->setFont(font);
+        question_imageText->setFont(font);
+        question_imageText->setFocusPolicy(Qt::NoFocus);
+        question_imageText->setReadOnly(true);
 
-        verticalLayout->addWidget(label);
+        verticalLayout->addWidget(question_imageText);
 
-        verticalSpacer = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout->addItem(verticalSpacer);
 
-        image_label = new QLabel(QuestionsDialog);
-        image_label->setObjectName("image_label");
-        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        question_text = new QPlainTextEdit(QuestionsDialog);
+        question_text->setObjectName("question_text");
+        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Expanding);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(image_label->sizePolicy().hasHeightForWidth());
-        image_label->setSizePolicy(sizePolicy1);
+        sizePolicy1.setHeightForWidth(question_text->sizePolicy().hasHeightForWidth());
+        question_text->setSizePolicy(sizePolicy1);
+        question_text->setMinimumSize(QSize(0, 0));
+        QFont font1;
+        font1.setPointSize(13);
+        question_text->setFont(font1);
+        question_text->setFocusPolicy(Qt::NoFocus);
+        question_text->setReadOnly(true);
 
-        verticalLayout->addWidget(image_label);
+        verticalLayout->addWidget(question_text);
+
+        question_image = new QLabel(QuestionsDialog);
+        question_image->setObjectName("question_image");
+
+        verticalLayout->addWidget(question_image);
 
 
         verticalLayout_2->addLayout(verticalLayout);
@@ -103,56 +121,54 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer_3);
 
-        plainTextEdit = new ClickableTextEdit(QuestionsDialog);
-        plainTextEdit->setObjectName("plainTextEdit");
+        answerA = new ClickableTextEdit(QuestionsDialog);
+        answerA->setObjectName("answerA");
         QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Maximum);
         sizePolicy2.setHorizontalStretch(0);
         sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(plainTextEdit->sizePolicy().hasHeightForWidth());
-        plainTextEdit->setSizePolicy(sizePolicy2);
-        plainTextEdit->setMinimumSize(QSize(0, 0));
-        plainTextEdit->setMaximumSize(QSize(16777215, 200));
-        QFont font1;
-        font1.setPointSize(10);
-        plainTextEdit->setFont(font1);
-        plainTextEdit->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
-        plainTextEdit->setFocusPolicy(Qt::NoFocus);
-        plainTextEdit->setReadOnly(true);
+        sizePolicy2.setHeightForWidth(answerA->sizePolicy().hasHeightForWidth());
+        answerA->setSizePolicy(sizePolicy2);
+        answerA->setMinimumSize(QSize(0, 0));
+        answerA->setMaximumSize(QSize(16777215, 200));
+        answerA->setFont(font);
+        answerA->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
+        answerA->setFocusPolicy(Qt::NoFocus);
+        answerA->setReadOnly(true);
 
-        horizontalLayout->addWidget(plainTextEdit);
+        horizontalLayout->addWidget(answerA);
 
         horizontalSpacer = new QSpacerItem(60, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer);
 
-        plainTextEdit_2 = new ClickableTextEdit(QuestionsDialog);
-        plainTextEdit_2->setObjectName("plainTextEdit_2");
-        sizePolicy2.setHeightForWidth(plainTextEdit_2->sizePolicy().hasHeightForWidth());
-        plainTextEdit_2->setSizePolicy(sizePolicy2);
-        plainTextEdit_2->setMinimumSize(QSize(0, 0));
-        plainTextEdit_2->setMaximumSize(QSize(16777215, 200));
-        plainTextEdit_2->setFont(font1);
-        plainTextEdit_2->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
-        plainTextEdit_2->setFocusPolicy(Qt::NoFocus);
-        plainTextEdit_2->setReadOnly(true);
+        answerB = new ClickableTextEdit(QuestionsDialog);
+        answerB->setObjectName("answerB");
+        sizePolicy2.setHeightForWidth(answerB->sizePolicy().hasHeightForWidth());
+        answerB->setSizePolicy(sizePolicy2);
+        answerB->setMinimumSize(QSize(0, 0));
+        answerB->setMaximumSize(QSize(16777215, 200));
+        answerB->setFont(font);
+        answerB->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
+        answerB->setFocusPolicy(Qt::NoFocus);
+        answerB->setReadOnly(true);
 
-        horizontalLayout->addWidget(plainTextEdit_2);
+        horizontalLayout->addWidget(answerB);
 
         horizontalSpacer_2 = new QSpacerItem(60, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer_2);
 
-        plainTextEdit_3 = new ClickableTextEdit(QuestionsDialog);
-        plainTextEdit_3->setObjectName("plainTextEdit_3");
-        sizePolicy2.setHeightForWidth(plainTextEdit_3->sizePolicy().hasHeightForWidth());
-        plainTextEdit_3->setSizePolicy(sizePolicy2);
-        plainTextEdit_3->setMaximumSize(QSize(16777215, 200));
-        plainTextEdit_3->setFont(font1);
-        plainTextEdit_3->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
-        plainTextEdit_3->setFocusPolicy(Qt::NoFocus);
-        plainTextEdit_3->setReadOnly(true);
+        answerC = new ClickableTextEdit(QuestionsDialog);
+        answerC->setObjectName("answerC");
+        sizePolicy2.setHeightForWidth(answerC->sizePolicy().hasHeightForWidth());
+        answerC->setSizePolicy(sizePolicy2);
+        answerC->setMaximumSize(QSize(16777215, 200));
+        answerC->setFont(font);
+        answerC->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
+        answerC->setFocusPolicy(Qt::NoFocus);
+        answerC->setReadOnly(true);
 
-        horizontalLayout->addWidget(plainTextEdit_3);
+        horizontalLayout->addWidget(answerC);
 
         horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
@@ -161,7 +177,7 @@ public:
 
         verticalLayout_2->addLayout(horizontalLayout);
 
-        verticalSpacer_4 = new QSpacerItem(20, 12, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer_4 = new QSpacerItem(20, 18, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout_2->addItem(verticalSpacer_4);
 
@@ -181,9 +197,8 @@ public:
     void retranslateUi(QDialog *QuestionsDialog)
     {
         QuestionsDialog->setWindowTitle(QCoreApplication::translate("QuestionsDialog", "Dialog", nullptr));
-        label->setText(QCoreApplication::translate("QuestionsDialog", "question", nullptr));
-        image_label->setText(QCoreApplication::translate("QuestionsDialog", "question image", nullptr));
-        plainTextEdit->setPlainText(QString());
+        question_image->setText(QCoreApplication::translate("QuestionsDialog", "image", nullptr));
+        answerA->setPlainText(QString());
     } // retranslateUi
 
 };

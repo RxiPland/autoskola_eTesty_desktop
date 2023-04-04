@@ -20,9 +20,9 @@ public:
     void loadSettings();
 
 private slots:
-    void on_plainTextEdit_clicked();
-    void on_plainTextEdit_2_clicked();
-    void on_plainTextEdit_3_clicked();
+    void on_answerA_clicked();
+    void on_answerB_clicked();
+    void on_answerC_clicked();
 
 private:
     Ui::QuestionsDialog *ui;

@@ -22,8 +22,7 @@ QuestionsDialog::QuestionsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->label->setAlignment(Qt::AlignCenter);
-    ui->image_label->setAlignment(Qt::AlignCenter);
+    //ui->question_imageText->setAlignment(Qt::AlignCenter);
     this->show();
 }
 
@@ -46,12 +45,13 @@ void QuestionsDialog::hideWidgets(bool hide)
 {
     // hide widgets
 
-    ui->plainTextEdit->setHidden(hide);
-    ui->plainTextEdit_2->setHidden(hide);
-    ui->plainTextEdit_3->setHidden(hide);
+    ui->answerA->setHidden(hide);
+    ui->answerB->setHidden(hide);
+    ui->answerC->setHidden(hide);
 
-    ui->label->setHidden(hide);
-    ui->image_label->setHidden(hide);
+    ui->question_imageText->setHidden(hide);
+    ui->question_text->setHidden(hide);
+    ui->question_image->setHidden(hide);
 }
 
 void QuestionsDialog::loadSettings()
@@ -111,25 +111,42 @@ void QuestionsDialog::newQuestion()
 {
     // set new question
 
-    qInfo() << "new question";
+    QJsonObject questionData = QuestionsDialog::getRandomQuestion();
 
-    QJsonObject question = QuestionsDialog::getRandomQuestion();
+    if(questionData.isEmpty()){
 
-    if(question.isEmpty()){
-
-        //return;
+        return;
     }
 
-    ui->plainTextEdit->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
-    ui->plainTextEdit_2->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
-    ui->plainTextEdit_3->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
 
-    ui->plainTextEdit->setText("ahoj");
-    ui->plainTextEdit->setAlignment(Qt::AlignCenter);
+    if(questionData["question_media"].toString().isEmpty()){
+        ui->question_imageText->setHidden(true);
+        ui->question_imageText->clear();
+        ui->question_text->setPlainText(questionData["question_text"].toString());
+        ui->question_image->clear();
+        ui->question_text->setHidden(false);
+
+    } else{
+        ui->question_imageText->setHidden(false);
+        ui->question_imageText->setPlainText(questionData["question_text"].toString());
+        ui->question_image->setText("[zde má být obrázek]");
+        ui->question_text->setHidden(true);
+    }
+
+    ui->answerA->setPlainText(questionData["correct_text"].toString());
+    ui->answerB->setPlainText(questionData["wrong1_text"].toString());
+    ui->answerC->setPlainText(questionData["wrong2_text"].toString());
+
+    //ui->plainTextEdit->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
+    //ui->plainTextEdit_2->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
+    //ui->plainTextEdit_3->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
+
+    //ui->plainTextEdit->setText("ahoj");
+    //ui->plainTextEdit->setAlignment(Qt::AlignCenter);
 
 
-    QPixmap questionImage("C:/Users/RxiPland/Downloads/0117.jpg");
-    ui->image_label->setPixmap(questionImage.scaled(ui->image_label->width(), ui->image_label->height(), Qt::KeepAspectRatio));
+    //QPixmap questionImage("C:/Users/RxiPland/Downloads/0117.jpg");
+    //ui->image_label->setPixmap(questionImage.scaled(ui->image_label->width(), ui->image_label->height(), Qt::KeepAspectRatio));
 }
 
 QJsonObject QuestionsDialog::getRandomQuestion()
@@ -232,7 +249,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         wrong2Text = match.captured(1).trimmed();
 
 
-    } else if(responseHtml.contains("/img/triple")){
+    } else if(responseHtml.contains("/img/tripple")){
         // text question and image answers
 
         // QUESTION TEXT
@@ -307,19 +324,17 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     rx = QRegularExpression(patternPoints);
     points = rx.match(responseHtml).captured(1).trimmed();
 
-
-
-    // tests
-    qInfo() << questionText;
-    qInfo() << questionMedia;
-    qInfo() << correctText;
-    qInfo() << correctMedia;
-    qInfo() << wrong1Text;
-    qInfo() << wrong1Media;
-    qInfo() << wrong2Text;
-    qInfo() << wrong2Media;
-    qInfo() << questionId;
-    qInfo() << points;
+    // make json
+    question["question_text"] = questionText;
+    question["question_media"] = questionMedia;
+    question["correct_text"] = correctText;
+    question["correct_media"] = correctMedia;
+    question["wrong1_text"] = wrong1Text;
+    question["wrong1_media"] = wrong1Media;
+    question["wrong2_text"] = wrong2Text;
+    question["wrong2_media"] = wrong2Media;
+    question["question_id"] = questionId;
+    question["points"] = points;
 
 
     QuestionsDialog::previousTopicId = randomTopicId;
@@ -329,28 +344,29 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 }
 
 
-void QuestionsDialog::on_plainTextEdit_clicked()
+void QuestionsDialog::on_answerA_clicked()
 {
     qInfo() << "answer A";
 
-
     // if correct
-    QTimer::singleShot(1000, this, &QuestionsDialog::newQuestion);
+    QTimer::singleShot(100, this, &QuestionsDialog::newQuestion);
 }
 
-void QuestionsDialog::on_plainTextEdit_2_clicked()
+
+void QuestionsDialog::on_answerB_clicked()
 {
     qInfo() << "answer B";
 
     // if correct
-    QTimer::singleShot(1000, this, &QuestionsDialog::newQuestion);
+    QTimer::singleShot(100, this, &QuestionsDialog::newQuestion);
 }
 
-void QuestionsDialog::on_plainTextEdit_3_clicked()
+
+void QuestionsDialog::on_answerC_clicked()
 {
     qInfo() << "answer C";
 
     // if correct
-    QTimer::singleShot(1000, this, &QuestionsDialog::newQuestion);
+    QTimer::singleShot(100, this, &QuestionsDialog::newQuestion);
 }
 
