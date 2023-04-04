@@ -102,12 +102,12 @@ public:
 
         question_text = new QPlainTextEdit(QuestionsDialog);
         question_text->setObjectName("question_text");
-        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Expanding);
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Expanding);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(question_text->sizePolicy().hasHeightForWidth());
         question_text->setSizePolicy(sizePolicy1);
-        question_text->setMinimumSize(QSize(0, 0));
+        question_text->setMinimumSize(QSize(250, 100));
         QFont font1;
         font1.setPointSize(13);
         question_text->setFont(font1);
