@@ -60,8 +60,14 @@ void checkFilesIntegrity(){
     if(corrupted){
         directory.mkdir("./Data");
 
+        QJsonObject newJson;
+        newJson["correct"] = 0;
+        newJson["wrong"] = 0;
+
+        QJsonDocument docData(newJson);
+
         statsFile.open(QIODevice::WriteOnly | QIODevice::Text);
-        statsFile.write("{}");
+        statsFile.write(docData.toJson());
         statsFile.close();
     }
 
