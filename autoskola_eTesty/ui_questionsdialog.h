@@ -121,6 +121,9 @@ public:
 
         question_image = new ClickableLabel(QuestionsDialog);
         question_image->setObjectName("question_image");
+        QFont font2;
+        font2.setPointSize(15);
+        question_image->setFont(font2);
         question_image->setCursor(QCursor(Qt::PointingHandCursor));
 
         verticalLayout->addWidget(question_image);

@@ -151,6 +151,11 @@
          </item>
          <item>
           <widget class="ClickableLabel" name="question_image">
+           <property name="font">
+            <font>
+             <pointsize>15</pointsize>
+            </font>
+           </property>
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
