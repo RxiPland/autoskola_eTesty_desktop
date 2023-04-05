@@ -21,6 +21,8 @@ public:
 
     qint64 questionCount = 0;
 
+    int waitIntervalMs = 1000;
+
 private slots:
     void on_answerA_clicked();
     void on_answerB_clicked();
@@ -33,7 +35,8 @@ private:
     QNetworkAccessManager manager;
 
     void closeEvent(QCloseEvent *bar = nullptr);
-    void hideWidgets(bool disable = true);
+    void hideWidgets(bool hide = true);
+    void disableWidgets(bool disable = true);
 
     QJsonObject getRandomQuestion();
     QString downloadFile(QString url, QString topicId, QString fileOrder);

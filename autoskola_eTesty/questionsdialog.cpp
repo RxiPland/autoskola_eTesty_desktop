@@ -67,6 +67,19 @@ void QuestionsDialog::hideWidgets(bool hide)
     ui->question_image->setHidden(hide);
 }
 
+void QuestionsDialog::disableWidgets(bool disable)
+{
+    // disable widgets
+
+    ui->answerA->setDisabled(disable);
+    ui->answerB->setDisabled(disable);
+    ui->answerC->setDisabled(disable);
+
+    ui->question_imageText->setDisabled(disable);
+    ui->question_text->setDisabled(disable);
+    ui->question_image->setDisabled(disable);
+}
+
 void QuestionsDialog::loadSettings()
 {
     // load settings from file
@@ -103,9 +116,8 @@ void QuestionsDialog::loadSettings()
             } else{
                 // everything OK
 
-
                 QuestionsDialog::userAgent = loadedJson["user_agent"].toString().toUtf8();
-
+                QuestionsDialog::waitIntervalMs = loadedJson["waiting_interval_miliseconds"].toInt();
             }
         }
 
@@ -240,36 +252,103 @@ void QuestionsDialog::newQuestion()
         ui->question_text->setPlainText(questionText);
         ui->question_text->setHidden(false);
 
+        if(correctLetter == 'A'){
 
-        if(!correctText.isEmpty()){
-            ui->answerA->setPlainText(correctText);
-            ui->answerA->setHidden(false);
-            ui->label->setHidden(false);
+            if(!correctText.isEmpty()){
+                ui->answerA->setPlainText(correctText);
+                ui->answerA->setHidden(false);
+                ui->label->setHidden(false);
 
-        } else{
-            ui->answerA->setHidden(true);
-            ui->label->setHidden(true);
+            } else{
+                ui->answerA->setHidden(true);
+                ui->label->setHidden(true);
+            }
+
+            if(!wrong1Text.isEmpty()){
+                ui->answerB->setPlainText(wrong1Text);
+                ui->answerB->setHidden(false);
+                ui->label_2->setHidden(false);
+
+            } else{
+                ui->answerB->setHidden(true);
+                ui->label_2->setHidden(true);
+            }
+
+            if(!wrong2Text.isEmpty()){
+                ui->answerC->setPlainText(wrong2Text);
+                ui->answerC->setHidden(false);
+                ui->label_3->setHidden(false);
+
+            } else{
+                ui->answerC->setHidden(true);
+                ui->label_3->setHidden(true);
+            }
+
+        } else if(correctLetter == 'B'){
+
+            if(!correctText.isEmpty()){
+                ui->answerB->setPlainText(correctText);
+                ui->answerB->setHidden(false);
+                ui->label_2->setHidden(false);
+
+            } else{
+                ui->answerB->setHidden(true);
+                ui->label_2->setHidden(true);
+            }
+
+            if(!wrong1Text.isEmpty()){
+                ui->answerA->setPlainText(wrong1Text);
+                ui->answerA->setHidden(false);
+                ui->label->setHidden(false);
+
+            } else{
+                ui->answerA->setHidden(true);
+                ui->label->setHidden(true);
+            }
+
+            if(!wrong2Text.isEmpty()){
+                ui->answerC->setPlainText(wrong2Text);
+                ui->answerC->setHidden(false);
+                ui->label_3->setHidden(false);
+
+            } else{
+                ui->answerC->setHidden(true);
+                ui->label_3->setHidden(true);
+            }
+
+        } else if(correctLetter == 'C'){
+
+            if(!correctText.isEmpty()){
+                ui->answerC->setPlainText(correctText);
+                ui->answerC->setHidden(false);
+                ui->label_3->setHidden(false);
+
+            } else{
+                ui->answerC->setHidden(true);
+                ui->label_3->setHidden(true);
+            }
+
+            if(!wrong1Text.isEmpty()){
+                ui->answerA->setPlainText(wrong1Text);
+                ui->answerA->setHidden(false);
+                ui->label->setHidden(false);
+
+            } else{
+                ui->answerA->setHidden(true);
+                ui->label->setHidden(true);
+            }
+
+            if(!wrong2Text.isEmpty()){
+                ui->answerB->setPlainText(wrong2Text);
+                ui->answerB->setHidden(false);
+                ui->label_2->setHidden(false);
+
+            } else{
+                ui->answerB->setHidden(true);
+                ui->label_2->setHidden(true);
+            }
         }
 
-        if(!wrong1Text.isEmpty()){
-            ui->answerB->setPlainText(wrong1Text);
-            ui->answerB->setHidden(false);
-            ui->label_2->setHidden(false);
-
-        } else{
-            ui->answerB->setHidden(true);
-            ui->label_2->setHidden(true);
-        }
-
-        if(!wrong2Text.isEmpty()){
-            ui->answerC->setPlainText(wrong2Text);
-            ui->answerC->setHidden(false);
-            ui->label_3->setHidden(false);
-
-        } else{
-            ui->answerC->setHidden(true);
-            ui->label_3->setHidden(true);
-        }
 
     } else if(questionType == 2){
         QuestionsDialog::hideWidgets();
@@ -303,36 +382,103 @@ void QuestionsDialog::newQuestion()
 
         ui->question_text->setHidden(true);
 
+        if(correctLetter == 'A'){
 
-        if(!correctText.isEmpty()){
-            ui->answerA->setPlainText(correctText);
-            ui->answerA->setHidden(false);
-            ui->label->setHidden(false);
+            if(!correctText.isEmpty()){
+                ui->answerA->setPlainText(correctText);
+                ui->answerA->setHidden(false);
+                ui->label->setHidden(false);
 
-        } else{
-            ui->answerA->setHidden(true);
-            ui->label->setHidden(true);
+            } else{
+                ui->answerA->setHidden(true);
+                ui->label->setHidden(true);
+            }
+
+            if(!wrong1Text.isEmpty()){
+                ui->answerB->setPlainText(wrong1Text);
+                ui->answerB->setHidden(false);
+                ui->label_2->setHidden(false);
+
+            } else{
+                ui->answerB->setHidden(true);
+                ui->label_2->setHidden(true);
+            }
+
+            if(!wrong2Text.isEmpty()){
+                ui->answerC->setPlainText(wrong2Text);
+                ui->answerC->setHidden(false);
+                ui->label_3->setHidden(false);
+
+            } else{
+                ui->answerC->setHidden(true);
+                ui->label_3->setHidden(true);
+            }
+
+        } else if(correctLetter == 'B'){
+
+            if(!correctText.isEmpty()){
+                ui->answerB->setPlainText(correctText);
+                ui->answerB->setHidden(false);
+                ui->label_2->setHidden(false);
+
+            } else{
+                ui->answerB->setHidden(true);
+                ui->label_2->setHidden(true);
+            }
+
+            if(!wrong1Text.isEmpty()){
+                ui->answerA->setPlainText(wrong1Text);
+                ui->answerA->setHidden(false);
+                ui->label->setHidden(false);
+
+            } else{
+                ui->answerA->setHidden(true);
+                ui->label->setHidden(true);
+            }
+
+            if(!wrong2Text.isEmpty()){
+                ui->answerC->setPlainText(wrong2Text);
+                ui->answerC->setHidden(false);
+                ui->label_3->setHidden(false);
+
+            } else{
+                ui->answerC->setHidden(true);
+                ui->label_3->setHidden(true);
+            }
+
+        } else if(correctLetter == 'C'){
+
+            if(!correctText.isEmpty()){
+                ui->answerC->setPlainText(correctText);
+                ui->answerC->setHidden(false);
+                ui->label_3->setHidden(false);
+
+            } else{
+                ui->answerC->setHidden(true);
+                ui->label_3->setHidden(true);
+            }
+
+            if(!wrong1Text.isEmpty()){
+                ui->answerA->setPlainText(wrong1Text);
+                ui->answerA->setHidden(false);
+                ui->label->setHidden(false);
+
+            } else{
+                ui->answerA->setHidden(true);
+                ui->label->setHidden(true);
+            }
+
+            if(!wrong2Text.isEmpty()){
+                ui->answerB->setPlainText(wrong2Text);
+                ui->answerB->setHidden(false);
+                ui->label_2->setHidden(false);
+
+            } else{
+                ui->answerB->setHidden(true);
+                ui->label_2->setHidden(true);
+            }
         }
 
-        if(!wrong1Text.isEmpty()){
-            ui->answerB->setPlainText(wrong1Text);
-            ui->answerB->setHidden(false);
-            ui->label_2->setHidden(false);
-
-        } else{
-            ui->answerB->setHidden(true);
-            ui->label_2->setHidden(true);
-        }
-
-        if(!wrong2Text.isEmpty()){
-            ui->answerC->setPlainText(wrong2Text);
-            ui->answerC->setHidden(false);
-            ui->label_3->setHidden(false);
-
-        } else{
-            ui->answerC->setHidden(true);
-            ui->label_3->setHidden(true);
-        }
 
     } else if(questionType == 3){
         QuestionsDialog::hideWidgets();
@@ -351,33 +497,101 @@ void QuestionsDialog::newQuestion()
         ui->question_text->setPlainText(questionText);
         ui->question_text->setHidden(false);
 
+        if(correctLetter == 'A'){
 
-        if(!correctMedia.isEmpty()){
-            ui->answerA->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(correctMedia));
-            ui->answerA->setHidden(false);
-            ui->label->setHidden(false);
-        } else{
-            ui->answerA->setHidden(true);
-            ui->label->setHidden(true);
+            if(!correctMedia.isEmpty()){
+                ui->answerA->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(correctMedia));
+                ui->answerA->setHidden(false);
+                ui->label->setHidden(false);
+
+            } else{
+                ui->answerA->setHidden(true);
+                ui->label->setHidden(true);
+            }
+
+            if(!wrong1Media.isEmpty()){
+                ui->answerB->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong1Media));
+                ui->answerB->setHidden(false);
+                ui->label_2->setHidden(false);
+
+            } else{
+                ui->answerB->setHidden(true);
+                ui->label_2->setHidden(true);
+            }
+
+            if(!wrong2Media.isEmpty()){
+                ui->answerC->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong2Media));
+                ui->answerC->setHidden(false);
+                ui->label_3->setHidden(false);
+            } else{
+                ui->answerC->setHidden(true);
+                ui->label_3->setHidden(true);
+            }
+
+        } else if(correctLetter == 'B'){
+
+            if(!correctMedia.isEmpty()){
+                ui->answerB->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(correctMedia));
+                ui->answerB->setHidden(false);
+                ui->label_2->setHidden(false);
+
+            } else{
+                ui->answerB->setHidden(true);
+                ui->label_2->setHidden(true);
+            }
+
+            if(!wrong1Media.isEmpty()){
+                ui->answerA->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong1Media));
+                ui->answerA->setHidden(false);
+                ui->label->setHidden(false);
+
+            } else{
+                ui->answerA->setHidden(true);
+                ui->label->setHidden(true);
+            }
+
+            if(!wrong2Media.isEmpty()){
+                ui->answerC->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong2Media));
+                ui->answerC->setHidden(false);
+                ui->label_3->setHidden(false);
+            } else{
+                ui->answerC->setHidden(true);
+                ui->label_3->setHidden(true);
+            }
+
+        } else if(correctLetter == 'C'){
+
+            if(!correctMedia.isEmpty()){
+                ui->answerC->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(correctMedia));
+                ui->answerC->setHidden(false);
+                ui->label_3->setHidden(false);
+
+            } else{
+                ui->answerC->setHidden(true);
+                ui->label_3->setHidden(true);
+            }
+
+            if(!wrong1Media.isEmpty()){
+                ui->answerA->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong1Media));
+                ui->answerA->setHidden(false);
+                ui->label->setHidden(false);
+
+            } else{
+                ui->answerA->setHidden(true);
+                ui->label->setHidden(true);
+            }
+
+            if(!wrong2Media.isEmpty()){
+                ui->answerB->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong2Media));
+                ui->answerB->setHidden(false);
+                ui->label_2->setHidden(false);
+            } else{
+                ui->answerB->setHidden(true);
+                ui->label_2->setHidden(true);
+            }
+
         }
 
-        if(!wrong1Media.isEmpty()){
-            ui->answerB->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong1Media));
-            ui->answerB->setHidden(false);
-            ui->label_2->setHidden(false);
-        } else{
-            ui->answerB->setHidden(true);
-            ui->label_2->setHidden(true);
-        }
-
-        if(!wrong2Media.isEmpty()){
-            ui->answerC->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong2Media));
-            ui->answerC->setHidden(false);
-            ui->label_3->setHidden(false);
-        } else{
-            ui->answerC->setHidden(true);
-            ui->label_3->setHidden(true);
-        }
 
     } else if(questionType == 4){
         QuestionsDialog::hideWidgets();
@@ -416,33 +630,94 @@ void QuestionsDialog::newQuestion()
         ui->question_text->setHidden(true);
         ui->question_imageText->setHidden(false);
 
+        if(correctLetter == 'A'){
 
-        if(!correctMedia.isEmpty()){
-            ui->answerA->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(correctMedia));
-            ui->answerA->setHidden(false);
-            ui->label->setHidden(false);
-        } else{
-            ui->answerA->setHidden(true);
-            ui->label->setHidden(true);
+            if(!correctMedia.isEmpty()){
+                ui->answerA->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(correctMedia));
+                ui->answerA->setHidden(false);
+                ui->label->setHidden(false);
+            } else{
+                ui->answerA->setHidden(true);
+                ui->label->setHidden(true);
+            }
+
+            if(!wrong1Media.isEmpty()){
+                ui->answerB->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong1Media));
+                ui->answerB->setHidden(false);
+                ui->label_2->setHidden(false);
+            } else{
+                ui->answerB->setHidden(true);
+                ui->label_2->setHidden(true);
+            }
+
+            if(!wrong2Media.isEmpty()){
+                ui->answerC->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong2Media));
+                ui->answerC->setHidden(false);
+                ui->label_3->setHidden(false);
+            } else{
+                ui->answerC->setHidden(true);
+                ui->label_3->setHidden(true);
+            }
+
+        } else if (correctLetter == 'B'){
+
+            if(!correctMedia.isEmpty()){
+                ui->answerB->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(correctMedia));
+                ui->answerB->setHidden(false);
+                ui->label_2->setHidden(false);
+            } else{
+                ui->answerB->setHidden(true);
+                ui->label_2->setHidden(true);
+            }
+
+            if(!wrong1Media.isEmpty()){
+                ui->answerA->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong1Media));
+                ui->answerA->setHidden(false);
+                ui->label->setHidden(false);
+            } else{
+                ui->answerA->setHidden(true);
+                ui->label->setHidden(true);
+            }
+
+            if(!wrong2Media.isEmpty()){
+                ui->answerC->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong2Media));
+                ui->answerC->setHidden(false);
+                ui->label_3->setHidden(false);
+            } else{
+                ui->answerC->setHidden(true);
+                ui->label_3->setHidden(true);
+            }
+
+        } else if (correctLetter == 'C'){
+
+            if(!correctMedia.isEmpty()){
+                ui->answerC->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(correctMedia));
+                ui->answerC->setHidden(false);
+                ui->label_3->setHidden(false);
+            } else{
+                ui->answerC->setHidden(true);
+                ui->label_3->setHidden(true);
+            }
+
+            if(!wrong1Media.isEmpty()){
+                ui->answerA->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong1Media));
+                ui->answerA->setHidden(false);
+                ui->label->setHidden(false);
+            } else{
+                ui->answerA->setHidden(true);
+                ui->label->setHidden(true);
+            }
+
+            if(!wrong2Media.isEmpty()){
+                ui->answerB->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong2Media));
+                ui->answerB->setHidden(false);
+                ui->label_2->setHidden(false);
+            } else{
+                ui->answerB->setHidden(true);
+                ui->label_2->setHidden(true);
+            }
         }
 
-        if(!wrong1Media.isEmpty()){
-            ui->answerB->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong1Media));
-            ui->answerB->setHidden(false);
-            ui->label_2->setHidden(false);
-        } else{
-            ui->answerB->setHidden(true);
-            ui->label_2->setHidden(true);
-        }
-
-        if(!wrong2Media.isEmpty()){
-            ui->answerC->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong2Media));
-            ui->answerC->setHidden(false);
-            ui->label_3->setHidden(false);
-        } else{
-            ui->answerC->setHidden(true);
-            ui->label_3->setHidden(true);
-        }
 
     } else{
         // an unknown error occured
@@ -453,6 +728,7 @@ void QuestionsDialog::newQuestion()
     ui->label_4->setHidden(false);
     ui->question_image->setAlignment(Qt::AlignCenter);
 
+    QuestionsDialog::disableWidgets(false);
 }
 
 QJsonObject QuestionsDialog::getRandomQuestion()
@@ -470,7 +746,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         QMessageBox::critical(this, "Nastala chyba", "Nepodařilo se vygenerovat náhodné číslo mezi 1 a 7!");
 
         QuestionsDialog::hideWidgets(false);
-        return question;
+        return QJsonObject();
     }
 
     QNetworkRequest request;
@@ -495,7 +771,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         QMessageBox::critical(this, "Nastala chyba", errortext);
 
         QuestionsDialog::hideWidgets(false);
-        return question;
+        return QJsonObject();
     }
 
     QuestionsDialog::questionCount += 1;
@@ -504,12 +780,12 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 
 
     if(responseHtml.isEmpty()){
-        // no HTML
+        // no HTML returned
 
         QMessageBox::critical(this, "Nastala chyba", "Server nic nevrátil!");
 
         QuestionsDialog::hideWidgets(false);
-        return question;
+        return QJsonObject();
     }
 
     // variables for json
@@ -528,6 +804,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     QRegularExpressionMatch match;
     QRegularExpressionMatchIterator iterator;
 
+    // regex search
 
     if(responseHtml.contains("/img/single") && responseHtml.contains("/img/tripple")){
         // image question and image answers
@@ -705,14 +982,32 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     int wrong1Index = responseHtml.indexOf("answer otazka_spatne");
     int wrong2Index = responseHtml.indexOf("answer otazka_spatne", wrong1Index+1);
 
-    indexes.append(QString::number(correctIndex));
-    indexes.append(QString::number(wrong1Index));
-    indexes.append(QString::number(wrong2Index));
+    if(correctIndex != -1){
+        indexes.append(QString::number(correctIndex));
+
+    } else{
+        QMessageBox::critical(this, "Nastala chyba", "Nepodařilo se vyhledat správnou odpověď v HTML!");
+
+        replyGet->deleteLater();
+        responseHtml.clear();
+
+        return QJsonObject();
+    }
+
+    if(wrong1Index != -1){
+        indexes.append(QString::number(wrong1Index));
+    }
+
+    if(wrong2Index != -1){
+        indexes.append(QString::number(wrong2Index));
+    }
 
     indexes.sort();
 
+
     int i;
 
+    // find letter for correct answer
     for(i=0; i<indexes.length(); i++){
 
         if (indexes[i] == QString::number(correctIndex)){
@@ -802,9 +1097,11 @@ void QuestionsDialog::on_answerA_clicked()
 {
     // if correct
     if(QuestionsDialog::correctLetter == "A"){
+
+        QuestionsDialog::disableWidgets(true);
         ui->label->setStyleSheet("background-color: green");
 
-        QTimer::singleShot(1500, this, &QuestionsDialog::newQuestion);
+        QTimer::singleShot(QuestionsDialog::waitIntervalMs, this, &QuestionsDialog::newQuestion);
         return;
 
     } else{
@@ -817,9 +1114,11 @@ void QuestionsDialog::on_answerB_clicked()
 {
     // if correct
     if(QuestionsDialog::correctLetter == "B"){
+
+        QuestionsDialog::disableWidgets(true);
         ui->label_2->setStyleSheet("background-color: green");
 
-        QTimer::singleShot(1500, this, &QuestionsDialog::newQuestion);
+        QTimer::singleShot(QuestionsDialog::waitIntervalMs, this, &QuestionsDialog::newQuestion);
         return;
 
     } else{
@@ -832,9 +1131,11 @@ void QuestionsDialog::on_answerC_clicked()
 {
     // if correct
     if(QuestionsDialog::correctLetter == "C"){
+
+        QuestionsDialog::disableWidgets(true);
         ui->label_3->setStyleSheet("background-color: green");
 
-        QTimer::singleShot(1500, this, &QuestionsDialog::newQuestion);
+        QTimer::singleShot(QuestionsDialog::waitIntervalMs, this, &QuestionsDialog::newQuestion);
         return;
 
     } else{
