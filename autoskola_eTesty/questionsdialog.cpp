@@ -232,14 +232,14 @@ void QuestionsDialog::newQuestion()
 
     } else if(questionType == 2){
         hideWidgets();
-        QString filePath = downloadFile(questionMedia, QString::number(questionTopicId), "1");
+        QuestionsDialog::questionImagePath = downloadFile(questionMedia, QString::number(questionTopicId), "1");
 
-        if(!filePath.isEmpty()){
-            QPixmap questionImage(filePath);
+        if(!questionImagePath.isEmpty() && !questionImagePath.contains(".mp4")){
+            QPixmap questionImage(questionImagePath);
             ui->question_image->setPixmap(questionImage.scaled(width, height, Qt::KeepAspectRatio));
 
         } else{
-            ui->question_image->setText(questionMedia);
+            ui->question_image->setText(questionImagePath);
         }
         ui->question_image->setHidden(false);
 
@@ -291,6 +291,8 @@ void QuestionsDialog::newQuestion()
         QMessageBox::critical(this, "Chyba", "Nastala neznámá chyba! Výstup byl uložen do log souboru");
         return;
     }
+
+    ui->label_4->setHidden(false);
 
 
     /*
@@ -374,10 +376,6 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         QuestionsDialog::hideWidgets(false);
         return question;
     }
-
-    int correctIndex = responseHtml.indexOf("answer otazka_spravne");
-    int wrong1Index = responseHtml.indexOf("answer otazka_spatne");
-    int wrong2Index = responseHtml.indexOf("answer otazka_spatne", wrong1Index+1);
 
     // variables for json
     QString questionText;
@@ -468,7 +466,6 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         }
 
 
-
     } else{
         // text question and text answers
 
@@ -503,15 +500,36 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     // make json
     question["question_text"] = questionText;
     question["question_media"] = questionMedia;
+
     question["correct_text"] = correctText;
     question["correct_media"] = correctMedia;
+
     question["wrong1_text"] = wrong1Text;
     question["wrong1_media"] = wrong1Media;
+
     question["wrong2_text"] = wrong2Text;
     question["wrong2_media"] = wrong2Media;
+
     question["question_id"] = questionId;
     question["topic_id"] = randomTopicId;
     question["points"] = points;
+
+    QJsonObject indexes;
+    int correctIndex = responseHtml.indexOf("answer otazka_spravne");
+    int wrong1Index = responseHtml.indexOf("answer otazka_spatne");
+    int wrong2Index = responseHtml.indexOf("answer otazka_spatne", wrong1Index+1);
+
+    indexes[QString::number(correctIndex)] = "correct_order";
+    indexes[QString::number(wrong1Index)] = "wrong1_order";
+    indexes[QString::number(wrong2Index)] = "wrong2_order";
+
+
+    //QStringList sortedIndexes = indexes.keys();
+    //for(i=0; i<indexes.length(); i++){
+    //    qInfo() << indexes[sortedIndexes[i]];
+    //}
+
+    question["answersOrder"] = indexes;
 
     QuestionsDialog::hideWidgets(false);
 
@@ -522,9 +540,9 @@ QString QuestionsDialog::downloadFile(QString url, QString topicId, QString file
 {
     // download image
 
-    if(url.contains(".mp4")){
-        return QString();
-    }
+    //if(url.contains(".mp4")){
+    //    return QString();
+    //}
 
     QNetworkRequest request;
     request.setUrl(QUrl(url));
@@ -561,9 +579,7 @@ QString QuestionsDialog::downloadFile(QString url, QString topicId, QString file
     downloadedFile.write(replyGet->readAll());
     downloadedFile.close();
 
-    QString fileName = downloadedFile.fileName();
-
-    return fileName;
+    return downloadedFile.fileName();
 }
 
 
@@ -593,3 +609,14 @@ void QuestionsDialog::on_answerC_clicked()
     QTimer::singleShot(100, this, &QuestionsDialog::newQuestion);
 }
 
+void QuestionsDialog::on_question_image_clicked()
+{
+    // open image
+
+    QStringList arguments;
+    arguments << "/C";
+    arguments << questionImagePath;
+
+    QProcess::startDetached("cmd", arguments);
+
+}

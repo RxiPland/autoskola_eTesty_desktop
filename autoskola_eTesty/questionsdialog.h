@@ -26,6 +26,8 @@ private slots:
     void on_answerB_clicked();
     void on_answerC_clicked();
 
+    void on_question_image_clicked();
+
 private:
     Ui::QuestionsDialog *ui;
     QNetworkAccessManager manager;
@@ -38,6 +40,7 @@ private:
 
     int width = 0;
     int height = 0;
+    QString questionImagePath;
 
     QByteArray userAgent;
 

@@ -17,6 +17,7 @@
 #include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
+#include "clickablelabel.h"
 #include "clickabletextedit.h"
 
 QT_BEGIN_NAMESPACE
@@ -33,7 +34,7 @@ public:
     QPlainTextEdit *question_imageText;
     QSpacerItem *verticalSpacer;
     QPlainTextEdit *question_text;
-    QLabel *question_image;
+    ClickableLabel *question_image;
     QSpacerItem *verticalSpacer_3;
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer_3;
@@ -92,6 +93,7 @@ public:
         font.setPointSize(11);
         question_imageText->setFont(font);
         question_imageText->setFocusPolicy(Qt::NoFocus);
+        question_imageText->setContextMenuPolicy(Qt::NoContextMenu);
         question_imageText->setReadOnly(true);
 
         verticalLayout->addWidget(question_imageText);
@@ -112,12 +114,14 @@ public:
         font1.setPointSize(13);
         question_text->setFont(font1);
         question_text->setFocusPolicy(Qt::NoFocus);
+        question_text->setContextMenuPolicy(Qt::NoContextMenu);
         question_text->setReadOnly(true);
 
         verticalLayout->addWidget(question_text);
 
-        question_image = new QLabel(QuestionsDialog);
+        question_image = new ClickableLabel(QuestionsDialog);
         question_image->setObjectName("question_image");
+        question_image->setCursor(QCursor(Qt::PointingHandCursor));
 
         verticalLayout->addWidget(question_image);
 
@@ -157,6 +161,7 @@ public:
         answerA->setFont(font);
         answerA->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
         answerA->setFocusPolicy(Qt::NoFocus);
+        answerA->setContextMenuPolicy(Qt::NoContextMenu);
         answerA->setReadOnly(true);
 
         verticalLayout_3->addWidget(answerA);
@@ -188,6 +193,7 @@ public:
         answerB->setFont(font);
         answerB->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
         answerB->setFocusPolicy(Qt::NoFocus);
+        answerB->setContextMenuPolicy(Qt::NoContextMenu);
         answerB->setReadOnly(true);
 
         verticalLayout_4->addWidget(answerB);
@@ -217,6 +223,7 @@ public:
         answerC->setFont(font);
         answerC->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
         answerC->setFocusPolicy(Qt::NoFocus);
+        answerC->setContextMenuPolicy(Qt::NoContextMenu);
         answerC->setReadOnly(true);
 
         verticalLayout_5->addWidget(answerC);

@@ -95,6 +95,9 @@
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
            </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::NoContextMenu</enum>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
@@ -138,13 +141,19 @@
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
            </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::NoContextMenu</enum>
+           </property>
            <property name="readOnly">
             <bool>true</bool>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="question_image">
+          <widget class="ClickableLabel" name="question_image">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="text">
             <string>image</string>
            </property>
@@ -243,6 +252,9 @@
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::NoContextMenu</enum>
+             </property>
              <property name="readOnly">
               <bool>true</bool>
              </property>
@@ -326,6 +338,9 @@
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::NoContextMenu</enum>
+             </property>
              <property name="readOnly">
               <bool>true</bool>
              </property>
@@ -396,6 +411,9 @@
              </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::NoContextMenu</enum>
              </property>
              <property name="readOnly">
               <bool>true</bool>
@@ -498,6 +516,14 @@
    <class>ClickableTextEdit</class>
    <extends>QPlainTextEdit</extends>
    <header>clickabletextedit.h</header>
+   <slots>
+    <signal>clicked()</signal>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>ClickableLabel</class>
+   <extends>QLabel</extends>
+   <header>clickablelabel.h</header>
    <slots>
     <signal>clicked()</signal>
    </slots>
