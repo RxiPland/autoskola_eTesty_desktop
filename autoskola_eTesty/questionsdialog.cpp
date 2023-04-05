@@ -151,14 +151,23 @@ void QuestionsDialog::newQuestion()
 
     if(
         !questionText.isEmpty() &&
-        questionMedia.isEmpty() &&
-        !correctText.isEmpty() &&
-        correctMedia.isEmpty() &&
-        !wrong1Text.isEmpty() &&
-        wrong1Media.isEmpty() &&
-        wrong2Media.isEmpty()
+        !questionMedia.isEmpty() &&
+        correctText.isEmpty() &&
+        !correctMedia.isEmpty() &&
+        wrong1Text.isEmpty() &&
+        !wrong1Media.isEmpty()
     ){
-        questionType = 1;
+        questionType = 4;
+
+    } else if (
+        !questionText.isEmpty() &&
+        questionMedia.isEmpty() &&
+        correctText.isEmpty() &&
+        !correctMedia.isEmpty() &&
+        wrong1Text.isEmpty() &&
+        !wrong1Media.isEmpty()
+    ){
+        questionType = 3;
 
     } else if (
         !questionText.isEmpty() &&
@@ -174,14 +183,12 @@ void QuestionsDialog::newQuestion()
     } else if (
         !questionText.isEmpty() &&
         questionMedia.isEmpty() &&
-        correctText.isEmpty() &&
-        !correctMedia.isEmpty() &&
-        wrong1Text.isEmpty() &&
-        !wrong1Media.isEmpty() &&
-        wrong2Text.isEmpty() &&
-        !wrong2Media.isEmpty()
+        !correctText.isEmpty() &&
+        correctMedia.isEmpty() &&
+        !wrong1Text.isEmpty() &&
+        wrong1Media.isEmpty()
     ){
-        questionType = 3;
+        questionType = 1;
 
     } else{
         qInfo() << "error";
@@ -190,14 +197,29 @@ void QuestionsDialog::newQuestion()
     }
 
 
+    ui->answerA->clear();
+    ui->answerB->clear();
+    ui->answerC->clear();
+
+    ui->answerA->setStyleSheet("");
+    ui->answerB->setStyleSheet("");
+    ui->answerC->setStyleSheet("");
+
+    ui->question_imageText->clear();
+    ui->question_image->clear();
+    ui->question_text->clear();
+
+    ui->question_imageText->setStyleSheet("");
+    ui->question_image->setStyleSheet("");
+    ui->question_text->setStyleSheet("");
+
+
     if(questionType == 1){
-        hideWidgets();
+        QuestionsDialog::hideWidgets();
 
         ui->question_imageText->setHidden(true);
-        ui->question_imageText->clear();
 
         ui->question_image->setHidden(true);
-        ui->question_image->clear();
 
         ui->question_text->setPlainText(questionText);
         ui->question_text->setHidden(false);
@@ -233,33 +255,36 @@ void QuestionsDialog::newQuestion()
         }
 
     } else if(questionType == 2){
-        hideWidgets();
+        QuestionsDialog::hideWidgets();
         QuestionsDialog::questionImagePath = QString();
 
         if(questionMedia.contains(".mp4")){
-            ui->question_image->setHidden(false);
             ui->question_image->setText("Stahuji video");
+            ui->question_image->setHidden(false);
+
+        } else{
+            ui->question_image->setText("Načítám otázku");
+            ui->question_image->setHidden(false);
         }
 
         QuestionsDialog::questionImagePath = downloadFile(questionMedia, QString::number(questionTopicId), "1");
 
         if(!questionImagePath.isEmpty() && !questionImagePath.contains(".mp4")){
-            QPixmap questionImage(questionImagePath);
+            QPixmap *questionImage = new QPixmap(questionImagePath);
             ui->question_image->clear();
-            ui->question_image->setPixmap(questionImage.scaled(width, height, Qt::KeepAspectRatio));
+            ui->question_image->setPixmap(questionImage->scaled(width, height, Qt::KeepAspectRatio));
+            delete(questionImage);
 
         } else{
-            //ui->question_image->setFixedSize(width, height);
             ui->question_image->setText("Spustit video");
+            ui->question_image->setStyleSheet("color: blue; text-decoration: underline;");
         }
         ui->question_image->setHidden(false);
 
         ui->question_imageText->setPlainText(questionText);
         ui->question_imageText->setHidden(false);
 
-
         ui->question_text->setHidden(true);
-        ui->question_text->clear();
 
 
         if(!correctText.isEmpty()){
@@ -293,9 +318,114 @@ void QuestionsDialog::newQuestion()
         }
 
     } else if(questionType == 3){
-        //hideWidgets();
+        QuestionsDialog::hideWidgets();
 
-        qInfo() << "type 3";
+        ui->question_image->setText("Načítám otázku");
+        ui->question_image->setHidden(false);
+
+        // download images
+        correctMedia = downloadFile(correctMedia, QString::number(questionTopicId), "1");
+        wrong1Media = downloadFile(wrong1Media, QString::number(questionTopicId), "2");
+        wrong2Media = downloadFile(wrong2Media, QString::number(questionTopicId), "3");
+
+        ui->question_image->setHidden(true);
+        ui->question_imageText->setHidden(true);
+
+        ui->question_text->setPlainText(questionText);
+        ui->question_text->setHidden(false);
+
+
+        if(!correctMedia.isEmpty()){
+            ui->answerA->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(correctMedia));
+            ui->answerA->setHidden(false);
+            ui->label->setHidden(false);
+        } else{
+            ui->answerA->setHidden(true);
+            ui->label->setHidden(true);
+        }
+
+        if(!wrong1Media.isEmpty()){
+            ui->answerB->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong1Media));
+            ui->answerB->setHidden(false);
+            ui->label_2->setHidden(false);
+        } else{
+            ui->answerB->setHidden(true);
+            ui->label_2->setHidden(true);
+        }
+
+        if(!wrong2Media.isEmpty()){
+            ui->answerC->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong2Media));
+            ui->answerC->setHidden(false);
+            ui->label_3->setHidden(false);
+        } else{
+            ui->answerC->setHidden(true);
+            ui->label_3->setHidden(true);
+        }
+
+    } else if(questionType == 4){
+        QuestionsDialog::hideWidgets();
+
+        QuestionsDialog::questionImagePath = QString();
+
+        if(questionMedia.contains(".mp4")){
+            ui->question_image->setText("Stahuji video");
+            ui->question_image->setHidden(false);
+        } else{
+            ui->question_image->setText("Načítám otázku");
+            ui->question_image->setHidden(false);
+        }
+
+        // download images
+        QuestionsDialog::questionImagePath = downloadFile(questionMedia, QString::number(questionTopicId), "1");
+        correctMedia = downloadFile(correctMedia, QString::number(questionTopicId), "2");
+        wrong1Media = downloadFile(wrong1Media, QString::number(questionTopicId), "3");
+        wrong2Media = downloadFile(wrong2Media, QString::number(questionTopicId), "4");
+
+
+        if(!questionImagePath.isEmpty() && !questionImagePath.contains(".mp4")){
+            QPixmap *questionImage = new QPixmap(questionImagePath);
+            ui->question_image->clear();
+            ui->question_image->setPixmap(questionImage->scaled(width, height, Qt::KeepAspectRatio));
+            delete(questionImage);
+
+        } else{
+            ui->question_image->setText("Spustit video");
+            ui->question_image->setStyleSheet("color: blue; text-decoration: underline;");
+        }
+
+        ui->question_imageText->setPlainText(questionText);
+
+        ui->question_image->setHidden(false);
+        ui->question_text->setHidden(true);
+        ui->question_imageText->setHidden(false);
+
+
+        if(!correctMedia.isEmpty()){
+            ui->answerA->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(correctMedia));
+            ui->answerA->setHidden(false);
+            ui->label->setHidden(false);
+        } else{
+            ui->answerA->setHidden(true);
+            ui->label->setHidden(true);
+        }
+
+        if(!wrong1Media.isEmpty()){
+            ui->answerB->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong1Media));
+            ui->answerB->setHidden(false);
+            ui->label_2->setHidden(false);
+        } else{
+            ui->answerB->setHidden(true);
+            ui->label_2->setHidden(true);
+        }
+
+        if(!wrong2Media.isEmpty()){
+            ui->answerC->setStyleSheet(QString("background-image: url(%1); background-position: center center; background-repeat: no-repeat").arg(wrong2Media));
+            ui->answerC->setHidden(false);
+            ui->label_3->setHidden(false);
+        } else{
+            ui->answerC->setHidden(true);
+            ui->label_3->setHidden(true);
+        }
 
 
     } else{
@@ -304,6 +434,7 @@ void QuestionsDialog::newQuestion()
     }
 
     ui->label_4->setHidden(false);
+    ui->question_image->setAlignment(Qt::AlignCenter);
 
 
     /*
@@ -351,6 +482,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 
     QNetworkRequest request;
     request.setUrl(QUrl(url + QString::number(randomTopicId)));
+    //request.setUrl(QUrl("https://www.autoskola-testy.cz/prohlizeni_otazek.php?otazka=11935-ktere_smerove_sloupky_oznacuji_usek_pozemni_komunikace_kde_hrozi_zvysene_nebezpeci_namrazy"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "text/html; charset=utf-8");
     request.setHeader(QNetworkRequest::UserAgentHeader, userAgent);
     request.setRawHeader("Referer", (url + QString::number(randomTopicId)).toUtf8());
@@ -404,7 +536,58 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     QRegularExpressionMatch match;
     QRegularExpressionMatchIterator iterator;
 
-    if(responseHtml.contains("/img/single")){
+
+    if(responseHtml.contains("/img/single") && responseHtml.contains("/img/tripple")){
+        // image question and image answers
+
+        // QUESTION TEXT
+        rx = QRegularExpression(patternQuestionText);
+        questionText = rx.match(responseHtml).captured(1).trimmed();
+
+        // QUESTION MEDIA
+        rx = QRegularExpression(patternQuestionMedia);
+        questionMedia = rx.match(responseHtml).captured(1).trimmed();
+
+        if(!questionMedia.isEmpty()){
+            questionMedia = "https://www.autoskola-testy.cz" + questionMedia;
+        }
+
+        // CORRECT MEDIA
+        rx = QRegularExpression(patternCorrect);
+        correctMedia = rx.match(responseHtml).captured(1).trimmed();
+
+        if(!correctMedia.isEmpty()){
+            correctMedia.replace("<img src=\"", "");
+            correctMedia.replace("\">", "");
+
+            correctMedia = "https://www.autoskola-testy.cz" + correctMedia;
+        }
+
+        // WRONG MEDIAS
+        rx = QRegularExpression(patternWrong);
+        iterator = rx.globalMatch(responseHtml);
+
+        match = iterator.next();
+        wrong1Media = match.captured(1).trimmed();
+
+        if(!wrong1Media.isEmpty()){
+            wrong1Media.replace("<img src=\"", "");
+            wrong1Media.replace("\">", "");
+
+            wrong1Media = "https://www.autoskola-testy.cz" + wrong1Media;
+        }
+
+        match = iterator.next();
+        wrong2Media = match.captured(1).trimmed();
+
+        if(!wrong2Media.isEmpty()){
+            wrong2Media.replace("<img src=\"", "");
+            wrong2Media.replace("\">", "");
+
+            wrong2Media = "https://www.autoskola-testy.cz" + wrong2Media;
+        }
+
+    } else if(responseHtml.contains("/img/single")){
         // image question and text answers
 
         // QUESTION TEXT
@@ -475,7 +658,6 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 
             wrong2Media = "https://www.autoskola-testy.cz" + wrong2Media;
         }
-
 
     } else{
         // text question and text answers
@@ -554,9 +736,9 @@ QString QuestionsDialog::downloadFile(QString url, QString topicId, QString file
 {
     // download image
 
-    //if(url.contains(".mp4")){
-    //    return QString();
-    //}
+    if(url.isEmpty() || topicId.isEmpty() || fileOrder.isEmpty()){
+        return QString();
+    }
 
     QNetworkRequest request;
     request.setUrl(QUrl(url));
@@ -587,15 +769,15 @@ QString QuestionsDialog::downloadFile(QString url, QString topicId, QString file
     QDir directory(QDir::currentPath());
     directory.mkpath(QDir::currentPath() + "/Data/Temp/" + questionCountStr);
 
-    QFile downloadedFile(QDir::currentPath() + "/Data/Temp/" + questionCountStr + '/' + fileOrder + '.' + url.split('.').last());
+    QFile *downloadedFile = new QFile(QDir::currentPath() + "/Data/Temp/" + questionCountStr + '/' + fileOrder + '.' + url.split('.').last());
 
-    downloadedFile.open(QIODevice::WriteOnly);
-    downloadedFile.write(replyGet->readAll());
-    downloadedFile.close();
+    downloadedFile->open(QIODevice::WriteOnly);
+    downloadedFile->write(replyGet->readAll());
+    downloadedFile->close();
 
-    QString fileName = downloadedFile.fileName();
+    QString fileName = downloadedFile->fileName();
 
-    downloadedFile.deleteLater();
+    downloadedFile->deleteLater();
     replyGet->deleteLater();
 
     return fileName;
