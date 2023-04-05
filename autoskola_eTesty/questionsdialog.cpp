@@ -28,6 +28,7 @@ QuestionsDialog::QuestionsDialog(QWidget *parent) :
     width = ui->question_text->width();
     height = ui->question_text->height()+(width/8);
 
+    ui->question_image->setFixedSize(width, height);
 }
 
 
@@ -145,6 +146,7 @@ void QuestionsDialog::newQuestion()
     // 1 = text question and text answers
     // 2 = image question and text answers
     // 3 = text question and image answers
+    // 4 = image question and image answers
     int questionType = 0;
 
     if(
@@ -232,14 +234,23 @@ void QuestionsDialog::newQuestion()
 
     } else if(questionType == 2){
         hideWidgets();
+        QuestionsDialog::questionImagePath = QString();
+
+        if(questionMedia.contains(".mp4")){
+            ui->question_image->setHidden(false);
+            ui->question_image->setText("Stahuji video");
+        }
+
         QuestionsDialog::questionImagePath = downloadFile(questionMedia, QString::number(questionTopicId), "1");
 
         if(!questionImagePath.isEmpty() && !questionImagePath.contains(".mp4")){
             QPixmap questionImage(questionImagePath);
+            ui->question_image->clear();
             ui->question_image->setPixmap(questionImage.scaled(width, height, Qt::KeepAspectRatio));
 
         } else{
-            ui->question_image->setText(questionImagePath);
+            //ui->question_image->setFixedSize(width, height);
+            ui->question_image->setText("Spustit video");
         }
         ui->question_image->setHidden(false);
 
@@ -533,6 +544,9 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 
     QuestionsDialog::hideWidgets(false);
 
+    replyGet->deleteLater();
+    responseHtml.clear();
+
     return question;
 }
 
@@ -579,7 +593,12 @@ QString QuestionsDialog::downloadFile(QString url, QString topicId, QString file
     downloadedFile.write(replyGet->readAll());
     downloadedFile.close();
 
-    return downloadedFile.fileName();
+    QString fileName = downloadedFile.fileName();
+
+    downloadedFile.deleteLater();
+    replyGet->deleteLater();
+
+    return fileName;
 }
 
 
@@ -611,7 +630,7 @@ void QuestionsDialog::on_answerC_clicked()
 
 void QuestionsDialog::on_question_image_clicked()
 {
-    // open image
+    // open image/video
 
     QStringList arguments;
     arguments << "/C";
