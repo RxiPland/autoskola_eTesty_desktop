@@ -76,6 +76,6 @@ void StartMenu::on_pushButton_clicked()
     qd.exec();
 
 
-    this->show();
+    this->close();
 }
 
