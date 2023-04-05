@@ -365,6 +365,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 
     QByteArray responseHtml = replyGet->readAll();
 
+
     if(responseHtml.isEmpty()){
         // no HTML
 
@@ -373,6 +374,10 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         QuestionsDialog::hideWidgets(false);
         return question;
     }
+
+    int correctIndex = responseHtml.indexOf("answer otazka_spravne");
+    int wrong1Index = responseHtml.indexOf("answer otazka_spatne");
+    int wrong2Index = responseHtml.indexOf("answer otazka_spatne", wrong1Index+1);
 
     // variables for json
     QString questionText;
