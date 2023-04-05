@@ -98,7 +98,7 @@ public:
 
         verticalLayout->addWidget(question_imageText);
 
-        verticalSpacer = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer = new QSpacerItem(25, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout->addItem(verticalSpacer);
 
