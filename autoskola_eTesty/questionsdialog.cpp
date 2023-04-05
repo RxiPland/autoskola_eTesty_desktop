@@ -426,8 +426,17 @@ void QuestionsDialog::newQuestion()
             ui->label_3->setHidden(true);
         }
 
-
     } else{
+        // an unknown error occured
+
+        QFile logFile = QFile(QDir::currentPath() + "/logs.txt");
+        QJsonDocument docData(questionData);
+
+        logFile.open(QIODevice::WriteOnly | QIODevice::Append);
+        logFile.write(docData.toJson());
+        logFile.write("\n\n");
+        logFile.close();
+
         QMessageBox::critical(this, "Chyba", "Nastala neznámá chyba! Výstup byl uložen do log souboru");
         return;
     }
@@ -435,30 +444,6 @@ void QuestionsDialog::newQuestion()
     ui->label_4->setHidden(false);
     ui->question_image->setAlignment(Qt::AlignCenter);
 
-
-    /*
-    } else{
-        ui->question_imageText->setHidden(false);
-        ui->question_imageText->setPlainText(questionData["question_text"].toString());
-        ui->question_image->setText("[zde má být obrázek]");
-        ui->question_text->setHidden(true);
-    }
-
-    ui->answerA->setPlainText(questionData["correct_text"].toString());
-    ui->answerB->setPlainText(questionData["wrong1_text"].toString());
-    ui->answerC->setPlainText(questionData["wrong2_text"].toString());
-    */
-
-    //ui->plainTextEdit->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
-    //ui->plainTextEdit_2->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
-    //ui->plainTextEdit_3->setStyleSheet("background-image: url(C:/Users/RxiPland/Downloads/e8d.jpg); background-position: center center; background-repeat: no-repeat");
-
-    //ui->plainTextEdit->setText("ahoj");
-    //ui->plainTextEdit->setAlignment(Qt::AlignCenter);
-
-
-    //QPixmap questionImage("C:/Users/RxiPland/Downloads/0117.jpg");
-    //ui->image_label->setPixmap(questionImage.scaled(ui->image_label->width(), ui->image_label->height(), Qt::KeepAspectRatio));
 }
 
 QJsonObject QuestionsDialog::getRandomQuestion()
@@ -481,7 +466,6 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 
     QNetworkRequest request;
     request.setUrl(QUrl(url + QString::number(randomTopicId)));
-    //request.setUrl(QUrl("https://www.autoskola-testy.cz/prohlizeni_otazek.php?otazka=11935-ktere_smerove_sloupky_oznacuji_usek_pozemni_komunikace_kde_hrozi_zvysene_nebezpeci_namrazy"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "text/html; charset=utf-8");
     request.setHeader(QNetworkRequest::UserAgentHeader, userAgent);
     request.setRawHeader("Referer", (url + QString::number(randomTopicId)).toUtf8());
