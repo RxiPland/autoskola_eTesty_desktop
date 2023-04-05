@@ -12,6 +12,8 @@ ClickableTextEdit::~ClickableTextEdit() {
 
 }
 
-void ClickableTextEdit::mousePressEvent(QMouseEvent* event) {
+
+void ClickableTextEdit::mouseReleaseEvent(QMouseEvent *event)
+{
     emit clicked();
 }
