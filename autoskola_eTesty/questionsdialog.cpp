@@ -836,24 +836,35 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         rx = QRegularExpression(patternWrong);
         iterator = rx.globalMatch(responseHtml);
 
-        match = iterator.next();
-        wrong1Media = match.captured(1).trimmed();
+        if(iterator.hasNext()){
+            match = iterator.next();
+            wrong1Media = match.captured(1).trimmed();
 
-        if(!wrong1Media.isEmpty()){
-            wrong1Media.replace("<img src=\"", "");
-            wrong1Media.replace("\">", "");
+            if(!wrong1Media.isEmpty()){
+                wrong1Media.replace("<img src=\"", "");
+                wrong1Media.replace("\">", "");
 
-            wrong1Media = "https://www.autoskola-testy.cz" + wrong1Media;
+                wrong1Media = "https://www.autoskola-testy.cz" + wrong1Media;
+            }
+
+        } else{
+            wrong1Media = QString();
         }
 
-        match = iterator.next();
-        wrong2Media = match.captured(1).trimmed();
 
-        if(!wrong2Media.isEmpty()){
-            wrong2Media.replace("<img src=\"", "");
-            wrong2Media.replace("\">", "");
+        if(iterator.hasNext()){
+            match = iterator.next();
+            wrong2Media = match.captured(1).trimmed();
 
-            wrong2Media = "https://www.autoskola-testy.cz" + wrong2Media;
+            if(!wrong2Media.isEmpty()){
+                wrong2Media.replace("<img src=\"", "");
+                wrong2Media.replace("\">", "");
+
+                wrong2Media = "https://www.autoskola-testy.cz" + wrong2Media;
+            }
+
+        } else{
+            wrong2Media = QString();
         }
 
     } else if(responseHtml.contains("/img/single")){
