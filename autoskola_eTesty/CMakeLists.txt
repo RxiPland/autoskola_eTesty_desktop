@@ -22,6 +22,9 @@ set(PROJECT_SOURCES
         clickabletextedit.h
         clickabletextedit.cpp
 
+        clickablelabel.h
+        clickablelabel.cpp
+
         questionsdialog.h
         questionsdialog.cpp
         questionsdialog.ui
