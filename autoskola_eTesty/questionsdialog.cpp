@@ -218,15 +218,14 @@ void QuestionsDialog::newQuestion()
         QuestionsDialog::hideWidgets();
 
         ui->question_imageText->setHidden(true);
-
         ui->question_image->setHidden(true);
 
         ui->question_text->setPlainText(questionText);
         ui->question_text->setHidden(false);
 
         if(!correctText.isEmpty()){
-            ui->answerA->setHidden(false);
             ui->answerA->setPlainText(correctText);
+            ui->answerA->setHidden(false);
             ui->label->setHidden(false);
 
         } else{
@@ -235,8 +234,8 @@ void QuestionsDialog::newQuestion()
         }
 
         if(!wrong1Text.isEmpty()){
-            ui->answerB->setHidden(false);
             ui->answerB->setPlainText(wrong1Text);
+            ui->answerB->setHidden(false);
             ui->label_2->setHidden(false);
 
         } else{
@@ -245,8 +244,8 @@ void QuestionsDialog::newQuestion()
         }
 
         if(!wrong2Text.isEmpty()){
-            ui->answerC->setHidden(false);
             ui->answerC->setPlainText(wrong2Text);
+            ui->answerC->setHidden(false);
             ui->label_3->setHidden(false);
 
         } else{
@@ -288,8 +287,8 @@ void QuestionsDialog::newQuestion()
 
 
         if(!correctText.isEmpty()){
-            ui->answerA->setHidden(false);
             ui->answerA->setPlainText(correctText);
+            ui->answerA->setHidden(false);
             ui->label->setHidden(false);
 
         } else{
@@ -298,8 +297,8 @@ void QuestionsDialog::newQuestion()
         }
 
         if(!wrong1Text.isEmpty()){
-            ui->answerB->setHidden(false);
             ui->answerB->setPlainText(wrong1Text);
+            ui->answerB->setHidden(false);
             ui->label_2->setHidden(false);
 
         } else{
@@ -308,8 +307,8 @@ void QuestionsDialog::newQuestion()
         }
 
         if(!wrong2Text.isEmpty()){
-            ui->answerC->setHidden(false);
             ui->answerC->setPlainText(wrong2Text);
+            ui->answerC->setHidden(false);
             ui->label_3->setHidden(false);
 
         } else{
