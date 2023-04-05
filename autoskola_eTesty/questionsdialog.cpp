@@ -145,7 +145,6 @@ void QuestionsDialog::newQuestion()
     // 1 = text question and text answers
     // 2 = image question and text answers
     // 3 = text question and image answers
-    // 4 = image question and image answers
     int questionType = 0;
 
     if(
@@ -184,6 +183,7 @@ void QuestionsDialog::newQuestion()
 
     } else{
         qInfo() << "error";
+        qInfo() << questionData;
         // write output to log file
     }
 
@@ -232,18 +232,24 @@ void QuestionsDialog::newQuestion()
 
     } else if(questionType == 2){
         hideWidgets();
+        QString filePath = downloadFile(questionMedia, QString::number(questionTopicId), "1");
+
+        if(!filePath.isEmpty()){
+            QPixmap questionImage(filePath);
+            ui->question_image->setPixmap(questionImage.scaled(width, height, Qt::KeepAspectRatio));
+
+        } else{
+            ui->question_image->setText(questionMedia);
+        }
+        ui->question_image->setHidden(false);
 
         ui->question_imageText->setPlainText(questionText);
         ui->question_imageText->setHidden(false);
 
-        QString filePath = downloadFile(questionMedia, QString::number(questionTopicId), "1");
-
-        QPixmap questionImage(filePath);
-        ui->question_image->setPixmap(questionImage.scaled(width, height, Qt::KeepAspectRatio));
-        ui->question_image->setHidden(false);
 
         ui->question_text->setHidden(true);
         ui->question_text->clear();
+
 
         if(!correctText.isEmpty()){
             ui->answerA->setHidden(false);
