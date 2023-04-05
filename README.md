@@ -1,6 +1,6 @@
 # autoskola-eTesty desktop
 - Program využívá stránku [autoskola-testy.cz](autoskola-testy.cz/)
-- Generování náhodných otázek ze všech okruhů zdarma
+- Generuje náhodné otázky ze všech okruhů zdarma
 
 <br></br>
 
