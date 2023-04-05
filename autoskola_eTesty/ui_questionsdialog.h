@@ -279,7 +279,7 @@ public:
 
     void retranslateUi(QDialog *QuestionsDialog)
     {
-        QuestionsDialog->setWindowTitle(QCoreApplication::translate("QuestionsDialog", "Dialog", nullptr));
+        QuestionsDialog->setWindowTitle(QCoreApplication::translate("QuestionsDialog", "autoskola-eTesty", nullptr));
         question_image->setText(QCoreApplication::translate("QuestionsDialog", "image", nullptr));
         label->setText(QCoreApplication::translate("QuestionsDialog", "Odpov\304\233\304\217 A:", nullptr));
         answerA->setPlainText(QString());
