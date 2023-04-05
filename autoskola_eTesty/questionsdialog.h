@@ -41,6 +41,7 @@ private:
     int width = 0;
     int height = 0;
     QString questionImagePath;
+    QString correctLetter;
 
     QByteArray userAgent;
 

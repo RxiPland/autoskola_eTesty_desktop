@@ -41,6 +41,9 @@ void QuestionsDialog::closeEvent(QCloseEvent *bar)
 {
     // before window close
 
+    QDir tempDirectory(QDir::currentPath() + "/Data/Temp");
+    tempDirectory.removeRecursively();
+
     if(bar != nullptr){
         bar->accept();
     }
@@ -128,6 +131,7 @@ void QuestionsDialog::newQuestion()
         return;
     }
 
+    QuestionsDialog::correctLetter = questionData["letter_correct"].toString();
     QString questionText = questionData["question_text"].toString();
     QString questionMedia = questionData["question_media"].toString();
     QString correctText = questionData["correct_text"].toString();
@@ -191,9 +195,18 @@ void QuestionsDialog::newQuestion()
         questionType = 1;
 
     } else{
-        qInfo() << "error";
-        qInfo() << questionData;
-        // write output to log file
+        // an unknown error occured
+
+        QFile logFile = QFile(QDir::currentPath() + "/logs.txt");
+        QJsonDocument docData(questionData);
+
+        logFile.open(QIODevice::WriteOnly | QIODevice::Append);
+        logFile.write(docData.toJson());
+        logFile.write("\n\n");
+        logFile.close();
+
+        QMessageBox::critical(this, "Chyba", "Nastala neznámá chyba! Výstup byl uložen do log souboru");
+        return;
     }
 
 
@@ -213,6 +226,10 @@ void QuestionsDialog::newQuestion()
     ui->question_image->setStyleSheet("");
     ui->question_text->setStyleSheet("");
 
+    ui->label->setStyleSheet("");
+    ui->label_2->setStyleSheet("");
+    ui->label_3->setStyleSheet("");
+
 
     if(questionType == 1){
         QuestionsDialog::hideWidgets();
@@ -222,6 +239,7 @@ void QuestionsDialog::newQuestion()
 
         ui->question_text->setPlainText(questionText);
         ui->question_text->setHidden(false);
+
 
         if(!correctText.isEmpty()){
             ui->answerA->setPlainText(correctText);
@@ -429,15 +447,6 @@ void QuestionsDialog::newQuestion()
     } else{
         // an unknown error occured
 
-        QFile logFile = QFile(QDir::currentPath() + "/logs.txt");
-        QJsonDocument docData(questionData);
-
-        logFile.open(QIODevice::WriteOnly | QIODevice::Append);
-        logFile.write(docData.toJson());
-        logFile.write("\n\n");
-        logFile.close();
-
-        QMessageBox::critical(this, "Chyba", "Nastala neznámá chyba! Výstup byl uložen do log souboru");
         return;
     }
 
@@ -690,22 +699,44 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     question["topic_id"] = randomTopicId;
     question["points"] = points;
 
-    QJsonObject indexes;
+
+    QStringList indexes;
     int correctIndex = responseHtml.indexOf("answer otazka_spravne");
     int wrong1Index = responseHtml.indexOf("answer otazka_spatne");
     int wrong2Index = responseHtml.indexOf("answer otazka_spatne", wrong1Index+1);
 
-    indexes[QString::number(correctIndex)] = "correct_order";
-    indexes[QString::number(wrong1Index)] = "wrong1_order";
-    indexes[QString::number(wrong2Index)] = "wrong2_order";
+    indexes.append(QString::number(correctIndex));
+    indexes.append(QString::number(wrong1Index));
+    indexes.append(QString::number(wrong2Index));
 
+    indexes.sort();
 
-    //QStringList sortedIndexes = indexes.keys();
-    //for(i=0; i<indexes.length(); i++){
-    //    qInfo() << indexes[sortedIndexes[i]];
-    //}
+    int i;
 
-    question["answersOrder"] = indexes;
+    for(i=0; i<indexes.length(); i++){
+
+        if (indexes[i] == QString::number(correctIndex)){
+
+            switch(i){
+                case 0:
+                    question["letter_correct"] = "A";
+                    break;
+                case 1:
+                    question["letter_correct"] = "B";
+                    break;
+                case 2:
+                    question["letter_correct"] = "C";
+                    break;
+
+                default:
+                    question["letter_correct"];
+                    break;
+            }
+
+            break;
+        }
+    }
+
 
     QuestionsDialog::hideWidgets(false);
 
@@ -769,28 +800,47 @@ QString QuestionsDialog::downloadFile(QString url, QString topicId, QString file
 
 void QuestionsDialog::on_answerA_clicked()
 {
-    qInfo() << "answer A";
-
     // if correct
-    QTimer::singleShot(100, this, &QuestionsDialog::newQuestion);
+    if(QuestionsDialog::correctLetter == "A"){
+        ui->label->setStyleSheet("background-color: green");
+
+        QTimer::singleShot(1500, this, &QuestionsDialog::newQuestion);
+        return;
+
+    } else{
+        ui->label->setStyleSheet("background-color: red");
+    }
 }
 
 
 void QuestionsDialog::on_answerB_clicked()
 {
-    qInfo() << "answer B";
-
     // if correct
-    QTimer::singleShot(100, this, &QuestionsDialog::newQuestion);
+    if(QuestionsDialog::correctLetter == "B"){
+        ui->label_2->setStyleSheet("background-color: green");
+
+        QTimer::singleShot(1500, this, &QuestionsDialog::newQuestion);
+        return;
+
+    } else{
+        ui->label_2->setStyleSheet("background-color: red");
+    }
 }
 
 
 void QuestionsDialog::on_answerC_clicked()
 {
-    qInfo() << "answer C";
-
     // if correct
-    QTimer::singleShot(100, this, &QuestionsDialog::newQuestion);
+    if(QuestionsDialog::correctLetter == "C"){
+        ui->label_3->setStyleSheet("background-color: green");
+
+        QTimer::singleShot(1500, this, &QuestionsDialog::newQuestion);
+        return;
+
+    } else{
+        ui->label_3->setStyleSheet("background-color: red");
+    }
+
 }
 
 void QuestionsDialog::on_question_image_clicked()
