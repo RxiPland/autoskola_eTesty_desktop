@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>icons/etesty_logo.jpg</file>
+        <file>icons/settings.ico</file>
     </qresource>
 </RCC>

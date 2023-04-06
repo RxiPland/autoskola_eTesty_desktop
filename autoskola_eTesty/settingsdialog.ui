@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>323</width>
+    <width>336</width>
     <height>229</height>
    </rect>
   </property>
@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/icons/etesty_logo.jpg</normaloff>:/icons/etesty_logo.jpg</iconset>
+    <normaloff>:/icons/settings.ico</normaloff>:/icons/settings.ico</iconset>
   </property>
  </widget>
  <resources>
