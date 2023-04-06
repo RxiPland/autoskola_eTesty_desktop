@@ -56,10 +56,41 @@ void StartMenu::on_pushButton_2_clicked()
 {
     // show stats
 
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Statistiky");
-    msgBox.setText("počet otázek správně: \n\n\n");
-    msgBox.exec();
+    QString statsText = "Nastala chyba!";
+    QByteArray fileContent;
+    QJsonObject loadedJson;
+
+    QFile statsFile(QDir::currentPath() + "/Data/stats.json");
+
+    if(statsFile.exists()){
+
+        statsFile.open(QIODevice::ReadOnly | QIODevice::Text);
+
+        fileContent = statsFile.readAll();
+        statsFile.close();
+
+        if(!fileContent.isEmpty()){
+
+            loadedJson = QJsonDocument::fromJson(fileContent).object();
+
+
+            if(!loadedJson.isEmpty()){
+                qint64 correctNum = loadedJson["correct"].toInteger();
+                qint64 wrongNum = loadedJson["wrong"].toInteger();
+                qint64 questionsCount = correctNum + wrongNum;
+
+                statsText = "Celkem otázek: " + QString::number(questionsCount) + "\t\t\n\n";
+                statsText += "Počet správně: " + QString::number(correctNum) + "\t\t\n";
+                statsText += "Počet špatně: " + QString::number(wrongNum) + "\t\t\n\n";
+
+                if(questionsCount > 0){
+                    statsText += QString("Úspěšnost: %1").arg((qint64)((float)correctNum/((float)questionsCount/100))) + "%";
+                }
+            }
+        }
+    }
+
+    QMessageBox::information(this, "Statistiky", statsText);
 }
 
 
