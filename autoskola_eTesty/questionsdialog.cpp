@@ -78,6 +78,8 @@ void QuestionsDialog::hideWidgets(bool hide)
     ui->label_3->setHidden(hide);
     ui->label_4->setHidden(hide);
 
+    ui->checkBox->setHidden(hide);
+
     if(questionCount > 0){
         ui->label_5->setHidden(hide);
     }
@@ -104,6 +106,8 @@ void QuestionsDialog::disableWidgets(bool disable)
 
     ui->pushButton->setDisabled(disable);
     ui->pushButton_2->setDisabled(disable);
+
+    ui->checkBox->setDisabled(disable);
 }
 
 void QuestionsDialog::correct()
@@ -116,7 +120,13 @@ void QuestionsDialog::correct()
     }
 
     QuestionsDialog::correctNum += 1;
-    ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/((float)QuestionsDialog::questionCount/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
+
+    if(correctNum == questionCount){
+        ui->label_5->setText("Úspěšnost: 100% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
+
+    } else{
+        ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/((float)QuestionsDialog::questionCount/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
+    }
     ui->label_5->setHidden(false);
 
     QFile statsFile(QDir::currentPath() + "/Data/stats.json");
@@ -170,7 +180,13 @@ void QuestionsDialog::wrong()
         if(correctNum == 0){
             ui->label_5->setText(QString("Úspěšnost: 0% ") + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
         } else{
-            ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/((float)QuestionsDialog::questionCount/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
+
+            if(correctNum == questionCount){
+                ui->label_5->setText("Úspěšnost: 100% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
+
+            } else{
+                ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/((float)QuestionsDialog::questionCount/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
+            }
         }
         ui->label_5->setHidden(false);
 
@@ -209,6 +225,8 @@ void QuestionsDialog::wrong()
 void QuestionsDialog::loadSettings()
 {
     // load settings from file
+
+    ui->checkBox->setChecked(QuestionsDialog::automaticNewQuestion);
 
     QFile dataFile(QDir::currentPath() + "/Data/settings.json");
 
@@ -263,6 +281,7 @@ void QuestionsDialog::newQuestion()
     // set new question
 
     ui->label_4->clear();
+    ui->pushButton->setText("Přeskočit");
 
     QJsonObject questionData = QuestionsDialog::getRandomQuestion();
 
@@ -862,6 +881,7 @@ void QuestionsDialog::newQuestion()
 
     ui->pushButton->setHidden(false);
     ui->pushButton_2->setHidden(false);
+    ui->checkBox->setHidden(false);
 
     ui->question_image->setAlignment(Qt::AlignCenter);
 
@@ -1286,7 +1306,16 @@ void QuestionsDialog::on_answerA_clicked()
 
         QuestionsDialog::correct();
 
-        QTimer::singleShot(QuestionsDialog::waitIntervalMs, this, &QuestionsDialog::newQuestion);
+        if(automaticNewQuestion){
+            QTimer::singleShot(QuestionsDialog::waitIntervalMs, this, &QuestionsDialog::newQuestion);
+
+        } else{
+            ui->pushButton->setText(" Nová otázka ");
+            ui->pushButton->setEnabled(true);
+            ui->pushButton_2->setEnabled(true);
+            ui->checkBox->setEnabled(true);
+        }
+
         return;
 
     } else{
@@ -1307,7 +1336,16 @@ void QuestionsDialog::on_answerB_clicked()
 
         QuestionsDialog::correct();
 
-        QTimer::singleShot(QuestionsDialog::waitIntervalMs, this, &QuestionsDialog::newQuestion);
+        if(automaticNewQuestion){
+            QTimer::singleShot(QuestionsDialog::waitIntervalMs, this, &QuestionsDialog::newQuestion);
+
+        } else{
+            ui->pushButton->setText(" Nová otázka ");
+            ui->pushButton->setEnabled(true);
+            ui->pushButton_2->setEnabled(true);
+            ui->checkBox->setEnabled(true);
+        }
+
         return;
 
     } else{
@@ -1328,7 +1366,16 @@ void QuestionsDialog::on_answerC_clicked()
 
         QuestionsDialog::correct();
 
-        QTimer::singleShot(QuestionsDialog::waitIntervalMs, this, &QuestionsDialog::newQuestion);
+        if(automaticNewQuestion){
+            QTimer::singleShot(QuestionsDialog::waitIntervalMs, this, &QuestionsDialog::newQuestion);
+
+        } else{
+            ui->pushButton->setText(" Nová otázka ");
+            ui->pushButton->setEnabled(true);
+            ui->pushButton_2->setEnabled(true);
+            ui->checkBox->setEnabled(true);
+        }
+
         return;
 
     } else{
@@ -1367,7 +1414,12 @@ void QuestionsDialog::on_pushButton_clicked()
         ui->label_3->setStyleSheet("background-color: green");
     }
 
-    QTimer::singleShot(QuestionsDialog::waitIntervalMs * 3, this, &QuestionsDialog::newQuestion);
+    if(ui->pushButton->text().contains("Nová otázka")){
+        QuestionsDialog::newQuestion();
+
+    } else{
+        QTimer::singleShot(QuestionsDialog::waitIntervalMs * 3, this, &QuestionsDialog::newQuestion);
+    }
 }
 
 void QuestionsDialog::on_pushButton_2_clicked()
@@ -1378,3 +1430,11 @@ void QuestionsDialog::on_pushButton_2_clicked()
 
     this->close();
 }
+
+void QuestionsDialog::on_checkBox_clicked()
+{
+    // automatic new question setting
+
+    QuestionsDialog::automaticNewQuestion = ui->checkBox->isChecked();
+}
+

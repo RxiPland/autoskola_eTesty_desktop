@@ -40,6 +40,8 @@ private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
 
+    void on_checkBox_clicked();
+
 private:
     Ui::QuestionsDialog *ui;
     QNetworkAccessManager manager;
@@ -61,6 +63,8 @@ private:
     int height = 0;
     QString questionImagePath;
     QString correctLetter;
+
+    bool automaticNewQuestion = true;
 
     QByteArray userAgent;
 
