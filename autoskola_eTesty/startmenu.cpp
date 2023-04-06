@@ -95,6 +95,7 @@ void StartMenu::on_pushButton_2_clicked()
     QMessageBox msgBox;
     msgBox.setWindowTitle("Statistiky");
     msgBox.setIconPixmap(QPixmap(":/icons/etesty_logo.jpg"));
+    msgBox.setWindowIcon(this->windowIcon());
     msgBox.setText(statsText);
     QAbstractButton* pButtonReset = msgBox.addButton(" Reset ", QMessageBox::NoRole);
     msgBox.addButton(" Ok ", QMessageBox::NoRole);
@@ -143,6 +144,19 @@ void StartMenu::on_pushButton_4_clicked()
     arguments.append("/C");
     arguments.append("start");
     arguments.append("https://www.autoskola-testy.cz");
+
+    QProcess::startDetached("cmd.exe", arguments);
+}
+
+
+void StartMenu::on_pushButton_5_clicked()
+{
+    // open website (github.com)
+
+    QStringList arguments;
+    arguments.append("/C");
+    arguments.append("start");
+    arguments.append("https://github.com/RxiPland/autoskola_eTesty_desktop");
 
     QProcess::startDetached("cmd.exe", arguments);
 }
