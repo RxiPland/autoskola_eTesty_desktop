@@ -2,6 +2,7 @@
 #include "startmenu.h"
 #include "./ui_startmenu.h"
 #include "questionsdialog.h"
+#include "settingsdialog.h"
 
 #include <QThread>
 #include <QFile>
@@ -24,30 +25,24 @@ StartMenu::~StartMenu()
     delete ui;
 }
 
-
-
-void StartMenu::on_pushButton_3_clicked()
+void StartMenu::on_pushButton_clicked()
 {
-    // reset stats
+    // start questions window
 
-    QDir directory(QDir::currentPath());
-    directory.mkdir("./Data");
+    QuestionsDialog qd;
+    this->hide();
 
-    QFile statsFile(QDir::currentPath() + "/Data/stats.json");
+    qd.loadSettings();
+    qd.newQuestion();
 
-    QJsonObject newJson;
-    newJson["correct"] = 0;
-    newJson["wrong"] = 0;
-    newJson["question_average_time"] = 0;
+    qd.exec();
 
-    QJsonDocument docData(newJson);
+    if(qd.exitApp){
+        this->close();
+        return;
+    }
 
-    statsFile.open(QIODevice::WriteOnly | QIODevice::Text);
-    statsFile.write(docData.toJson());
-    statsFile.close();
-
-
-    QMessageBox::information(this, "Oznámení", "Statistiky byly úspěšně vyresetovány");
+    this->show();
 }
 
 
@@ -84,34 +79,57 @@ void StartMenu::on_pushButton_2_clicked()
                 statsText += "Počet špatně: " + QString::number(wrongNum) + "\t\t\n\n";
 
                 if(questionsCount > 0){
-                    statsText += QString("Úspěšnost: %1").arg((qint64)((float)correctNum/((float)questionsCount/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionsCount)) + "\t\t\n";
-                    statsText += QString("Průměrný čas jedné otázky: %1").arg(averageTime) + "s" + "\t\t\n";
+
+                    if(correctNum == questionsCount){
+                        statsText += "Úspěšnost: 100% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionsCount)) + "\t\t\n";
+                    } else{
+                        statsText += QString("Úspěšnost: %1").arg((qint64)((float)correctNum/((float)questionsCount/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionsCount)) + "\t\t\n";
+                    }
+                    statsText += QString("Průměrný čas jedné otázky: %1").arg(averageTime) + "s" + "\t\t";
                 }
             }
         }
     }
 
-    QMessageBox::information(this, "Statistiky", statsText);
-}
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Statistiky");
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setText(statsText);
+    QAbstractButton* pButtonReset = msgBox.addButton(" Reset ", QMessageBox::NoRole);
+    msgBox.addButton(" Ok ", QMessageBox::NoRole);
 
+    pButtonReset->setFocusPolicy(Qt::FocusPolicy::NoFocus);
+    msgBox.exec();
 
-void StartMenu::on_pushButton_clicked()
-{
-    // start questions window
+    if (msgBox.clickedButton() == pButtonReset){
 
-    QuestionsDialog qd;
-    this->hide();
+        QDir directory(QDir::currentPath());
+        directory.mkdir("./Data");
 
-    qd.loadSettings();
-    qd.newQuestion();
+        QFile statsFile(QDir::currentPath() + "/Data/stats.json");
 
-    qd.exec();
+        QJsonObject newJson;
+        newJson["correct"] = 0;
+        newJson["wrong"] = 0;
+        newJson["question_average_time"] = 0;
 
-    if(qd.exitApp){
-        this->close();
+        QJsonDocument docData(newJson);
+
+        statsFile.open(QIODevice::WriteOnly | QIODevice::Text);
+        statsFile.write(docData.toJson());
+        statsFile.close();
+
+        QMessageBox::information(this, "Oznámení", "Statistiky byly úspěšně vyresetovány");
+
         return;
     }
-
-    this->show();
 }
 
+
+void StartMenu::on_pushButton_3_clicked()
+{
+    // settings
+
+    SettingsDialog sd;
+    sd.exec();
+}
