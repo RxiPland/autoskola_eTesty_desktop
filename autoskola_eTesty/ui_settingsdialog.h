@@ -23,7 +23,7 @@ public:
     {
         if (SettingsDialog->objectName().isEmpty())
             SettingsDialog->setObjectName("SettingsDialog");
-        SettingsDialog->resize(240, 320);
+        SettingsDialog->resize(323, 229);
 
         retranslateUi(SettingsDialog);
 
