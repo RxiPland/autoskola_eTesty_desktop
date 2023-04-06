@@ -24,9 +24,9 @@ public:
     {
         if (SettingsDialog->objectName().isEmpty())
             SettingsDialog->setObjectName("SettingsDialog");
-        SettingsDialog->resize(323, 229);
+        SettingsDialog->resize(336, 229);
         QIcon icon;
-        icon.addFile(QString::fromUtf8(":/icons/etesty_logo.jpg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/icons/settings.ico"), QSize(), QIcon::Normal, QIcon::Off);
         SettingsDialog->setWindowIcon(icon);
 
         retranslateUi(SettingsDialog);
