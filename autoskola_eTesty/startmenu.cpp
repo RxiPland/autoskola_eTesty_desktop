@@ -75,7 +75,11 @@ void StartMenu::on_pushButton_clicked()
 
     qd.exec();
 
+    if(qd.exitApp){
+        this->close();
+        return;
+    }
 
-    this->close();
+    this->show();
 }
 

@@ -15,6 +15,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPlainTextEdit>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include "clickablelabel.h"
@@ -54,7 +55,12 @@ public:
     QSpacerItem *horizontalSpacer_6;
     QHBoxLayout *horizontalLayout_3;
     QLabel *label_4;
+    QSpacerItem *horizontalSpacer_9;
+    QLabel *label_5;
     QSpacerItem *horizontalSpacer_7;
+    QPushButton *pushButton_2;
+    QPushButton *pushButton;
+    QSpacerItem *horizontalSpacer_8;
 
     void setupUi(QDialog *QuestionsDialog)
     {
@@ -264,9 +270,34 @@ public:
 
         horizontalLayout_3->addWidget(label_4);
 
+        horizontalSpacer_9 = new QSpacerItem(10, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_3->addItem(horizontalSpacer_9);
+
+        label_5 = new QLabel(QuestionsDialog);
+        label_5->setObjectName("label_5");
+
+        horizontalLayout_3->addWidget(label_5);
+
         horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_3->addItem(horizontalSpacer_7);
+
+        pushButton_2 = new QPushButton(QuestionsDialog);
+        pushButton_2->setObjectName("pushButton_2");
+        pushButton_2->setFocusPolicy(Qt::NoFocus);
+
+        horizontalLayout_3->addWidget(pushButton_2);
+
+        pushButton = new QPushButton(QuestionsDialog);
+        pushButton->setObjectName("pushButton");
+        pushButton->setFocusPolicy(Qt::NoFocus);
+
+        horizontalLayout_3->addWidget(pushButton);
+
+        horizontalSpacer_8 = new QSpacerItem(10, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_3->addItem(horizontalSpacer_8);
 
 
         verticalLayout_6->addLayout(horizontalLayout_3);
@@ -285,7 +316,10 @@ public:
         answerA->setPlainText(QString());
         label_2->setText(QCoreApplication::translate("QuestionsDialog", "Odpov\304\233\304\217 B:", nullptr));
         label_3->setText(QCoreApplication::translate("QuestionsDialog", "Odpov\304\233\304\217 C:", nullptr));
-        label_4->setText(QCoreApplication::translate("QuestionsDialog", "\304\214as", nullptr));
+        label_4->setText(QCoreApplication::translate("QuestionsDialog", "00:00:00", nullptr));
+        label_5->setText(QCoreApplication::translate("QuestionsDialog", "\303\232sp\304\233\305\241nost: 100%", nullptr));
+        pushButton_2->setText(QCoreApplication::translate("QuestionsDialog", "Odej\303\255t", nullptr));
+        pushButton->setText(QCoreApplication::translate("QuestionsDialog", "P\305\231esko\304\215it", nullptr));
     } // retranslateUi
 
 };
