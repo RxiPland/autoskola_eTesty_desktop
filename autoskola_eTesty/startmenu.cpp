@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QProcess>
 
 
 StartMenu::StartMenu(QWidget *parent)
@@ -93,7 +94,7 @@ void StartMenu::on_pushButton_2_clicked()
 
     QMessageBox msgBox;
     msgBox.setWindowTitle("Statistiky");
-    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setIconPixmap(QPixmap(":/icons/etesty_logo.jpg"));
     msgBox.setText(statsText);
     QAbstractButton* pButtonReset = msgBox.addButton(" Reset ", QMessageBox::NoRole);
     msgBox.addButton(" Ok ", QMessageBox::NoRole);
@@ -133,3 +134,16 @@ void StartMenu::on_pushButton_3_clicked()
     SettingsDialog sd;
     sd.exec();
 }
+
+void StartMenu::on_pushButton_4_clicked()
+{
+    // open website (autoskola-testy.cz)
+
+    QStringList arguments;
+    arguments.append("/C");
+    arguments.append("start");
+    arguments.append("https://www.autoskola-testy.cz");
+
+    QProcess::startDetached("cmd.exe", arguments);
+}
+
