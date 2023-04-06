@@ -48,7 +48,7 @@ public:
     {
         if (StartMenu->objectName().isEmpty())
             StartMenu->setObjectName("StartMenu");
-        StartMenu->resize(304, 303);
+        StartMenu->resize(315, 303);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/icons/etesty_logo.jpg"), QSize(), QIcon::Normal, QIcon::Off);
         StartMenu->setWindowIcon(icon);

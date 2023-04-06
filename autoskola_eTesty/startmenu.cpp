@@ -13,12 +13,15 @@
 #include <QProcess>
 
 
-StartMenu::StartMenu(QWidget *parent)
+StartMenu::StartMenu(QWidget *parent, QString appVersion)
     : QMainWindow(parent)
     , ui(new Ui::StartMenu)
 {
     ui->setupUi(this);
     this->setWindowFlags(windowFlags() &(~Qt::WindowMaximizeButtonHint));
+
+    this->setWindowTitle(this->windowTitle() + " | " + appVersion);
+    StartMenu::appVersion = appVersion;
 }
 
 StartMenu::~StartMenu()
@@ -133,6 +136,7 @@ void StartMenu::on_pushButton_3_clicked()
     // settings dialog
 
     SettingsDialog sd;
+    sd.loadSettings();
     sd.exec();
 }
 

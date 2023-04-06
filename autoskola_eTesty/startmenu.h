@@ -16,8 +16,10 @@ class StartMenu : public QMainWindow
     Q_OBJECT
 
 public:
-    StartMenu(QWidget *parent = nullptr);
+    StartMenu(QWidget *parent = nullptr, QString appVersion = "");
     ~StartMenu();
+
+    QString appVersion;
 
 private slots:
     void on_pushButton_clicked();
