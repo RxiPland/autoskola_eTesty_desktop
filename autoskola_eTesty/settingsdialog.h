@@ -2,6 +2,7 @@
 #define SETTINGSDIALOG_H
 
 #include <QDialog>
+#include <QNetworkAccessManager>
 
 namespace Ui {
 class SettingsDialog;
@@ -15,8 +16,21 @@ public:
     explicit SettingsDialog(QWidget *parent = nullptr);
     ~SettingsDialog();
 
+    void loadSettings();
+
+    QString appVersion;
+    QByteArray userAgent;
+
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::SettingsDialog *ui;
+    QNetworkAccessManager manager;
+
+    void closeEvent(QCloseEvent *bar = nullptr);
+    void disableWidgets(bool disable=true);
+
 };
 
 #endif // SETTINGSDIALOG_H
