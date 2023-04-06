@@ -64,6 +64,8 @@ private:
     QString questionImagePath;
     QString correctLetter;
 
+    int previousQuestionTopic = 0;
+
     bool automaticNewQuestion = true;
 
     QByteArray userAgent;
