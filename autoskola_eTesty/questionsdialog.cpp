@@ -82,7 +82,7 @@ void QuestionsDialog::hideWidgets(bool hide)
 
     ui->checkBox->setHidden(hide);
 
-    if(questionCount > 0){
+    if((correctNum + wrongNum) > 0){
         ui->label_5->setHidden(hide);
     }
 
@@ -123,11 +123,11 @@ void QuestionsDialog::correct()
 
     QuestionsDialog::correctNum += 1;
 
-    if(correctNum == questionCount){
-        ui->label_5->setText("Úspěšnost: 100% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
+    if(correctNum == (correctNum + wrongNum)){
+        ui->label_5->setText("Úspěšnost: 100% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(correctNum + wrongNum)));
 
     } else{
-        ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/((float)QuestionsDialog::questionCount/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
+        ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/(((float)(correctNum + wrongNum))/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(correctNum + wrongNum)));
     }
     ui->label_5->setHidden(false);
 
@@ -180,14 +180,14 @@ void QuestionsDialog::wrong()
         QuestionsDialog::wrongNum += 1;
 
         if(correctNum == 0){
-            ui->label_5->setText(QString("Úspěšnost: 0% ") + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
+            ui->label_5->setText(QString("Úspěšnost: 0% ") + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(correctNum + wrongNum)));
         } else{
 
-            if(correctNum == questionCount){
-                ui->label_5->setText("Úspěšnost: 100% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
+            if(correctNum == (correctNum + wrongNum)){
+                ui->label_5->setText("Úspěšnost: 100% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(correctNum + wrongNum)));
 
             } else{
-                ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/((float)QuestionsDialog::questionCount/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
+                ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/(((float)(correctNum + wrongNum))/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(correctNum + wrongNum)));
             }
         }
         ui->label_5->setHidden(false);
@@ -877,7 +877,7 @@ void QuestionsDialog::newQuestion()
     elapsedTime.restart();
     ui->label_4->setHidden(false);
 
-    if(questionCount > 1){
+    if((correctNum + wrongNum) > 1){
         ui->label_5->setHidden(false);
     }
 
@@ -899,6 +899,15 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     QJsonObject question;
 
     int randomTopicId = QRandomGenerator::global()->bounded(1,8);
+
+    while(randomTopicId == QuestionsDialog::previousQuestionTopic){
+        // generate new topic number
+
+        randomTopicId = QRandomGenerator::global()->bounded(1,8);
+    }
+
+    QuestionsDialog::previousQuestionTopic = randomTopicId;
+
 
     if(randomTopicId < 1 || randomTopicId > 7){
         // should never happen
