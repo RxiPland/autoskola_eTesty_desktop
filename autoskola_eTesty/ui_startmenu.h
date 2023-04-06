@@ -27,16 +27,14 @@ public:
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout_2;
     QGridLayout *gridLayout;
-    QSpacerItem *verticalSpacer_2;
-    QPushButton *pushButton_4;
-    QSpacerItem *horizontalSpacer_2;
-    QPushButton *pushButton_3;
     QPushButton *pushButton_2;
-    QSpacerItem *verticalSpacer_4;
-    QSpacerItem *horizontalSpacer;
-    QPushButton *pushButton;
     QSpacerItem *verticalSpacer;
+    QSpacerItem *horizontalSpacer;
+    QSpacerItem *horizontalSpacer_2;
+    QSpacerItem *verticalSpacer_2;
     QSpacerItem *verticalSpacer_3;
+    QPushButton *pushButton;
+    QPushButton *pushButton_3;
     QSpacerItem *verticalSpacer_5;
     QStatusBar *statusBar;
 
@@ -44,7 +42,7 @@ public:
     {
         if (StartMenu->objectName().isEmpty())
             StartMenu->setObjectName("StartMenu");
-        StartMenu->resize(304, 296);
+        StartMenu->resize(304, 266);
         centralwidget = new QWidget(StartMenu);
         centralwidget->setObjectName("centralwidget");
         horizontalLayout_2 = new QHBoxLayout(centralwidget);
@@ -52,38 +50,31 @@ public:
         gridLayout = new QGridLayout();
         gridLayout->setObjectName("gridLayout");
         gridLayout->setContentsMargins(-1, 0, -1, -1);
-        verticalSpacer_2 = new QSpacerItem(0, 38, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding);
-
-        gridLayout->addItem(verticalSpacer_2, 0, 1, 1, 1);
-
-        pushButton_4 = new QPushButton(centralwidget);
-        pushButton_4->setObjectName("pushButton_4");
-
-        gridLayout->addWidget(pushButton_4, 7, 1, 1, 1);
-
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer_2, 1, 2, 1, 1);
-
-        pushButton_3 = new QPushButton(centralwidget);
-        pushButton_3->setObjectName("pushButton_3");
-        pushButton_3->setMinimumSize(QSize(0, 28));
-
-        gridLayout->addWidget(pushButton_3, 5, 1, 1, 1);
-
         pushButton_2 = new QPushButton(centralwidget);
         pushButton_2->setObjectName("pushButton_2");
         pushButton_2->setMinimumSize(QSize(0, 28));
 
         gridLayout->addWidget(pushButton_2, 3, 1, 1, 1);
 
-        verticalSpacer_4 = new QSpacerItem(20, 5, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer = new QSpacerItem(20, 25, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding);
 
-        gridLayout->addItem(verticalSpacer_4, 4, 1, 1, 1);
+        gridLayout->addItem(verticalSpacer, 2, 1, 1, 1);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         gridLayout->addItem(horizontalSpacer, 1, 0, 1, 1);
+
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout->addItem(horizontalSpacer_2, 1, 2, 1, 1);
+
+        verticalSpacer_2 = new QSpacerItem(0, 38, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding);
+
+        gridLayout->addItem(verticalSpacer_2, 0, 1, 1, 1);
+
+        verticalSpacer_3 = new QSpacerItem(20, 25, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding);
+
+        gridLayout->addItem(verticalSpacer_3, 6, 1, 1, 1);
 
         pushButton = new QPushButton(centralwidget);
         pushButton->setObjectName("pushButton");
@@ -94,17 +85,15 @@ public:
 
         gridLayout->addWidget(pushButton, 1, 1, 1, 1);
 
-        verticalSpacer = new QSpacerItem(20, 110, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        pushButton_3 = new QPushButton(centralwidget);
+        pushButton_3->setObjectName("pushButton_3");
+        pushButton_3->setMinimumSize(QSize(0, 28));
 
-        gridLayout->addItem(verticalSpacer, 2, 1, 1, 1);
+        gridLayout->addWidget(pushButton_3, 5, 1, 1, 1);
 
-        verticalSpacer_3 = new QSpacerItem(20, 25, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding);
+        verticalSpacer_5 = new QSpacerItem(15, 10, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-        gridLayout->addItem(verticalSpacer_3, 8, 1, 1, 1);
-
-        verticalSpacer_5 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        gridLayout->addItem(verticalSpacer_5, 6, 1, 1, 1);
+        gridLayout->addItem(verticalSpacer_5, 4, 1, 1, 1);
 
 
         horizontalLayout_2->addLayout(gridLayout);
@@ -122,10 +111,9 @@ public:
     void retranslateUi(QMainWindow *StartMenu)
     {
         StartMenu->setWindowTitle(QCoreApplication::translate("StartMenu", "autoskola-eTesty", nullptr));
-        pushButton_4->setText(QCoreApplication::translate("StartMenu", "Nastaven\303\255", nullptr));
-        pushButton_3->setText(QCoreApplication::translate("StartMenu", "Smazat statistiky", nullptr));
         pushButton_2->setText(QCoreApplication::translate("StartMenu", "Zobrazit statistiky", nullptr));
         pushButton->setText(QCoreApplication::translate("StartMenu", "Spustit ot\303\241zky", nullptr));
+        pushButton_3->setText(QCoreApplication::translate("StartMenu", "Nastaven\303\255", nullptr));
     } // retranslateUi
 
 };
