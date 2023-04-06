@@ -10,6 +10,7 @@
 #define UI_SETTINGSDIALOG_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
 
@@ -24,6 +25,9 @@ public:
         if (SettingsDialog->objectName().isEmpty())
             SettingsDialog->setObjectName("SettingsDialog");
         SettingsDialog->resize(323, 229);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/icons/etesty_logo.jpg"), QSize(), QIcon::Normal, QIcon::Off);
+        SettingsDialog->setWindowIcon(icon);
 
         retranslateUi(SettingsDialog);
 

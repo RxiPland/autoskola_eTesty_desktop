@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>autoskola-eTesty</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/icons/etesty_logo.jpg</normaloff>:/icons/etesty_logo.jpg</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -616,6 +620,8 @@
    </slots>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

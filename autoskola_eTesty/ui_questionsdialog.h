@@ -10,6 +10,7 @@
 #define UI_QUESTIONSDIALOG_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
@@ -70,6 +71,9 @@ public:
         if (QuestionsDialog->objectName().isEmpty())
             QuestionsDialog->setObjectName("QuestionsDialog");
         QuestionsDialog->resize(854, 577);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/icons/etesty_logo.jpg"), QSize(), QIcon::Normal, QIcon::Off);
+        QuestionsDialog->setWindowIcon(icon);
         verticalLayout_6 = new QVBoxLayout(QuestionsDialog);
         verticalLayout_6->setObjectName("verticalLayout_6");
         horizontalLayout_2 = new QHBoxLayout();
