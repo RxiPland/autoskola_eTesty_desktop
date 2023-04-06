@@ -1419,8 +1419,14 @@ void QuestionsDialog::on_pushButton_clicked()
     if(ui->pushButton->text().contains("Nová otázka")){
         QuestionsDialog::newQuestion();
 
-    } else{
+    } else if (ui->checkBox->isChecked()){
         QTimer::singleShot(QuestionsDialog::waitIntervalMs * 3, this, &QuestionsDialog::newQuestion);
+
+    } else{
+        ui->pushButton->setText(" Nová otázka ");
+        ui->pushButton->setEnabled(true);
+        ui->pushButton_2->setEnabled(true);
+        ui->checkBox->setEnabled(true);
     }
 }
 
