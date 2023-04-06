@@ -13,8 +13,8 @@
 <br></br>
 
 # Odkazy ke stažení
-- [Stáhnout instalačku](https://github.com/RxiPland/y2mate_desktop/releases/download/v1.0.0/autoskola-eTesty_setup.exe) exe (win64) `md5: bda007224f78aa1e6da1855aa3dc240c`
-- [Stáhnout zip](https://github.com/RxiPland/y2mate_desktop/releases/download/v1.0.0/autoskola-eTesty.zip) (win64) `md5: a66b19f8ac335b9ddef5c4042da87d22`
+- [Stáhnout instalačku](https://github.com/RxiPland/autoskola_eTesty_desktop/releases/download/v1.0.0/autoskola-eTesty_setup.exe) exe (win64) `md5: bda007224f78aa1e6da1855aa3dc240c`
+- [Stáhnout zip](https://github.com/RxiPland/autoskola_eTesty_desktop/releases/download/v1.0.0/autoskola-eTesty.zip) (win64) `md5: a66b19f8ac335b9ddef5c4042da87d22`
 
 <br></br>
 # Náhled
