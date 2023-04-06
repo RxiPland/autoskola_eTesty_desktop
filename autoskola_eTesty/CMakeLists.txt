@@ -28,6 +28,10 @@ set(PROJECT_SOURCES
         questionsdialog.h
         questionsdialog.cpp
         questionsdialog.ui
+
+        settingsdialog.h
+        settingsdialog.cpp
+        settingsdialog.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
