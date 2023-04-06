@@ -128,7 +128,7 @@ void StartMenu::on_pushButton_2_clicked()
 
 void StartMenu::on_pushButton_3_clicked()
 {
-    // settings
+    // settings dialog
 
     SettingsDialog sd;
     sd.exec();
