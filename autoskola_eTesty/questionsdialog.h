@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QNetworkAccessManager>
+#include <QElapsedTimer>
 
 namespace Ui {
 class QuestionsDialog;
@@ -27,6 +28,8 @@ public:
 
     bool exitApp = true;
 
+    void updateTimeLabel();
+
 private slots:
     void on_answerA_clicked();
     void on_answerB_clicked();
@@ -48,6 +51,8 @@ private:
     void correct();
     void wrong();
     bool wrongLock = false;
+
+    QElapsedTimer elapsedTime;
 
     QJsonObject getRandomQuestion();
     QString downloadFile(QString url, QString topicId, QString fileOrder);

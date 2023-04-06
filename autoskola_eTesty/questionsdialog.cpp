@@ -14,6 +14,7 @@
 #include <QTimer>
 #include <QRandomGenerator>
 #include <QRegularExpression>
+#include <QElapsedTimer>
 
 
 QuestionsDialog::QuestionsDialog(QWidget *parent) :
@@ -30,6 +31,12 @@ QuestionsDialog::QuestionsDialog(QWidget *parent) :
     height = ui->question_text->height()+(width/8);
 
     ui->question_image->setFixedSize(width, height);
+
+    elapsedTime.restart();
+
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &QuestionsDialog::updateTimeLabel);
+    timer->start(100);
 }
 
 
@@ -48,6 +55,14 @@ void QuestionsDialog::closeEvent(QCloseEvent *bar)
     if(bar != nullptr){
         bar->accept();
     }
+}
+
+void QuestionsDialog::updateTimeLabel()
+{
+    QTime time(0,0,0,0);
+    time = time.addMSecs(elapsedTime.elapsed());
+
+    ui->label_4->setText(time.toString("hh:mm:ss"));
 }
 
 void QuestionsDialog::hideWidgets(bool hide)
@@ -238,6 +253,8 @@ void QuestionsDialog::loadSettings()
 void QuestionsDialog::newQuestion()
 {
     // set new question
+
+    ui->label_4->clear();
 
     QJsonObject questionData = QuestionsDialog::getRandomQuestion();
 
@@ -828,6 +845,7 @@ void QuestionsDialog::newQuestion()
         return;
     }
 
+    elapsedTime.restart();
     ui->label_4->setHidden(false);
 
     if(questionCount > 1){
@@ -838,6 +856,7 @@ void QuestionsDialog::newQuestion()
     ui->pushButton_2->setHidden(false);
 
     ui->question_image->setAlignment(Qt::AlignCenter);
+
 
     QuestionsDialog::disableWidgets(false);
 }
