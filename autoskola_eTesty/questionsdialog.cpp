@@ -62,7 +62,9 @@ void QuestionsDialog::updateTimeLabel()
     QTime time(0,0,0,0);
     time = time.addMSecs(elapsedTime.elapsed());
 
-    ui->label_4->setText(time.toString("hh:mm:ss"));
+    if(!ui->pushButton->text().contains("Nová otázka")){
+        ui->label_4->setText(time.toString("hh:mm:ss"));
+    }
 }
 
 void QuestionsDialog::hideWidgets(bool hide)
