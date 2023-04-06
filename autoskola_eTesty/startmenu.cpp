@@ -35,18 +35,17 @@ void StartMenu::on_pushButton_3_clicked()
 
     QFile statsFile(QDir::currentPath() + "/Data/stats.json");
 
-    if(statsFile.exists()){
+    QJsonObject newJson;
+    newJson["correct"] = 0;
+    newJson["wrong"] = 0;
+    newJson["question_average_time"] = 0;
 
-        QJsonObject newJson;
-        newJson["correct"] = 0;
-        newJson["wrong"] = 0;
+    QJsonDocument docData(newJson);
 
-        QJsonDocument docData(newJson);
+    statsFile.open(QIODevice::WriteOnly | QIODevice::Text);
+    statsFile.write(docData.toJson());
+    statsFile.close();
 
-        statsFile.open(QIODevice::WriteOnly | QIODevice::Text);
-        statsFile.write(docData.toJson());
-        statsFile.close();
-    }
 
     QMessageBox::information(this, "Oznámení", "Statistiky byly úspěšně vyresetovány");
 }
@@ -78,13 +77,15 @@ void StartMenu::on_pushButton_2_clicked()
                 qint64 correctNum = loadedJson["correct"].toInteger();
                 qint64 wrongNum = loadedJson["wrong"].toInteger();
                 qint64 questionsCount = correctNum + wrongNum;
+                qint64 averageTime = loadedJson["question_average_time"].toInteger();
 
                 statsText = "Celkem otázek: " + QString::number(questionsCount) + "\t\t\n\n";
                 statsText += "Počet správně: " + QString::number(correctNum) + "\t\t\n";
                 statsText += "Počet špatně: " + QString::number(wrongNum) + "\t\t\n\n";
 
                 if(questionsCount > 0){
-                    statsText += QString("Úspěšnost: %1").arg((qint64)((float)correctNum/((float)questionsCount/100))) + "%";
+                    statsText += QString("Úspěšnost: %1").arg((qint64)((float)correctNum/((float)questionsCount/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionsCount)) + "\t\t\n";
+                    statsText += QString("Průměrný čas jedné otázky: %1").arg(averageTime) + "s" + "\t\t\n";
                 }
             }
         }

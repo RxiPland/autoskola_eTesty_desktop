@@ -63,6 +63,7 @@ void checkFilesIntegrity(){
         QJsonObject newJson;
         newJson["correct"] = 0;
         newJson["wrong"] = 0;
+        newJson["question_average_time"] = 0;
 
         QJsonDocument docData(newJson);
 

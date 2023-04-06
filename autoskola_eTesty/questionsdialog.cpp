@@ -116,7 +116,7 @@ void QuestionsDialog::correct()
     }
 
     QuestionsDialog::correctNum += 1;
-    ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/((float)QuestionsDialog::questionCount/100))) + "%");
+    ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/((float)QuestionsDialog::questionCount/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
     ui->label_5->setHidden(false);
 
     QFile statsFile(QDir::currentPath() + "/Data/stats.json");
@@ -136,7 +136,15 @@ void QuestionsDialog::correct()
                 // everything OK
 
                 qint64 correctNumHistory = loadedJson["correct"].toInteger();
+                qint64 averageTime = loadedJson["question_average_time"].toInteger();
                 loadedJson["correct"] = correctNumHistory + 1;
+
+                if(averageTime == 0){
+                    loadedJson["question_average_time"] = elapsedTime.elapsed()/1000;
+
+                } else{
+                    loadedJson["question_average_time"] = (averageTime + (elapsedTime.elapsed()/1000))/2;
+                }
 
                 QJsonDocument docData(loadedJson);
 
@@ -160,9 +168,9 @@ void QuestionsDialog::wrong()
         QuestionsDialog::wrongNum += 1;
 
         if(correctNum == 0){
-            ui->label_5->setText(QString("Úspěšnost: 0%"));
+            ui->label_5->setText(QString("Úspěšnost: 0% ") + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
         } else{
-            ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/((float)QuestionsDialog::questionCount/100))) + "%");
+            ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/((float)QuestionsDialog::questionCount/100))) + "% " + QString("(%1 z %2)").arg(QString::number(correctNum), QString::number(questionCount)));
         }
         ui->label_5->setHidden(false);
 
