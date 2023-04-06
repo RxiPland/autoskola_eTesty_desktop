@@ -23,6 +23,7 @@ QuestionsDialog::QuestionsDialog(QWidget *parent) :
     ui->setupUi(this);
 
     ui->question_image->setAlignment(Qt::AlignCenter);
+    ui->label_5->setHidden(true);
 
     this->show();
     width = ui->question_text->width();
@@ -62,9 +63,16 @@ void QuestionsDialog::hideWidgets(bool hide)
     ui->label_3->setHidden(hide);
     ui->label_4->setHidden(hide);
 
+    if(questionCount > 0){
+        ui->label_5->setHidden(hide);
+    }
+
     ui->question_imageText->setHidden(hide);
     ui->question_text->setHidden(hide);
     ui->question_image->setHidden(hide);
+
+    ui->pushButton->setHidden(hide);
+    ui->pushButton_2->setHidden(hide);
 }
 
 void QuestionsDialog::disableWidgets(bool disable)
@@ -78,6 +86,101 @@ void QuestionsDialog::disableWidgets(bool disable)
     ui->question_imageText->setDisabled(disable);
     ui->question_text->setDisabled(disable);
     ui->question_image->setDisabled(disable);
+
+    ui->pushButton->setDisabled(disable);
+    ui->pushButton_2->setDisabled(disable);
+}
+
+void QuestionsDialog::correct()
+{
+    // increase correct number in stats file
+
+    if(wrongLock){
+        QuestionsDialog::wrongLock = false;
+        return;
+    }
+
+    QuestionsDialog::correctNum += 1;
+    ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/((float)QuestionsDialog::questionCount/100))) + "%");
+    ui->label_5->setHidden(false);
+
+    QFile statsFile(QDir::currentPath() + "/Data/stats.json");
+
+    if (statsFile.exists()){
+        statsFile.open(QIODevice::ReadOnly | QIODevice::Text);
+
+        QByteArray fileContent = statsFile.readAll();
+        statsFile.close();
+
+
+        if(!fileContent.isEmpty()){
+
+            QJsonObject loadedJson = QJsonDocument::fromJson(fileContent).object();
+
+            if(!loadedJson.isEmpty()){
+                // everything OK
+
+                qint64 correctNumHistory = loadedJson["correct"].toInteger();
+                loadedJson["correct"] = correctNumHistory + 1;
+
+                QJsonDocument docData(loadedJson);
+
+                statsFile.open(QIODevice::WriteOnly | QIODevice::Text);
+                statsFile.write(docData.toJson());
+                statsFile.close();
+            }
+        }
+
+    } else{
+        return;
+    }
+}
+
+void QuestionsDialog::wrong()
+{
+    // increase wrong number in stats file
+
+    if(!wrongLock){
+        QuestionsDialog::wrongLock = true;
+        QuestionsDialog::wrongNum += 1;
+
+        if(correctNum == 0){
+            ui->label_5->setText(QString("Úspěšnost: 0%"));
+        } else{
+            ui->label_5->setText(QString("Úspěšnost: %1").arg((qint64)((float)QuestionsDialog::correctNum/((float)QuestionsDialog::questionCount/100))) + "%");
+        }
+        ui->label_5->setHidden(false);
+
+
+        QFile statsFile(QDir::currentPath() + "/Data/stats.json");
+
+        if (statsFile.exists()){
+            statsFile.open(QIODevice::ReadOnly | QIODevice::Text);
+
+            QByteArray fileContent = statsFile.readAll();
+            statsFile.close();
+
+
+            if(!fileContent.isEmpty()){
+
+                QJsonObject loadedJson = QJsonDocument::fromJson(fileContent).object();
+
+                if(!loadedJson.isEmpty()){
+                    // everything OK
+
+                    qint64 wrongNumHistory = loadedJson["wrong"].toInteger();
+                    loadedJson["wrong"] = wrongNumHistory + 1;
+
+                    QJsonDocument docData(loadedJson);
+
+                    statsFile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    statsFile.write(docData.toJson());
+                    statsFile.close();
+                }
+            }
+        }
+    }
+
 }
 
 void QuestionsDialog::loadSettings()
@@ -117,7 +220,7 @@ void QuestionsDialog::loadSettings()
                 // everything OK
 
                 QuestionsDialog::userAgent = loadedJson["user_agent"].toString().toUtf8();
-                QuestionsDialog::waitIntervalMs = loadedJson["waiting_interval_miliseconds"].toInt();
+                QuestionsDialog::waitIntervalMs = loadedJson["waiting_interval_miliseconds"].toInteger();
             }
         }
 
@@ -726,6 +829,14 @@ void QuestionsDialog::newQuestion()
     }
 
     ui->label_4->setHidden(false);
+
+    if(questionCount > 1){
+        ui->label_5->setHidden(false);
+    }
+
+    ui->pushButton->setHidden(false);
+    ui->pushButton_2->setHidden(false);
+
     ui->question_image->setAlignment(Qt::AlignCenter);
 
     QuestionsDialog::disableWidgets(false);
@@ -891,10 +1002,22 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 
         iterator = rx.globalMatch(responseHtml);
 
-        match = iterator.next();
-        wrong1Text = match.captured(1).trimmed();
-        match = iterator.next();
-        wrong2Text = match.captured(1).trimmed();
+        if(iterator.hasNext()){
+            match = iterator.next();
+            wrong1Text = match.captured(1).trimmed();
+
+        } else{
+            wrong1Text = QString();
+        }
+
+
+        if(iterator.hasNext()){
+            match = iterator.next();
+            wrong2Text = match.captured(1).trimmed();
+
+        } else{
+            wrong2Text = QString();
+        }
 
 
     } else if(responseHtml.contains("/img/tripple")){
@@ -919,24 +1042,35 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         rx = QRegularExpression(patternWrong);
         iterator = rx.globalMatch(responseHtml);
 
-        match = iterator.next();
-        wrong1Media = match.captured(1).trimmed();
+        if(iterator.hasNext()){
+            match = iterator.next();
+            wrong1Media = match.captured(1).trimmed();
 
-        if(!wrong1Media.isEmpty()){
-            wrong1Media.replace("<img src=\"", "");
-            wrong1Media.replace("\">", "");
+            if(!wrong1Media.isEmpty()){
+                wrong1Media.replace("<img src=\"", "");
+                wrong1Media.replace("\">", "");
 
-            wrong1Media = "https://www.autoskola-testy.cz" + wrong1Media;
+                wrong1Media = "https://www.autoskola-testy.cz" + wrong1Media;
+            }
+
+        } else{
+            wrong1Media = QString();
         }
 
-        match = iterator.next();
-        wrong2Media = match.captured(1).trimmed();
 
-        if(!wrong2Media.isEmpty()){
-            wrong2Media.replace("<img src=\"", "");
-            wrong2Media.replace("\">", "");
+        if(iterator.hasNext()){
+            match = iterator.next();
+            wrong2Media = match.captured(1).trimmed();
 
-            wrong2Media = "https://www.autoskola-testy.cz" + wrong2Media;
+            if(!wrong2Media.isEmpty()){
+                wrong2Media.replace("<img src=\"", "");
+                wrong2Media.replace("\">", "");
+
+                wrong2Media = "https://www.autoskola-testy.cz" + wrong2Media;
+            }
+
+        } else{
+            wrong2Media = QString();
         }
 
     } else{
@@ -955,10 +1089,22 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 
         iterator = rx.globalMatch(responseHtml);
 
-        match = iterator.next();
-        wrong1Text = match.captured(1).trimmed();
-        match = iterator.next();
-        wrong2Text = match.captured(1).trimmed();
+        if(iterator.hasNext()){
+            match = iterator.next();
+            wrong1Text = match.captured(1).trimmed();
+
+        } else{
+            wrong1Text = QString();
+        }
+
+
+        if(iterator.hasNext()){
+            match = iterator.next();
+            wrong2Text = match.captured(1).trimmed();
+
+        } else{
+            wrong2Text = QString();
+        }
 
     }
 
@@ -1043,7 +1189,6 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         }
     }
 
-
     QuestionsDialog::hideWidgets(false);
 
     replyGet->deleteLater();
@@ -1112,11 +1257,15 @@ void QuestionsDialog::on_answerA_clicked()
         QuestionsDialog::disableWidgets(true);
         ui->label->setStyleSheet("background-color: green");
 
+        QuestionsDialog::correct();
+
         QTimer::singleShot(QuestionsDialog::waitIntervalMs, this, &QuestionsDialog::newQuestion);
         return;
 
     } else{
         ui->label->setStyleSheet("background-color: red");
+
+        QuestionsDialog::wrong();
     }
 }
 
@@ -1129,11 +1278,15 @@ void QuestionsDialog::on_answerB_clicked()
         QuestionsDialog::disableWidgets(true);
         ui->label_2->setStyleSheet("background-color: green");
 
+        QuestionsDialog::correct();
+
         QTimer::singleShot(QuestionsDialog::waitIntervalMs, this, &QuestionsDialog::newQuestion);
         return;
 
     } else{
         ui->label_2->setStyleSheet("background-color: red");
+
+        QuestionsDialog::wrong();
     }
 }
 
@@ -1146,11 +1299,15 @@ void QuestionsDialog::on_answerC_clicked()
         QuestionsDialog::disableWidgets(true);
         ui->label_3->setStyleSheet("background-color: green");
 
+        QuestionsDialog::correct();
+
         QTimer::singleShot(QuestionsDialog::waitIntervalMs, this, &QuestionsDialog::newQuestion);
         return;
 
     } else{
         ui->label_3->setStyleSheet("background-color: red");
+
+        QuestionsDialog::wrong();
     }
 
 }
@@ -1165,4 +1322,32 @@ void QuestionsDialog::on_question_image_clicked()
 
     QProcess::startDetached("cmd", arguments);
 
+}
+
+void QuestionsDialog::on_pushButton_clicked()
+{
+    // skip question
+
+    QuestionsDialog::disableWidgets(true);
+
+    if(QuestionsDialog::correctLetter == "A"){
+        ui->label->setStyleSheet("background-color: green");
+
+    } else if(QuestionsDialog::correctLetter == "B"){
+        ui->label_2->setStyleSheet("background-color: green");
+
+    } else if(QuestionsDialog::correctLetter == "C"){
+        ui->label_3->setStyleSheet("background-color: green");
+    }
+
+    QTimer::singleShot(QuestionsDialog::waitIntervalMs * 3, this, &QuestionsDialog::newQuestion);
+}
+
+void QuestionsDialog::on_pushButton_2_clicked()
+{
+    // close window
+
+    QuestionsDialog::exitApp = false;
+
+    this->close();
 }

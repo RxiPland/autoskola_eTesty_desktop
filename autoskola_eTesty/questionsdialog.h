@@ -19,9 +19,13 @@ public:
     void newQuestion();
     void loadSettings();
 
-    qint64 questionCount = 0;
+    qint64 waitIntervalMs = 0;
 
-    int waitIntervalMs = 1000;
+    qint64 questionCount = 0;
+    qint64 correctNum = 0;
+    qint64 wrongNum = 0;
+
+    bool exitApp = true;
 
 private slots:
     void on_answerA_clicked();
@@ -30,6 +34,9 @@ private slots:
 
     void on_question_image_clicked();
 
+    void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
+
 private:
     Ui::QuestionsDialog *ui;
     QNetworkAccessManager manager;
@@ -37,6 +44,10 @@ private:
     void closeEvent(QCloseEvent *bar = nullptr);
     void hideWidgets(bool hide = true);
     void disableWidgets(bool disable = true);
+
+    void correct();
+    void wrong();
+    bool wrongLock = false;
 
     QJsonObject getRandomQuestion();
     QString downloadFile(QString url, QString topicId, QString fileOrder);
