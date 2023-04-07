@@ -8,7 +8,7 @@
 #include <QJsonDocument>
 
 
-QString appVersion = "v1.0.0";
+QString appVersion = "v1.1.0";
 
 
 void checkFilesIntegrity(){
