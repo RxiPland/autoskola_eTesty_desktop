@@ -20,7 +20,7 @@
 
 <br></br>
 # Náhled
-![1](https://user-images.githubusercontent.com/82058894/230468122-767e8e01-e4fb-4a4b-b901-d73ec8af509c.png)
+![1](https://user-images.githubusercontent.com/82058894/230598346-34b85bfe-39e4-416d-aee5-5d50ff6c0f59.png)
 
 <br></br>
 # Poznámky
