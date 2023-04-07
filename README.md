@@ -21,6 +21,8 @@
 <br></br>
 # Náhled
 ![1](https://user-images.githubusercontent.com/82058894/230598346-34b85bfe-39e4-416d-aee5-5d50ff6c0f59.png)
+##
+![2](https://user-images.githubusercontent.com/82058894/230611738-cd896d25-bacf-48ea-90d5-75b9e1108439.png)
 
 <br></br>
 # Poznámky
