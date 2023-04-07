@@ -37,6 +37,7 @@ void StartMenu::on_pushButton_clicked()
     this->hide();
 
     qd.loadSettings();
+    qd.loadQuestions();
     qd.newQuestion();
 
     qd.exec();

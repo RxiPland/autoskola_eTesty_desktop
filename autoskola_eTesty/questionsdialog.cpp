@@ -67,6 +67,71 @@ void QuestionsDialog::updateTimeLabel()
     }
 }
 
+QStringList QuestionsDialog::getQuestionsUrls(int topicId)
+{
+    // get questions urls based on topic id (1-7)
+
+    QStringList foundUrls = QStringList();
+
+    if(topicId < 1 || topicId > 7){
+        // should never happen
+
+        QMessageBox::critical(this, "Nastala chyba", "Číslo okruhu musí být mezi 1 a 7!");
+
+        QuestionsDialog::hideWidgets(false);
+        return QStringList();
+    }
+
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(urlTopic + QString::number(topicId)));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "text/html; charset=utf-8");
+    request.setHeader(QNetworkRequest::UserAgentHeader, userAgent);
+    request.setRawHeader("Referer", "https://www.autoskola-testy.cz/prohlizeni_otazek.php");
+
+    QNetworkReply *replyGet = manager.get(request);
+
+    // wait for completed
+    QEventLoop loop;
+    connect(replyGet, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    QNetworkReply::NetworkError error = replyGet->error();
+
+    if(error != QNetworkReply::NoError){
+        // any error occured
+
+        QString errortext = replyGet->errorString();
+        QMessageBox::critical(this, "Nastala chyba", errortext);
+
+        QuestionsDialog::hideWidgets(false);
+        return QStringList();
+    }
+
+
+    QByteArray responseHtml = replyGet->readAll();
+
+    if(responseHtml.isEmpty()){
+        // no HTML returned
+
+        QMessageBox::critical(this, "Nastala chyba", "Server nic nevrátil!");
+
+        QuestionsDialog::hideWidgets(false);
+        return QStringList();
+    }
+
+
+    QRegularExpression rx = QRegularExpression(patternQuestionsUrls);
+    QRegularExpressionMatchIterator iterator = rx.globalMatch(responseHtml);
+
+    while (iterator.hasNext()){
+        QRegularExpressionMatch match = iterator.next();
+        foundUrls.append(match.captured(2).trimmed());
+    }
+
+    return foundUrls;
+}
+
 void QuestionsDialog::hideWidgets(bool hide)
 {
     // hide widgets
@@ -276,6 +341,17 @@ void QuestionsDialog::loadSettings()
         QMetaObject::invokeMethod(qApp, "quit", Qt::QueuedConnection);
         return;
     }
+}
+
+void QuestionsDialog::loadQuestions()
+{
+    // load all questions urls
+
+    int i;
+    for(i=1; i<8; i++){
+        QuestionsDialog::topicsQuestionsUrls.append(QuestionsDialog::getQuestionsUrls(i));
+    }
+
 }
 
 void QuestionsDialog::newQuestion()
@@ -900,15 +976,6 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 
     int randomTopicId = QRandomGenerator::global()->bounded(1,8);
 
-    while(randomTopicId == QuestionsDialog::previousQuestionTopic){
-        // generate new topic number
-
-        randomTopicId = QRandomGenerator::global()->bounded(1,8);
-    }
-
-    QuestionsDialog::previousQuestionTopic = randomTopicId;
-
-
     if(randomTopicId < 1 || randomTopicId > 7){
         // should never happen
 
@@ -918,11 +985,49 @@ QJsonObject QuestionsDialog::getRandomQuestion()
         return QJsonObject();
     }
 
+
+    while(randomTopicId == QuestionsDialog::previousQuestionTopic){
+        // generate new topic number
+
+        randomTopicId = QRandomGenerator::global()->bounded(1,8);
+    }
+
+    QuestionsDialog::previousQuestionTopic = randomTopicId;
+
+    int k = 0;
+
+    // if list of all questions will be empty
+    for(k=0; k<8 && topicsQuestionsUrls[k].isEmpty(); k++){
+
+        if(k == 7){
+            QMessageBox::critical(this, "Gratulace", "Všechny otázky byly vyčerpány! Restartujte program pro znovunačtení otázek.");
+
+            QuestionsDialog::hideWidgets(true);
+            return QJsonObject();
+
+        } else{
+            randomTopicId = k+1;
+        }
+    }
+
+
+    int randomIndex;
+    QString url;
+
+    randomIndex = QRandomGenerator::global()->bounded(0, topicsQuestionsUrls[randomTopicId-1].length());
+    url = "https://www.autoskola-testy.cz/prohlizeni_otazek.php" + topicsQuestionsUrls[randomTopicId-1][randomIndex];
+
+    if(url.isEmpty()){
+        QMessageBox::critical(this, "Nastala chyba", "Nepodařilo se získat URL adresu!");
+
+        QuestionsDialog::hideWidgets(false);
+        return QJsonObject();
+    }
+
     QNetworkRequest request;
-    request.setUrl(QUrl(url + QString::number(randomTopicId)));
+    request.setUrl(QUrl(url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "text/html; charset=utf-8");
     request.setHeader(QNetworkRequest::UserAgentHeader, userAgent);
-    request.setRawHeader("Referer", (url + QString::number(randomTopicId)).toUtf8());
 
     QNetworkReply *replyGet = manager.get(request);
 
@@ -1251,6 +1356,9 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 
     replyGet->deleteLater();
     responseHtml.clear();
+
+
+    QuestionsDialog::topicsQuestionsUrls[randomTopicId-1].removeAt(randomIndex);
 
     return question;
 }

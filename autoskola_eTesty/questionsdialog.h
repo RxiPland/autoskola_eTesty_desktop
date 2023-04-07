@@ -17,8 +17,9 @@ public:
     explicit QuestionsDialog(QWidget *parent = nullptr);
     ~QuestionsDialog();
 
-    void newQuestion();
     void loadSettings();
+    void loadQuestions();
+    void newQuestion();
 
     qint64 waitIntervalMs = 0;
 
@@ -29,6 +30,10 @@ public:
     bool exitApp = true;
 
     void updateTimeLabel();
+
+    QStringList getQuestionsUrls(int topicId);
+
+    QList<QStringList> topicsQuestionsUrls;
 
 private slots:
     void on_answerA_clicked();
@@ -70,7 +75,10 @@ private:
 
     QByteArray userAgent;
 
-    QString url = "https://www.autoskola-testy.cz/prohlizeni_otazek.php?random=";
+    QString urlRandom = "https://www.autoskola-testy.cz/prohlizeni_otazek.php?random=";
+    QString urlTopic = "https://www.autoskola-testy.cz/prohlizeni_otazek.php?okruh=";
+
+    QString patternQuestionsUrls = "kód (\\d+), <a href=\"(\\S+)\">";
 
     QString patternQuestionText = "\"question-text\".+>(.+)\n*\t*</p>";
     QString patternQuestionMedia = "src=\"(/img/[a-zA-z0-9/]+.[a-zA-Z0-9]+)";
