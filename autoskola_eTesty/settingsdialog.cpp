@@ -164,3 +164,9 @@ void SettingsDialog::on_pushButton_clicked()
 
     SettingsDialog::disableWidgets(false);
 }
+
+void SettingsDialog::on_checkBox_clicked()
+{
+    // check updates on start
+}
+

@@ -42,9 +42,9 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QLabel" name="label_2">
+        <widget class="QCheckBox" name="checkBox">
          <property name="text">
-          <string>Zatím žádné nastavení</string>
+          <string>Automaticky kontrolovat aktualizace</string>
          </property>
         </widget>
        </item>

@@ -112,6 +112,7 @@ void checkFilesIntegrity(){
         QJsonObject newJson;
         newJson["user_agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36";
         newJson["waiting_interval_miliseconds"] = 1000;
+        newJson["check_for_updates"] = true;
         newJson["app_version"] = appVersion;
 
         QJsonDocument docData(newJson);
@@ -129,7 +130,13 @@ int main(int argc, char *argv[])
     // check if json is not corrupted
     checkFilesIntegrity();
 
-    StartMenu w(nullptr, appVersion);
+    StartMenu w;
+    w.loadSettings();
     w.show();
+
+    if(w.checkForUpdates){
+        w.checkNewVersion();
+    }
+
     return a.exec();
 }

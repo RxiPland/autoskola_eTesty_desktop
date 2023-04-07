@@ -11,22 +11,135 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QProcess>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 
 
-StartMenu::StartMenu(QWidget *parent, QString appVersion)
+StartMenu::StartMenu(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::StartMenu)
 {
     ui->setupUi(this);
     this->setWindowFlags(windowFlags() &(~Qt::WindowMaximizeButtonHint));
-
-    this->setWindowTitle(this->windowTitle() + " | " + appVersion);
-    StartMenu::appVersion = appVersion;
 }
 
 StartMenu::~StartMenu()
 {
     delete ui;
+}
+
+void StartMenu::loadSettings()
+{
+    // load settings
+
+    QFile dataFile(QDir::currentPath() + "/Data/settings.json");
+
+    if (dataFile.exists()){
+        dataFile.open(QIODevice::ReadOnly | QIODevice::Text);
+
+        QByteArray fileContent = dataFile.readAll();
+        dataFile.close();
+
+        if(fileContent.isEmpty()){
+            // File is empty
+
+            QMessageBox::critical(this, "Chyba", "Soubor s nastavením je prázdný! Program bude restartován pro opravu.");
+
+            QProcess::startDetached(QApplication::applicationFilePath());
+            QMetaObject::invokeMethod(qApp, "quit", Qt::QueuedConnection);
+            return;
+
+        } else{
+            QJsonObject loadedJson = QJsonDocument::fromJson(fileContent).object();
+
+            if(loadedJson.isEmpty()){
+                // JSON is corrupted
+
+                QMessageBox::critical(this, "Chyba", "JSON v souboru s nastavením je poškozený! Program bude restartován pro opravu.");
+
+                QProcess::startDetached(QApplication::applicationFilePath());
+                QMetaObject::invokeMethod(qApp, "quit", Qt::QueuedConnection);
+                return;
+
+            } else{
+                // everything OK
+
+                StartMenu::userAgent = loadedJson["user_agent"].toString().toUtf8();
+                StartMenu::appVersion = loadedJson["app_version"].toString();
+                StartMenu::checkForUpdates = loadedJson["check_for_updates"].toBool();
+
+                this->setWindowTitle(this->windowTitle() + " | " + appVersion);
+            }
+        }
+
+    } else{
+        // file with settings not found
+
+        QMessageBox::critical(this, "Chyba", "Soubor s nastavením neexistuje! Program bude restartován pro opravu.");
+
+        QProcess::startDetached(QApplication::applicationFilePath());
+        QMetaObject::invokeMethod(qApp, "quit", Qt::QueuedConnection);
+        return;
+    }
+}
+
+void StartMenu::checkNewVersion()
+{
+
+    QNetworkRequest request;
+    request.setUrl(QUrl("https://api.github.com/repos/RxiPland/autoskola_eTesty_desktop/releases/latest"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json; charset=utf-8");
+    request.setHeader(QNetworkRequest::UserAgentHeader, userAgent);
+
+    QNetworkReply *replyGet = manager.get(request);
+
+    while (!replyGet->isFinished())
+    {
+        qApp->processEvents();
+    }
+
+    QNetworkReply::NetworkError error = replyGet->error();
+
+    if (error == QNetworkReply::HostNotFoundError || error == QNetworkReply::UnknownNetworkError){
+        // no internet connection available
+
+        return;
+
+    } else if (error != QNetworkReply::NoError){
+        // unknown error
+
+        return;
+    }
+
+    QByteArray response = replyGet->readAll();
+    replyGet->deleteLater();
+
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(response);
+    QJsonObject jsonObject = jsonResponse.object();
+
+    QString newestVersion = jsonObject["tag_name"].toString();
+
+    if (newestVersion != appVersion && newestVersion != ""){
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Aktualizace");
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setText("Je dostupná novější verze!\n\nVaše verze: " + appVersion  + "\nDostupná verze: " + newestVersion);
+        QAbstractButton* pButtonYes = msgBox.addButton("  Otevřít  ", QMessageBox::YesRole);
+        msgBox.addButton("Zrušit", QMessageBox::YesRole);
+        msgBox.exec();
+
+        if(msgBox.clickedButton() == pButtonYes){
+            // open github page
+
+            QStringList arguments;
+            arguments.append("/C");
+            arguments.append("start");
+            arguments.append("https://github.com/RxiPland/autoskola_eTesty_desktop");
+
+            QProcess::startDetached("cmd.exe", arguments);
+        }
+    }
 }
 
 void StartMenu::on_pushButton_clicked()

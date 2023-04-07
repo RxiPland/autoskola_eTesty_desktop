@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
@@ -29,7 +30,7 @@ public:
     QSpacerItem *horizontalSpacer_3;
     QVBoxLayout *verticalLayout;
     QGridLayout *gridLayout;
-    QLabel *label_2;
+    QCheckBox *checkBox;
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButton;
@@ -58,10 +59,10 @@ public:
         gridLayout = new QGridLayout();
         gridLayout->setObjectName("gridLayout");
         gridLayout->setContentsMargins(-1, 0, -1, -1);
-        label_2 = new QLabel(SettingsDialog);
-        label_2->setObjectName("label_2");
+        checkBox = new QCheckBox(SettingsDialog);
+        checkBox->setObjectName("checkBox");
 
-        gridLayout->addWidget(label_2, 0, 0, 1, 1);
+        gridLayout->addWidget(checkBox, 0, 0, 1, 1);
 
 
         verticalLayout->addLayout(gridLayout);
@@ -116,7 +117,7 @@ public:
     void retranslateUi(QDialog *SettingsDialog)
     {
         SettingsDialog->setWindowTitle(QCoreApplication::translate("SettingsDialog", "Nastaven\303\255", nullptr));
-        label_2->setText(QCoreApplication::translate("SettingsDialog", "Zat\303\255m \305\276\303\241dn\303\251 nastaven\303\255", nullptr));
+        checkBox->setText(QCoreApplication::translate("SettingsDialog", "Automaticky kontrolovat aktualizace", nullptr));
         pushButton->setText(QCoreApplication::translate("SettingsDialog", "Zkontrolovat aktualizace", nullptr));
         label->setText(QCoreApplication::translate("SettingsDialog", "Aktu\303\241ln\303\255 verze", nullptr));
     } // retranslateUi

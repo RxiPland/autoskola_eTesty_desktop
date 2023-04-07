@@ -3,7 +3,7 @@
 #define STARTMENU_H
 
 #include <QMainWindow>
-
+#include <QNetworkAccessManager>
 
 
 QT_BEGIN_NAMESPACE
@@ -16,10 +16,16 @@ class StartMenu : public QMainWindow
     Q_OBJECT
 
 public:
-    StartMenu(QWidget *parent = nullptr, QString appVersion = "");
+    StartMenu(QWidget *parent = nullptr);
     ~StartMenu();
 
     QString appVersion;
+    QByteArray userAgent;
+    bool checkForUpdates = true;
+
+    void loadSettings();
+    void checkNewVersion();
+
 
 private slots:
     void on_pushButton_clicked();
@@ -30,6 +36,7 @@ private slots:
 
 private:
     Ui::StartMenu *ui;
+    QNetworkAccessManager manager;
 };
 
 #endif // STARTMENU_H
