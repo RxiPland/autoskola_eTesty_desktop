@@ -52,6 +52,9 @@ void SettingsDialog::closeEvent(QCloseEvent *bar)
                 }
 
                 return;
+
+            } else{
+                ui->label_2->clear();
             }
         }
     }
@@ -111,6 +114,9 @@ bool SettingsDialog::saveSettings()
                 }
             }
         }
+
+    } else{
+        return true;
     }
 
     return false;
@@ -297,8 +303,8 @@ void SettingsDialog::on_pushButton_4_clicked()
     bool saved = SettingsDialog::saveSettings();
 
     if(saved){
-        QMessageBox::information(this, "Oznámení", "Nastavení bylo úspěšně uloženo");
         ui->label_2->clear();
+        QMessageBox::information(this, "Oznámení", "Nastavení bylo úspěšně uloženo");
         this->close();
 
     } else{
