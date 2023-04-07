@@ -77,7 +77,6 @@ private:
 
     QByteArray userAgent;
 
-    QString urlRandom = "https://www.autoskola-testy.cz/prohlizeni_otazek.php?random=";
     QString urlTopic = "https://www.autoskola-testy.cz/prohlizeni_otazek.php?okruh=";
 
     QString patternQuestionsUrls = "kód (\\d+), <a href=\"(\\S+)\">";
