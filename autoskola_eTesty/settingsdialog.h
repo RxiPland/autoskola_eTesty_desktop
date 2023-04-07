@@ -21,8 +21,14 @@ public:
     QString appVersion;
     QByteArray userAgent;
 
+    bool settingsChanged = false;
+
 private slots:
     void on_pushButton_clicked();
+    void on_toolButton_clicked();
+    void on_pushButton_2_clicked();
+    void on_pushButton_3_clicked();
+    void on_pushButton_4_clicked();
 
     void on_checkBox_clicked();
 
@@ -32,6 +38,9 @@ private:
 
     void closeEvent(QCloseEvent *bar = nullptr);
     void disableWidgets(bool disable=true);
+    bool saveSettings();
+
+    bool checkUpdates;
 
 };
 

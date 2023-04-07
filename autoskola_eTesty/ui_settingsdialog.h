@@ -19,6 +19,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
@@ -30,7 +31,9 @@ public:
     QSpacerItem *horizontalSpacer_3;
     QVBoxLayout *verticalLayout;
     QGridLayout *gridLayout;
+    QSpacerItem *horizontalSpacer_5;
     QCheckBox *checkBox;
+    QToolButton *toolButton;
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButton;
@@ -38,6 +41,11 @@ public:
     QLabel *label;
     QSpacerItem *horizontalSpacer_2;
     QSpacerItem *verticalSpacer_2;
+    QLabel *label_2;
+    QHBoxLayout *horizontalLayout_3;
+    QPushButton *pushButton_2;
+    QPushButton *pushButton_3;
+    QPushButton *pushButton_4;
     QSpacerItem *horizontalSpacer_4;
 
     void setupUi(QDialog *SettingsDialog)
@@ -59,10 +67,27 @@ public:
         gridLayout = new QGridLayout();
         gridLayout->setObjectName("gridLayout");
         gridLayout->setContentsMargins(-1, 0, -1, -1);
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout->addItem(horizontalSpacer_5, 0, 1, 1, 1);
+
         checkBox = new QCheckBox(SettingsDialog);
         checkBox->setObjectName("checkBox");
+        checkBox->setFocusPolicy(Qt::NoFocus);
 
         gridLayout->addWidget(checkBox, 0, 0, 1, 1);
+
+        toolButton = new QToolButton(SettingsDialog);
+        toolButton->setObjectName("toolButton");
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(toolButton->sizePolicy().hasHeightForWidth());
+        toolButton->setSizePolicy(sizePolicy);
+        toolButton->setMinimumSize(QSize(30, 28));
+        toolButton->setFocusPolicy(Qt::NoFocus);
+
+        gridLayout->addWidget(toolButton, 0, 2, 1, 1);
 
 
         verticalLayout->addLayout(gridLayout);
@@ -97,9 +122,38 @@ public:
 
         verticalLayout->addLayout(horizontalLayout);
 
-        verticalSpacer_2 = new QSpacerItem(20, 8, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer_2 = new QSpacerItem(30, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout->addItem(verticalSpacer_2);
+
+        label_2 = new QLabel(SettingsDialog);
+        label_2->setObjectName("label_2");
+
+        verticalLayout->addWidget(label_2);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName("horizontalLayout_3");
+        horizontalLayout_3->setContentsMargins(-1, 0, -1, -1);
+        pushButton_2 = new QPushButton(SettingsDialog);
+        pushButton_2->setObjectName("pushButton_2");
+        pushButton_2->setFocusPolicy(Qt::NoFocus);
+
+        horizontalLayout_3->addWidget(pushButton_2);
+
+        pushButton_3 = new QPushButton(SettingsDialog);
+        pushButton_3->setObjectName("pushButton_3");
+        pushButton_3->setFocusPolicy(Qt::NoFocus);
+
+        horizontalLayout_3->addWidget(pushButton_3);
+
+        pushButton_4 = new QPushButton(SettingsDialog);
+        pushButton_4->setObjectName("pushButton_4");
+        pushButton_4->setFocusPolicy(Qt::NoFocus);
+
+        horizontalLayout_3->addWidget(pushButton_4);
+
+
+        verticalLayout->addLayout(horizontalLayout_3);
 
 
         horizontalLayout_2->addLayout(verticalLayout);
@@ -117,9 +171,14 @@ public:
     void retranslateUi(QDialog *SettingsDialog)
     {
         SettingsDialog->setWindowTitle(QCoreApplication::translate("SettingsDialog", "Nastaven\303\255", nullptr));
-        checkBox->setText(QCoreApplication::translate("SettingsDialog", "Automaticky kontrolovat aktualizace", nullptr));
+        checkBox->setText(QCoreApplication::translate("SettingsDialog", "Kontrolovat aktualizace", nullptr));
+        toolButton->setText(QCoreApplication::translate("SettingsDialog", "?", nullptr));
         pushButton->setText(QCoreApplication::translate("SettingsDialog", "Zkontrolovat aktualizace", nullptr));
         label->setText(QCoreApplication::translate("SettingsDialog", "Aktu\303\241ln\303\255 verze", nullptr));
+        label_2->setText(QCoreApplication::translate("SettingsDialog", "Nastaven\303\255 nen\303\255 ulo\305\276eno", nullptr));
+        pushButton_2->setText(QCoreApplication::translate("SettingsDialog", "Defaultn\303\255", nullptr));
+        pushButton_3->setText(QCoreApplication::translate("SettingsDialog", "Zru\305\241it", nullptr));
+        pushButton_4->setText(QCoreApplication::translate("SettingsDialog", "Ulo\305\276it", nullptr));
     } // retranslateUi
 
 };

@@ -17,6 +17,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     ui(new Ui::SettingsDialog)
 {
     ui->setupUi(this);
+
+    ui->label_2->clear();
 }
 
 SettingsDialog::~SettingsDialog()
@@ -24,20 +26,94 @@ SettingsDialog::~SettingsDialog()
     delete ui;
 }
 
+void SettingsDialog::closeEvent(QCloseEvent *bar)
+{
+    // before window close
+
+    if(settingsChanged){
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Upozornění");
+        msgBox.setIcon(QMessageBox::Warning);
+        msgBox.setText("Bylo zjištěno neuložené nastavení! Chcete uložit změny?");
+        QAbstractButton* pButtonYes = msgBox.addButton(" Ano ", QMessageBox::YesRole);
+        msgBox.addButton(" Ne ", QMessageBox::YesRole);
+        msgBox.exec();
+
+        if (msgBox.clickedButton() == pButtonYes){
+            // save settings
+
+            bool saved = SettingsDialog::saveSettings();
+
+            if(!saved){
+                QMessageBox::critical(this, "Chyba", "Nastavení se nepodařilo uložit!");
+
+                if(bar != nullptr){
+                    bar->ignore();
+                }
+
+                return;
+            }
+        }
+    }
+
+    if(bar != nullptr){
+        bar->accept();
+    }
+}
+
 void SettingsDialog::disableWidgets(bool disable)
 {
     // disable widgets
 
     ui->pushButton->setDisabled(disable);
+    ui->pushButton_2->setDisabled(disable);
+    ui->pushButton_3->setDisabled(disable);
+    ui->pushButton_4->setDisabled(disable);
+
+    ui->checkBox->setDisabled(disable);
+
+    ui->toolButton->setDisabled(disable);
 }
 
-void SettingsDialog::closeEvent(QCloseEvent *bar)
+bool SettingsDialog::saveSettings()
 {
-    // before window close
+    // save settings if changed
 
-    if(bar != nullptr){
-        bar->accept();
+    if(settingsChanged){
+
+        QFile settingsFile(QDir::currentPath() + "/Data/settings.json");
+
+        if (settingsFile.exists()){
+            settingsFile.open(QIODevice::ReadOnly | QIODevice::Text);
+
+            QByteArray fileContent = settingsFile.readAll();
+            settingsFile.close();
+
+
+            if(!fileContent.isEmpty()){
+
+                QJsonObject loadedJson = QJsonDocument::fromJson(fileContent).object();
+
+                if(!loadedJson.isEmpty()){
+                    // everything OK
+
+                    loadedJson["check_for_updates"] = ui->checkBox->isChecked();
+
+                    QJsonDocument docData(loadedJson);
+
+                    settingsFile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    settingsFile.write(docData.toJson());
+                    settingsFile.close();
+
+                    settingsChanged = false;
+
+                    return true;
+                }
+            }
+        }
     }
+
+    return false;
 }
 
 void SettingsDialog::loadSettings()
@@ -78,8 +154,10 @@ void SettingsDialog::loadSettings()
 
                 SettingsDialog::userAgent = loadedJson["user_agent"].toString().toUtf8();
                 SettingsDialog::appVersion = loadedJson["app_version"].toString();
+                SettingsDialog::checkUpdates = loadedJson["check_for_updates"].toBool();
 
                 ui->label->setText("Aktuální verze " + appVersion);
+                ui->checkBox->setChecked(SettingsDialog::checkUpdates);
             }
         }
 
@@ -142,9 +220,10 @@ void SettingsDialog::on_pushButton_clicked()
         QMessageBox msgBox;
         msgBox.setWindowTitle("Aktualizace");
         msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("Je dostupná novější verze!\n\nVaše verze: " + appVersion  + "\nDostupná verze: " + newestVersion);
+        msgBox.setText("Je dostupná novější verze!\n\nVaše verze: " + appVersion  + "\nDostupná verze: " + newestVersion + "\n\nPři instalaci nové verze se předchozí automaticky odstraní.");
         QAbstractButton* pButtonYes = msgBox.addButton("  Otevřít  ", QMessageBox::YesRole);
         msgBox.addButton("Zrušit", QMessageBox::YesRole);
+        msgBox.exec();
 
         if(msgBox.clickedButton() == pButtonYes){
             // open github page
@@ -157,7 +236,6 @@ void SettingsDialog::on_pushButton_clicked()
             QProcess::startDetached("cmd.exe", arguments);
         }
 
-
     } else{
         QMessageBox::information(this, "Aktualizace", QString("Již máte nejnovější verzi (%1)").arg(newestVersion));
     }
@@ -165,8 +243,66 @@ void SettingsDialog::on_pushButton_clicked()
     SettingsDialog::disableWidgets(false);
 }
 
+
 void SettingsDialog::on_checkBox_clicked()
 {
-    // check updates on start
+    // check updates checkbox
+
+    SettingsDialog::checkUpdates = ui->checkBox->isChecked();
+
+    if(!settingsChanged){
+        ui->label_2->setText("Nastavení není uloženo");
+        ui->label_2->setStyleSheet("color: red");
+        SettingsDialog::settingsChanged = true;
+    }
+}
+
+
+void SettingsDialog::on_toolButton_clicked()
+{
+    // help - check version
+    QMessageBox::information(this, "Nápověda", "Pokud bude povoleno, tak se při spuštění aplikace automaticky zkontroluje, zda nevyšla nová verze programu. Kontrolovat aktualizace jde i manuálně.");
+}
+
+
+void SettingsDialog::on_pushButton_2_clicked()
+{
+    // default settings
+
+    ui->checkBox->setChecked(true);
+
+    SettingsDialog::checkUpdates = ui->checkBox->isChecked();
+
+
+    ui->label_2->setText("Nastavení není uloženo");
+    ui->label_2->setStyleSheet("color: red");
+    SettingsDialog::settingsChanged = true;
+
+    QMessageBox::information(this, "Oznámení", "Bylo nastaveno defaultní nastavení, nezapomeňte uložit změny");
+}
+
+
+void SettingsDialog::on_pushButton_3_clicked()
+{
+    // cancel settings
+
+    this->close();
+}
+
+
+void SettingsDialog::on_pushButton_4_clicked()
+{
+    // save settings
+
+    bool saved = SettingsDialog::saveSettings();
+
+    if(saved){
+        QMessageBox::information(this, "Oznámení", "Nastavení bylo úspěšně uloženo");
+        ui->label_2->clear();
+        this->close();
+
+    } else{
+        QMessageBox::critical(this, "Chyba", "Nastavení se nepodařilo uložit!");
+    }
 }
 
