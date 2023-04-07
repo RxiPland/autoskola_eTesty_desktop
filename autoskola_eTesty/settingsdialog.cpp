@@ -282,14 +282,6 @@ void SettingsDialog::on_doubleSpinBox_valueChanged(double arg1)
     }
 }
 
-
-void SettingsDialog::on_toolButton_clicked()
-{
-    // help - check version
-    QMessageBox::information(this, "Nápověda", "Pokud bude povoleno, tak se při spuštění aplikace automaticky zkontroluje, zda nevyšla nová verze programu. Kontrolovat aktualizace jde i manuálně.");
-}
-
-
 void SettingsDialog::on_pushButton_2_clicked()
 {
     // default settings
@@ -332,3 +324,15 @@ void SettingsDialog::on_pushButton_4_clicked()
     }
 }
 
+void SettingsDialog::on_toolButton_clicked()
+{
+    // help - check version
+    QMessageBox::information(this, "Nápověda", "Pokud bude povoleno, tak se při spuštění aplikace automaticky zkontroluje, zda nevyšla nová verze programu. Kontrolovat aktualizace jde i manuálně.");
+}
+
+void SettingsDialog::on_toolButton_2_clicked()
+{
+    // help - waiting time
+
+    QMessageBox::information(this, "Nápověda", "Doba v sekundách, po kterou bude program čekat, než načte další otázku. Může se hodit, pokud si chcete důkladně přečíst každou správnou odpověď.");
+}
