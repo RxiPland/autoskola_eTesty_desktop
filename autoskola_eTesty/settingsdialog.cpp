@@ -76,6 +76,7 @@ void SettingsDialog::disableWidgets(bool disable)
     ui->checkBox->setDisabled(disable);
 
     ui->toolButton->setDisabled(disable);
+    ui->toolButton_2->setDisabled(disable);
 }
 
 bool SettingsDialog::saveSettings()
