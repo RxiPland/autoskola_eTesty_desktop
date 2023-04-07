@@ -60,6 +60,8 @@ public:
     QSpacerItem *horizontalSpacer_9;
     QLabel *label_5;
     QSpacerItem *horizontalSpacer_7;
+    QPushButton *pushButton_3;
+    QSpacerItem *horizontalSpacer_11;
     QCheckBox *checkBox;
     QSpacerItem *horizontalSpacer_10;
     QPushButton *pushButton_2;
@@ -290,6 +292,16 @@ public:
 
         horizontalLayout_3->addItem(horizontalSpacer_7);
 
+        pushButton_3 = new QPushButton(QuestionsDialog);
+        pushButton_3->setObjectName("pushButton_3");
+        pushButton_3->setFocusPolicy(Qt::NoFocus);
+
+        horizontalLayout_3->addWidget(pushButton_3);
+
+        horizontalSpacer_11 = new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_3->addItem(horizontalSpacer_11);
+
         checkBox = new QCheckBox(QuestionsDialog);
         checkBox->setObjectName("checkBox");
 
@@ -334,6 +346,7 @@ public:
         label_3->setText(QCoreApplication::translate("QuestionsDialog", "Odpov\304\233\304\217 C:", nullptr));
         label_4->setText(QCoreApplication::translate("QuestionsDialog", "00:00:00", nullptr));
         label_5->setText(QCoreApplication::translate("QuestionsDialog", "\303\232sp\304\233\305\241nost: 100%", nullptr));
+        pushButton_3->setText(QCoreApplication::translate("QuestionsDialog", "Info", nullptr));
         checkBox->setText(QCoreApplication::translate("QuestionsDialog", "Automaticky nov\303\241 ot\303\241zka", nullptr));
         pushButton_2->setText(QCoreApplication::translate("QuestionsDialog", "Odej\303\255t", nullptr));
         pushButton->setText(QCoreApplication::translate("QuestionsDialog", "P\305\231esko\304\215it", nullptr));

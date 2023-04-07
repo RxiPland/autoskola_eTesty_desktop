@@ -47,6 +47,8 @@ private slots:
 
     void on_checkBox_clicked();
 
+    void on_pushButton_3_clicked();
+
 private:
     Ui::QuestionsDialog *ui;
     QNetworkAccessManager manager;

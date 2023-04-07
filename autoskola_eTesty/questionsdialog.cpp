@@ -157,6 +157,7 @@ void QuestionsDialog::hideWidgets(bool hide)
 
     ui->pushButton->setHidden(hide);
     ui->pushButton_2->setHidden(hide);
+    ui->pushButton_3->setHidden(hide);
 }
 
 void QuestionsDialog::disableWidgets(bool disable)
@@ -173,6 +174,7 @@ void QuestionsDialog::disableWidgets(bool disable)
 
     ui->pushButton->setDisabled(disable);
     ui->pushButton_2->setDisabled(disable);
+    ui->pushButton_3->setDisabled(disable);
 
     ui->checkBox->setDisabled(disable);
 }
@@ -346,6 +348,12 @@ void QuestionsDialog::loadSettings()
 void QuestionsDialog::loadQuestions()
 {
     // load all questions urls
+
+    QuestionsDialog::hideWidgets();
+
+    ui->question_image->setText("Hledám otázky");
+    ui->question_image->setDisabled(true);
+    ui->question_image->setHidden(false);
 
     int i;
     for(i=1; i<8; i++){
@@ -959,6 +967,7 @@ void QuestionsDialog::newQuestion()
 
     ui->pushButton->setHidden(false);
     ui->pushButton_2->setHidden(false);
+    ui->pushButton_3->setHidden(false);
     ui->checkBox->setHidden(false);
 
     ui->question_image->setAlignment(Qt::AlignCenter);
@@ -1432,6 +1441,7 @@ void QuestionsDialog::on_answerA_clicked()
             ui->pushButton->setText(" Nová otázka ");
             ui->pushButton->setEnabled(true);
             ui->pushButton_2->setEnabled(true);
+            ui->pushButton_3->setEnabled(true);
             ui->checkBox->setEnabled(true);
         }
 
@@ -1462,6 +1472,7 @@ void QuestionsDialog::on_answerB_clicked()
             ui->pushButton->setText(" Nová otázka ");
             ui->pushButton->setEnabled(true);
             ui->pushButton_2->setEnabled(true);
+            ui->pushButton_3->setEnabled(true);
             ui->checkBox->setEnabled(true);
         }
 
@@ -1492,6 +1503,7 @@ void QuestionsDialog::on_answerC_clicked()
             ui->pushButton->setText(" Nová otázka ");
             ui->pushButton->setEnabled(true);
             ui->pushButton_2->setEnabled(true);
+            ui->pushButton_3->setEnabled(true);
             ui->checkBox->setEnabled(true);
         }
 
@@ -1543,6 +1555,7 @@ void QuestionsDialog::on_pushButton_clicked()
         ui->pushButton->setText(" Nová otázka ");
         ui->pushButton->setEnabled(true);
         ui->pushButton_2->setEnabled(true);
+        ui->pushButton_3->setEnabled(true);
         ui->checkBox->setEnabled(true);
     }
 }
@@ -1561,5 +1574,27 @@ void QuestionsDialog::on_checkBox_clicked()
     // automatic new question setting
 
     QuestionsDialog::automaticNewQuestion = ui->checkBox->isChecked();
+}
+
+
+void QuestionsDialog::on_pushButton_3_clicked()
+{
+    // show info about remaining questions number
+
+    QStringList topicNames = {"Pravidla provozu na pozemních komunikacích", "Dopravní značky", "Zásady bezpečné jízdy", "Dopravní situace", "Předpisy o podmínkách provozu vozidel", "Předpisy související s provozem", "Zdravotnická příprava"};
+    QString infoText;
+
+    int total = 0;
+    int i;
+    for(i=0; i<7; i++){
+
+        int count = topicsQuestionsUrls[i].length();
+        total += count;
+        infoText += "(" + topicNames[i] + ") zbývá: " + QString::number(count) + "\t\t\n";
+    }
+
+    infoText = "Dostupné otázky: " + QString::number(total) + "\t\t\n\n" + infoText;
+
+    QMessageBox::information(this, "Informace - počet otázek", infoText);
 }
 
