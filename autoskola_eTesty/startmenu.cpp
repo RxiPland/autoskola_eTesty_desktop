@@ -13,6 +13,7 @@
 #include <QProcess>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QCloseEvent>
 
 
 StartMenu::StartMenu(QWidget *parent)
@@ -27,6 +28,16 @@ StartMenu::~StartMenu()
 {
     delete ui;
 }
+
+void StartMenu::closeEvent(QCloseEvent *bar)
+{
+    // before window close
+
+    if(bar != nullptr){
+        bar->accept();
+    }
+}
+
 
 void StartMenu::loadSettings()
 {
@@ -124,7 +135,7 @@ void StartMenu::checkNewVersion()
         QMessageBox msgBox;
         msgBox.setWindowTitle("Aktualizace");
         msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("Je dostupná novější verze!\n\nVaše verze: " + appVersion  + "\nDostupná verze: " + newestVersion);
+        msgBox.setText("Je dostupná novější verze!\n\nVaše verze: " + appVersion  + "\nDostupná verze: " + newestVersion + "\n\nPři instalaci nové verze se předchozí automaticky odstraní.");
         QAbstractButton* pButtonYes = msgBox.addButton("  Otevřít  ", QMessageBox::YesRole);
         msgBox.addButton("Zrušit", QMessageBox::YesRole);
         msgBox.exec();
@@ -278,4 +289,3 @@ void StartMenu::on_pushButton_5_clicked()
 
     QProcess::startDetached("cmd.exe", arguments);
 }
-

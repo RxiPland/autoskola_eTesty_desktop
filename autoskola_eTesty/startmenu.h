@@ -37,6 +37,8 @@ private slots:
 private:
     Ui::StartMenu *ui;
     QNetworkAccessManager manager;
+
+    void closeEvent(QCloseEvent *bar = nullptr);
 };
 
 #endif // STARTMENU_H
