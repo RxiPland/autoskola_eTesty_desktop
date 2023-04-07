@@ -11,7 +11,7 @@
   - Předpisy související s provozem
   - Zdravotnická příprava
 <br></br>
-- Otázky se nikdy neopakují
+- Otázky se nikdy neopakují (mohou být podobné)
 <br></br>
 
 # Odkazy ke stažení
