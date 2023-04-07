@@ -21,6 +21,9 @@ public:
     QString appVersion;
     QByteArray userAgent;
 
+    bool checkUpdates;
+    qint64 waitingIntervalMiliseconds;
+
     bool settingsChanged = false;
 
 private slots:
@@ -32,6 +35,8 @@ private slots:
 
     void on_checkBox_clicked();
 
+    void on_doubleSpinBox_valueChanged(double arg1);
+
 private:
     Ui::SettingsDialog *ui;
     QNetworkAccessManager manager;
@@ -39,8 +44,6 @@ private:
     void closeEvent(QCloseEvent *bar = nullptr);
     void disableWidgets(bool disable=true);
     bool saveSettings();
-
-    bool checkUpdates;
 
 };
 

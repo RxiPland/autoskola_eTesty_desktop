@@ -101,6 +101,7 @@ bool SettingsDialog::saveSettings()
                     // everything OK
 
                     loadedJson["check_for_updates"] = ui->checkBox->isChecked();
+                    loadedJson["waiting_interval_miliseconds"] = (qint64)(ui->doubleSpinBox->value()*1000);
 
                     QJsonDocument docData(loadedJson);
 
@@ -161,9 +162,14 @@ void SettingsDialog::loadSettings()
                 SettingsDialog::userAgent = loadedJson["user_agent"].toString().toUtf8();
                 SettingsDialog::appVersion = loadedJson["app_version"].toString();
                 SettingsDialog::checkUpdates = loadedJson["check_for_updates"].toBool();
+                SettingsDialog::waitingIntervalMiliseconds = loadedJson["waiting_interval_miliseconds"].toInteger();
 
                 ui->label->setText("Aktuální verze " + appVersion);
                 ui->checkBox->setChecked(SettingsDialog::checkUpdates);
+                ui->doubleSpinBox->setValue((float)waitingIntervalMiliseconds/1000);
+
+                SettingsDialog::settingsChanged = false;
+                ui->label_2->clear();
             }
         }
 
@@ -263,6 +269,19 @@ void SettingsDialog::on_checkBox_clicked()
     }
 }
 
+void SettingsDialog::on_doubleSpinBox_valueChanged(double arg1)
+{
+    // waiting time setting
+
+    SettingsDialog::waitingIntervalMiliseconds = arg1*1000;
+
+    if(!settingsChanged){
+        ui->label_2->setText("Nastavení není uloženo");
+        ui->label_2->setStyleSheet("color: red");
+        SettingsDialog::settingsChanged = true;
+    }
+}
+
 
 void SettingsDialog::on_toolButton_clicked()
 {
@@ -276,8 +295,10 @@ void SettingsDialog::on_pushButton_2_clicked()
     // default settings
 
     ui->checkBox->setChecked(true);
+    ui->doubleSpinBox->setValue(1.0);
 
     SettingsDialog::checkUpdates = ui->checkBox->isChecked();
+    SettingsDialog::waitingIntervalMiliseconds = ui->doubleSpinBox->value()*1000;
 
 
     ui->label_2->setText("Nastavení není uloženo");
@@ -294,7 +315,6 @@ void SettingsDialog::on_pushButton_3_clicked()
 
     this->close();
 }
-
 
 void SettingsDialog::on_pushButton_4_clicked()
 {

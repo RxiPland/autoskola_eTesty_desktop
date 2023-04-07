@@ -14,6 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
+#include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
@@ -32,8 +33,13 @@ public:
     QVBoxLayout *verticalLayout;
     QGridLayout *gridLayout;
     QSpacerItem *horizontalSpacer_5;
-    QCheckBox *checkBox;
     QToolButton *toolButton;
+    QCheckBox *checkBox;
+    QLabel *label_3;
+    QHBoxLayout *horizontalLayout_4;
+    QDoubleSpinBox *doubleSpinBox;
+    QLabel *label_4;
+    QToolButton *toolButton_2;
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButton;
@@ -71,12 +77,6 @@ public:
 
         gridLayout->addItem(horizontalSpacer_5, 0, 1, 1, 1);
 
-        checkBox = new QCheckBox(SettingsDialog);
-        checkBox->setObjectName("checkBox");
-        checkBox->setFocusPolicy(Qt::NoFocus);
-
-        gridLayout->addWidget(checkBox, 0, 0, 1, 1);
-
         toolButton = new QToolButton(SettingsDialog);
         toolButton->setObjectName("toolButton");
         QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -88,6 +88,43 @@ public:
         toolButton->setFocusPolicy(Qt::NoFocus);
 
         gridLayout->addWidget(toolButton, 0, 2, 1, 1);
+
+        checkBox = new QCheckBox(SettingsDialog);
+        checkBox->setObjectName("checkBox");
+        checkBox->setFocusPolicy(Qt::NoFocus);
+
+        gridLayout->addWidget(checkBox, 0, 0, 1, 1);
+
+        label_3 = new QLabel(SettingsDialog);
+        label_3->setObjectName("label_3");
+
+        gridLayout->addWidget(label_3, 1, 0, 1, 1);
+
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName("horizontalLayout_4");
+        horizontalLayout_4->setContentsMargins(0, -1, -1, -1);
+        doubleSpinBox = new QDoubleSpinBox(SettingsDialog);
+        doubleSpinBox->setObjectName("doubleSpinBox");
+        doubleSpinBox->setFocusPolicy(Qt::NoFocus);
+        doubleSpinBox->setProperty("showGroupSeparator", QVariant(false));
+        doubleSpinBox->setDecimals(1);
+        doubleSpinBox->setSingleStep(0.100000000000000);
+
+        horizontalLayout_4->addWidget(doubleSpinBox);
+
+        label_4 = new QLabel(SettingsDialog);
+        label_4->setObjectName("label_4");
+
+        horizontalLayout_4->addWidget(label_4);
+
+
+        gridLayout->addLayout(horizontalLayout_4, 1, 1, 1, 1);
+
+        toolButton_2 = new QToolButton(SettingsDialog);
+        toolButton_2->setObjectName("toolButton_2");
+        toolButton_2->setMinimumSize(QSize(30, 28));
+
+        gridLayout->addWidget(toolButton_2, 1, 2, 1, 1);
 
 
         verticalLayout->addLayout(gridLayout);
@@ -171,8 +208,13 @@ public:
     void retranslateUi(QDialog *SettingsDialog)
     {
         SettingsDialog->setWindowTitle(QCoreApplication::translate("SettingsDialog", "Nastaven\303\255", nullptr));
-        checkBox->setText(QCoreApplication::translate("SettingsDialog", "Kontrolovat aktualizace", nullptr));
         toolButton->setText(QCoreApplication::translate("SettingsDialog", "?", nullptr));
+        checkBox->setText(QCoreApplication::translate("SettingsDialog", "Kontrolovat aktualizace", nullptr));
+        label_3->setText(QCoreApplication::translate("SettingsDialog", "\304\214ek\303\241n\303\255 mezi dal\305\241\303\255 ot\303\241zkou:", nullptr));
+        doubleSpinBox->setSpecialValueText(QString());
+        doubleSpinBox->setSuffix(QString());
+        label_4->setText(QCoreApplication::translate("SettingsDialog", "vte\305\231in", nullptr));
+        toolButton_2->setText(QCoreApplication::translate("SettingsDialog", "?", nullptr));
         pushButton->setText(QCoreApplication::translate("SettingsDialog", "Zkontrolovat aktualizace", nullptr));
         label->setText(QCoreApplication::translate("SettingsDialog", "Aktu\303\241ln\303\255 verze", nullptr));
         label_2->setText(QCoreApplication::translate("SettingsDialog", "Nastaven\303\255 nen\303\255 ulo\305\276eno", nullptr));
