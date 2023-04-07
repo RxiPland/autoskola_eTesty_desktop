@@ -11,6 +11,8 @@
   - Předpisy související s provozem
   - Zdravotnická příprava
 <br></br>
+- Otázky se nikdy neopakují
+<br></br>
 
 # Odkazy ke stažení
 - [Stáhnout instalačku](https://github.com/RxiPland/autoskola_eTesty_desktop/releases/download/v1.0.0/autoskola-eTesty_setup.exe) exe (win64) `md5: bda007224f78aa1e6da1855aa3dc240c`
