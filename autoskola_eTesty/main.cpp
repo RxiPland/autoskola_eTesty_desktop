@@ -11,7 +11,7 @@
 QString appVersion = "v1.1.1";
 
 
-void checkFilesIntegrity(){
+void checkJsonIntegrity(){
     // check stats and settings file
 
     QJsonObject loadedJson;
@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     // check if json is not corrupted
-    checkFilesIntegrity();
+    checkJsonIntegrity();
 
     StartMenu w;
     w.loadSettings();
