@@ -197,10 +197,10 @@ void SettingsDialog::on_pushButton_clicked()
 
     QNetworkReply *replyGet = manager.get(request);
 
-    while (!replyGet->isFinished())
-    {
-        qApp->processEvents();
-    }
+    // wait for finished
+    QEventLoop loop;
+    connect(replyGet, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
 
     QNetworkReply::NetworkError error = replyGet->error();
 
