@@ -14,6 +14,7 @@ QString appVersion = "v1.1.1";
 void checkJsonIntegrity(){
     // check stats and settings file
 
+    QJsonDocument docData;
     QJsonObject loadedJson;
     QByteArray fileContent;
     QDir directory(QDir::currentPath());
@@ -95,6 +96,17 @@ void checkJsonIntegrity(){
                 corrupted = true;
 
             } else{
+
+                if(loadedJson["app_version"].toString() != appVersion){
+
+                    loadedJson["app_version"] = appVersion;
+                    docData = QJsonDocument(loadedJson);
+
+                    settingsFile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    settingsFile.write(docData.toJson());
+                    settingsFile.close();
+                }
+
                 // OK
                 corrupted = false;
             }
@@ -115,7 +127,7 @@ void checkJsonIntegrity(){
         newJson["check_for_updates"] = true;
         newJson["app_version"] = appVersion;
 
-        QJsonDocument docData(newJson);
+        docData = QJsonDocument(newJson);
 
         settingsFile.open(QIODevice::WriteOnly | QIODevice::Text);
         settingsFile.write(docData.toJson());
