@@ -15,14 +15,14 @@
 <br></br>
 
 # Odkazy ke stažení
-- [Stáhnout instalačku](https://github.com/RxiPland/autoskola_eTesty_desktop/releases/download/v1.1.0/autoskola-eTesty_setup.exe) exe (win64) `md5: c68cf53830cd1aa8aa33cd971e16b86a`
-- [Stáhnout zip](https://github.com/RxiPland/autoskola_eTesty_desktop/releases/download/v1.1.0/autoskola-eTesty.zip) (win64) `md5: e590561a25b7b4fab6b71ee405319311`
+- [Stáhnout instalačku](https://github.com/RxiPland/autoskola_eTesty_desktop/releases/download/v1.1.1/autoskola-eTesty_setup.exe) exe (win64) `md5: c0bc8ac7768f0387a3b33f3318adbb04`
+- [Stáhnout zip](https://github.com/RxiPland/autoskola_eTesty_desktop/releases/download/v1.1.1/autoskola-eTesty.zip) (win64) `md5: c3dbd4012ee61acb736a38ec11afe493`
 
 <br></br>
 # Náhled
 ![1](https://user-images.githubusercontent.com/82058894/230598346-34b85bfe-39e4-416d-aee5-5d50ff6c0f59.png)
 ##
-![2](https://user-images.githubusercontent.com/82058894/230611738-cd896d25-bacf-48ea-90d5-75b9e1108439.png)
+![2](https://user-images.githubusercontent.com/82058894/230719109-3da8ab57-af4a-4891-b959-8da36ba4ac6c.png)
 
 <br></br>
 # Poznámky
