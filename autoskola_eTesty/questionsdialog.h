@@ -33,7 +33,7 @@ public:
 
     QStringList getQuestionsUrls(int topicId);
 
-    QList<QStringList> topicsQuestionsUrls;
+    QList<QStringList> topicsQuestionsUrls = *new QList<QStringList>;
 
 private slots:
     void on_answerA_clicked();

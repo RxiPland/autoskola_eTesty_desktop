@@ -359,7 +359,6 @@ void QuestionsDialog::loadQuestions()
     for(i=1; i<8; i++){
         QuestionsDialog::topicsQuestionsUrls.append(QuestionsDialog::getQuestionsUrls(i));
     }
-
 }
 
 void QuestionsDialog::newQuestion()
@@ -983,7 +982,7 @@ QJsonObject QuestionsDialog::getRandomQuestion()
 
     QJsonObject question;
 
-    int randomTopicId = QRandomGenerator::global()->bounded(1,8);
+    int randomTopicId = QRandomGenerator::global()->bounded(1,topicsQuestionsUrls.length()+1);
 
     if(randomTopicId < 1 || randomTopicId > 7){
         // should never happen
@@ -995,30 +994,30 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     }
 
 
-    while(randomTopicId == QuestionsDialog::previousQuestionTopic){
-        // generate new topic number
-
-        randomTopicId = QRandomGenerator::global()->bounded(1,8);
-    }
-
-    QuestionsDialog::previousQuestionTopic = randomTopicId;
-
     int k = 0;
 
     // if list of all questions will be empty
-    for(k=0; k<8 && topicsQuestionsUrls[k].isEmpty(); k++){
+    for(k=0; k<=topicsQuestionsUrls.length() && topicsQuestionsUrls[k].isEmpty(); k++){
 
-        if(k == 7){
+        if(k == topicsQuestionsUrls.length()){
             QMessageBox::critical(this, "Gratulace", "Všechny otázky byly vyčerpány! Restartujte program pro znovunačtení otázek.");
 
             QuestionsDialog::hideWidgets(true);
             return QJsonObject();
-
-        } else{
-            randomTopicId = k+1;
         }
     }
 
+    bool emptyError = topicsQuestionsUrls[randomTopicId-1].isEmpty();
+
+    while(randomTopicId == QuestionsDialog::previousQuestionTopic || emptyError){
+        // generate new topic number
+
+        randomTopicId = QRandomGenerator::global()->bounded(1,8);
+
+        emptyError = topicsQuestionsUrls[randomTopicId-1].isEmpty();
+    }
+
+    QuestionsDialog::previousQuestionTopic = randomTopicId;
 
     int randomIndex;
     QString url;
