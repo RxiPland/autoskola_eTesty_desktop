@@ -1,5 +1,6 @@
 # autoskola-eTesty desktop
-- Program využívá stránku (https://www.autoskola-testy.cz/)
+- Procvičování testových otázek z autoškoly (skupina B)
+- Program využívá stránku https://www.autoskola-testy.cz/
 - Bylo použito API z vedlejšího projektu [autoskola_eTesty_API](https://github.com/RxiPland/autoskola_eTesty_API)
 <br></br>
 - Generuje zdarma náhodné otázky ze všech okruhů:
