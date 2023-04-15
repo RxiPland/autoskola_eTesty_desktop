@@ -997,12 +997,15 @@ QJsonObject QuestionsDialog::getRandomQuestion()
     int k = 0;
 
     // if list of all questions will be empty
-    for(k=0; k<=topicsQuestionsUrls.length() && topicsQuestionsUrls[k].isEmpty(); k++){
+    for(k=0; k<topicsQuestionsUrls.length() && topicsQuestionsUrls[k].isEmpty(); k++){
 
-        if(k == topicsQuestionsUrls.length()){
-            QMessageBox::critical(this, "Gratulace", "Všechny otázky byly vyčerpány! Restartujte program pro znovunačtení otázek.");
-
+        if(k == topicsQuestionsUrls.length()-1){
+            QMessageBox::information(this, "Gratulace", "Gratuluji! Všechny otázky byly vyčerpány! Restartuji program pro znovunačtení otázek.");
             QuestionsDialog::hideWidgets(true);
+
+            QProcess::startDetached(QApplication::applicationFilePath());
+            QMetaObject::invokeMethod(qApp, "quit", Qt::QueuedConnection);
+
             return QJsonObject();
         }
     }
