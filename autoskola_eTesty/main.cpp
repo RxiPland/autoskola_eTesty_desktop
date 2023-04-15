@@ -8,7 +8,7 @@
 #include <QJsonDocument>
 
 
-QString appVersion = "v1.1.1";
+QString appVersion = "v1.1.2";
 
 
 void checkJsonIntegrity(){
