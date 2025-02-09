@@ -1,3 +1,5 @@
+# Kvůli změně API již program nadále nefunguje!
+
 # autoskola-eTesty desktop
 - Procvičování testových otázek z autoškoly (skupina B)
 - Program využívá stránku https://www.autoskola-testy.cz/
